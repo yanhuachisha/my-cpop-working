@@ -14,7 +14,7 @@ from app.kugou_bridge import bridge_status, search_bridge
 from app.langchain_agent import AgentRunRequest, MusicAgent, agent_status
 from app.agent_evaluation import evaluate_agent
 from app.hybrid_recommender import HybridRecommender
-from app.listening_agent import ListeningAgent, ListeningChatRequest, LyricAnalysisRequest
+from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningStoryRequest, LyricAnalysisRequest
 from app.library_import import (
     LibraryImportRequest,
     discover_kugou,
@@ -186,7 +186,7 @@ def recommendation_evaluation(limit: int = Query(10, ge=2, le=30)):
 @app.get("/api/recommendations/algorithms")
 def recommendation_algorithms():
     return {
-        "candidate_generation": ["content_based", "implicit_feedback", "kg_personalized_pagerank"],
+        "candidate_generation": ["content_based", "implicit_feedback", "bpr_pairwise", "context_aware"],
         "ranking": ["weighted_multi_objective", "thompson_sampling_contextual_bandit"],
         "reranking": ["maximal_marginal_relevance"],
         "evaluation": ["catalog_coverage", "intra_list_diversity", "artist_coverage", "precision_at_k_ready", "ndcg_at_k_ready"],
@@ -196,6 +196,11 @@ def recommendation_algorithms():
 @app.get("/api/listening/context")
 def listening_context():
     return ListeningAgent(get_store()).context()
+
+
+@app.post("/api/listening/story")
+def listening_story(request: ListeningStoryRequest):
+    return ListeningAgent(get_store()).story(request)
 
 
 @app.post("/api/listening/analyze-lyrics")
@@ -310,7 +315,6 @@ def artist_detail(artist_id: str):
         "artist": artist,
         "releases": store.artist_releases(artist_id),
         "recordings": recordings,
-        "relations": store.relations_for(artist_id),
     }
 
 

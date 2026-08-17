@@ -64,10 +64,13 @@ type ChatMessage = { role: "agent" | "user"; content: string; tools?: string[]; 
 
 export default function ListeningRoomPage() {
   const activeTrackKey = useRef<string | null>(null);
+  const detectedTrackKey = useRef("idle");
+  const storyLoadingKey = useRef<string | null>(null);
   const contextLoading = useRef(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [context, setContext] = useState<ListeningContext | null>(null);
   const [loading, setLoading] = useState(true);
+  const [storyLoading, setStoryLoading] = useState(false);
   const [opening, setOpening] = useState(false);
   const [activePanel, setActivePanel] = useState<"story" | "lyrics">("story");
   const [excerpt, setExcerpt] = useState("");
@@ -79,21 +82,47 @@ export default function ListeningRoomPage() {
   const [showIntro, setShowIntro] = useState(true);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
+  const loadStory = useCallback(async (track: TrackState, trackKey: string) => {
+    if (!track.title || storyLoadingKey.current === trackKey) return;
+    storyLoadingKey.current = trackKey;
+    setStoryLoading(true);
+    try {
+      const story = await fetchApiClient<SongStory>("/api/listening/story", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: track.title, artist: track.artist, album: track.album, year: track.year }),
+        retries: 0,
+        timeoutMs: 70000,
+      });
+      if (detectedTrackKey.current !== trackKey) return;
+      setContext((currentContext) => currentContext ? { ...currentContext, story } : currentContext);
+    } catch {
+    } finally {
+      if (storyLoadingKey.current === trackKey) storyLoadingKey.current = null;
+      if (detectedTrackKey.current === trackKey) setStoryLoading(false);
+    }
+  }, []);
+
   const loadContext = useCallback(async () => {
     if (contextLoading.current) return;
     contextLoading.current = true;
     try {
-      const nextContext = await fetchApiClient<ListeningContext>("/api/listening/context", { retries: 1, timeoutMs: 70000 });
+      const nextContext = await fetchApiClient<ListeningContext>("/api/listening/context", { retries: 0, timeoutMs: 5000 });
+      const trackKey = nextContext.current.title ? `${nextContext.current.title}::${nextContext.current.artist || ""}` : "idle";
+      detectedTrackKey.current = trackKey;
       setContext(nextContext);
+      if (nextContext.current.title && !nextContext.story) void loadStory(nextContext.current, trackKey);
+      if (!nextContext.current.title) setStoryLoading(false);
+    } catch {
     } finally {
       contextLoading.current = false;
       setLoading(false);
     }
-  }, []);
+  }, [loadStory]);
 
   useEffect(() => {
     loadContext();
-    const timer = window.setInterval(() => loadContext(), 5000);
+    const timer = window.setInterval(() => loadContext(), 1000);
     return () => window.clearInterval(timer);
   }, [loadContext]);
 
@@ -189,7 +218,7 @@ export default function ListeningRoomPage() {
       });
       setMessages((items) => [...items, { role: "agent", content: result.answer, tools: result.tools_used, sources: result.sources }]);
     } catch {
-      setMessages((items) => [...items, { role: "agent", content: "音乐助理暂时没有响应，请确认服务仍在运行。" }]);
+      setMessages((items) => [...items, { role: "agent", content: "音乐陪伴暂时没有回应，请确认服务仍在运行。" }]);
     } finally {
       setChatting(false);
     }
@@ -247,8 +276,10 @@ export default function ListeningRoomPage() {
                     {context.story.listening_points.map((point, index) => <div key={point}><span>0{index + 1}</span><p>{point}</p></div>)}
                   </div>
                 </>
+              ) : current?.title && storyLoading ? (
+                <div className="room-empty"><LoaderCircle className="spin-icon" size={38} /><h2>歌曲已经同步</h2><p>正在补全这首歌的情绪画像，不影响继续识别下一首。</p></div>
               ) : (
-                <div className="room-empty"><Disc3 size={42} /><h2>等待一首歌进入房间</h2><p>播放歌曲后，音乐助理会补全歌曲简介和聆听提示。</p></div>
+                <div className="room-empty"><Disc3 size={42} /><h2>等待一首歌进入房间</h2><p>播放歌曲后，音乐陪伴会和你一起慢慢听懂它。</p></div>
               )}
             </div>
           ) : (
@@ -295,7 +326,7 @@ export default function ListeningRoomPage() {
           </div>
           <div className="agent-input">
             <MessageCircleMore size={17} />
-            <input onChange={(event) => setQuestion(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") askAgent(); }} placeholder="问问这首歌……" value={question} />
+            <input onChange={(event) => setQuestion(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") askAgent(); }} placeholder="说说你此刻在这首歌里听见了什么……" value={question} />
             <button disabled={!question.trim() || chatting} onClick={() => askAgent()} type="button"><Send size={15} /></button>
           </div>
         </aside>

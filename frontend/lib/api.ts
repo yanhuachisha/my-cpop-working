@@ -64,11 +64,6 @@ export type RecommendationOptions = {
   moods: { value: string; label: string; count: number }[];
 };
 
-export type GraphPayload = {
-  nodes: { id: string; label: string; kind: "artist" | "recording" | "release" | "tag" }[];
-  edges: { id: string; source: string; target: string; label: string }[];
-};
-
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -86,7 +81,8 @@ async function retryFetch<T>(
   retries: number = 3,
   timeoutMs: number = 9000
 ): Promise<T> {
-  for (let i = 0; i < retries; i++) {
+  const attempts = Math.max(1, retries);
+  for (let i = 0; i < attempts; i++) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -98,7 +94,7 @@ async function retryFetch<T>(
         clearTimeout(timeout);
       }
     } catch (error) {
-      if (i === retries - 1) throw error;
+      if (i === attempts - 1) throw error;
       // 等待后重试 (100ms, 200ms, 400ms)
       await new Promise((resolve) => setTimeout(resolve, 100 * Math.pow(2, i)));
     }

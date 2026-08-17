@@ -8,7 +8,6 @@ from datetime import date, datetime
 from typing import Any
 
 from app.data_store import DataStore
-from app.kg_algorithms import KnowledgeGraphAlgorithms
 from app.listener_memory import load_state
 
 
@@ -38,7 +37,6 @@ class HybridRecommender:
 
         profile = self._profile(state)
         itemcf = self._itemcf_scores(state)
-        pagerank = self._pagerank_scores(state)
         bpr_vector = self._train_bpr(state, candidates, seed)
         base_features: dict[str, dict[str, float]] = {}
         item_features: dict[str, list[str]] = {}
@@ -49,7 +47,6 @@ class HybridRecommender:
                 "content_similarity": self._cosine(profile, Counter(features)),
                 "itemcf": itemcf.get(item.id, 0.0),
                 "bpr_pairwise": self._bpr_score(item, bpr_vector),
-                "kg_pagerank": pagerank.get(item.artist_id, 0.0),
                 "context": self._context_score(item, features, mode, context),
                 "popularity": self._popularity_score(item, state),
                 "freshness": self._freshness_score(item, state),
@@ -63,11 +60,10 @@ class HybridRecommender:
             item = recall_data["item"]
             breakdown = base_features[item.id]
             score = (
-                breakdown["content_similarity"] * 0.13
-                + breakdown["itemcf"] * 0.09
-                + breakdown["bpr_pairwise"] * 0.15
-                + breakdown["kg_pagerank"] * 0.07
-                + breakdown["context"] * 0.11
+                breakdown["content_similarity"] * 0.15
+                + breakdown["itemcf"] * 0.10
+                + breakdown["bpr_pairwise"] * 0.17
+                + breakdown["context"] * 0.13
                 + breakdown["popularity"] * 0.06
                 + breakdown["freshness"] * 0.07
                 + breakdown["thompson"] * 0.10
@@ -85,7 +81,7 @@ class HybridRecommender:
 
         ranked = self._mmr(sorted(scored, key=lambda item: item["score"], reverse=True), limit)
         return {
-            "algorithm": "two-stage-multi-recall-bpr-itemcf-kg-mmr-thompson",
+            "algorithm": "two-stage-multi-recall-bpr-itemcf-mmr-thompson",
             "pipeline": [
                 "multi_channel_candidate_recall",
                 "bpr_pairwise_learning_to_rank",
@@ -125,7 +121,6 @@ class HybridRecommender:
             "content_recall": ("content_similarity", 500),
             "itemcf_recall": ("itemcf", 350),
             "bpr_recall": ("bpr_pairwise", 500),
-            "kg_recall": ("kg_pagerank", 300),
             "context_recall": ("context", 350),
             "popular_recall": ("popularity", 300),
             "fresh_recall": ("freshness", 350),
@@ -264,16 +259,6 @@ class HybridRecommender:
 
     def _feature_index(self, feature: str, dimensions: int) -> int:
         return int(hashlib.sha1(feature.encode()).hexdigest()[:8], 16) % dimensions
-
-    def _pagerank_scores(self, state: dict) -> dict[str, float]:
-        seeds = []
-        for recording_id in [*state["liked"], *state["saved"]]:
-            recording = self.store.get_recording(recording_id)
-            if recording:
-                seeds.append(recording.artist_id)
-        ranked = KnowledgeGraphAlgorithms(self.store).personalized_pagerank(seeds)
-        maximum = max([item["score"] for item in ranked], default=1.0)
-        return {item["id"]: item["score"] / maximum for item in ranked if item["kind"] == "artist"}
 
     def _context_score(self, item, features: list[str], mode: str, context: dict[str, Any]) -> float:
         tokens = {value.split(":", 1)[-1] for value in features}

@@ -1,7 +1,7 @@
 import pytest
 
 from app.data_store import get_store
-from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningChatTurn, LyricAnalysisRequest
+from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningChatTurn, ListeningStoryRequest, LyricAnalysisRequest
 from app.models import SourceRef
 
 
@@ -17,13 +17,24 @@ def test_listening_context_has_no_demo_mode(monkeypatch):
     assert context.story is None
 
 
-def test_listening_context_builds_story_for_uncatalogued_track(monkeypatch):
+def test_listening_context_returns_track_before_story_generation(monkeypatch):
     monkeypatch.setattr("app.listening_agent.get_now_playing", lambda: {
         "title": "一首不在本地曲库的新歌",
         "artist": "新歌手",
         "raw_title": "一首不在本地曲库的新歌 - 新歌手",
         "source": "test",
     })
+    monkeypatch.setattr("app.listening_agent.cached_song_introduction", lambda title, artist: None)
+    monkeypatch.setattr("app.listening_agent.song_introduction", lambda *args: pytest.fail("context must not generate story"))
+
+    context = ListeningAgent(get_store()).context()
+
+    assert context.current.artist == "新歌手"
+    assert context.current.title == "一首不在本地曲库的新歌"
+    assert context.story is None
+
+
+def test_listening_story_generates_uncatalogued_track(monkeypatch):
     monkeypatch.setattr("app.listening_agent.song_introduction", lambda title, artist, album, year: {
         "subtitle": f"《{title}》的独立简介",
         "narrative": f"这是为{artist}的《{title}》生成的内容。",
@@ -34,12 +45,10 @@ def test_listening_context_builds_story_for_uncatalogued_track(monkeypatch):
         "source_urls": [],
     })
 
-    context = ListeningAgent(get_store()).context()
+    story = ListeningAgent(get_store()).story(ListeningStoryRequest(title="一首不在本地曲库的新歌", artist="新歌手"))
 
-    assert context.current.artist == "新歌手"
-    assert context.story is not None
-    assert context.story.title == "一首不在本地曲库的新歌"
-    assert "独立简介" in context.story.subtitle
+    assert story.title == "一首不在本地曲库的新歌"
+    assert "独立简介" in story.subtitle
 
 
 def test_lyric_analysis_uses_user_excerpt_only():
@@ -149,4 +158,6 @@ def test_listening_chat_extracts_real_agent_loop(monkeypatch):
     assert response.tools_used == ["find_similar_recordings"]
     assert response.iterations == 1
     assert "find_similar_recordings" in captured["tools"]
+    assert "只围绕此刻正在播放的这一首歌" in captured["system_prompt"]
+    assert "细腻" in captured["system_prompt"]
     assert captured["payload"]["messages"][0]["role"] == "user"

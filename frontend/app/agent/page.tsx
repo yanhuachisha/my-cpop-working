@@ -10,11 +10,8 @@ type Message = { id: string; role: 'user' | 'assistant'; content: string; run?: 
 
 const SOURCE_LABELS: Record<string, string> = {
   search_music: '歌曲资料',
-  kg_neighbors: '音乐关系',
-  kg_shortest_path: '作品关联',
   daily_recommendation: '今日推荐',
   hybrid_recommendation: '偏好算法',
-  kg_pagerank: '关联音乐人',
   listener_emotion_memory: '情绪记忆',
   weekly_listening_report: '听歌复盘',
 };
@@ -125,7 +122,7 @@ export default function AgentPage() {
 
           <div className="music-agent-composer">
             {error ? <p>{error}</p> : null}
-            <div><textarea aria-label="给音乐助理发送消息" onChange={(event) => setQuery(event.target.value)} onKeyDown={handleKeyDown} placeholder="比如：为什么我最近总想听慢歌？" rows={1} value={query} /><button disabled={busy || !query.trim()} onClick={() => execute()} type="button" aria-label="发送"><Send size={18} /></button></div>
+            <div><textarea aria-label="给音乐助理发送消息" onChange={(event) => setQuery(event.target.value)} onKeyDown={handleKeyDown} placeholder="比如：结合播放记录，分析我最近的音乐偏好" rows={1} value={query} /><button disabled={busy || !query.trim()} onClick={() => execute()} type="button" aria-label="发送"><Send size={18} /></button></div>
             <small>Enter 发送 · Shift + Enter 换行 · Agent 会自动调用需要的能力</small>
           </div>
         </section>

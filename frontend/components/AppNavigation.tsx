@@ -9,7 +9,7 @@ const ITEMS = [
   { href: "/agent", label: "\u97f3\u4e50\u52a9\u7406", icon: Sparkles },
   { href: "/listening", label: "\u542c\u6b4c\u623f", icon: Headphones },
   { href: "/library", label: "\u6536\u85cf", icon: Heart },
-  { href: "/graph", label: "\u65b0\u4e16\u754c", icon: Rocket },
+  { href: "/world", label: "\u65b0\u4e16\u754c", icon: Rocket },
 ];
 
 export function AppNavigation() {

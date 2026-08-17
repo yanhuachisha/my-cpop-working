@@ -36,7 +36,6 @@ def build_recommendation_diagnostics(
         release_count=len(store.releases),
         recording_count=len(store.recordings),
         cpop_recording_count=len(cpop_recordings),
-        relation_count=len(store.relations),
         daily_pick_ready=bool(cpop_recordings),
         preview_checked=live_preview,
         preview_available_count=len(preview_available),

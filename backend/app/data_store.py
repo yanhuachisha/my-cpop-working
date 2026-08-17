@@ -8,7 +8,7 @@ from pathlib import Path
 import yaml
 
 from app.cpop_classifier import is_cpop_artist, is_cpop_recording
-from app.models import Artist, GraphEdge, GraphNode, GraphPayload, Recording, Relation, Release
+from app.models import Artist, Recording, Release
 
 
 class DataStore:
@@ -19,7 +19,6 @@ class DataStore:
             self.artists.setdefault(artist_id, artist)
         self.releases = self._load_models("seed_releases.yaml", Release)
         self.recordings = self._load_models("seed_recordings.yaml", Recording)
-        self.relations = self._load_models("seed_relations.yaml", Relation)
         self._merge_catalog("open_catalog.json")
         self._merge_catalog("musicbrainz_discovery.json")
         self._merge_catalog("itunes_catalog.json")
@@ -100,50 +99,6 @@ class DataStore:
     def get_release(self, release_id: str | None) -> Release | None:
         return self.releases.get(release_id) if release_id else None
 
-    def relations_for(self, entity_id: str) -> list[Relation]:
-        return [
-            relation
-            for relation in self.relations.values()
-            if relation.source_id == entity_id or relation.target_id == entity_id
-        ]
-
-    def graph(self, focus_artist_id: str | None = None) -> GraphPayload:
-        nodes: dict[str, GraphNode] = {}
-        edges: list[GraphEdge] = []
-        relations = self.relations
-        if focus_artist_id:
-            relations = {
-                relation_id: relation
-                for relation_id, relation in relations.items()
-                if relation.source_id == focus_artist_id or relation.target_id == focus_artist_id
-            }
-
-        def add_node(entity_id: str) -> None:
-            if entity_id in nodes:
-                return
-            if entity_id in self.artists:
-                nodes[entity_id] = GraphNode(id=entity_id, label=self.artists[entity_id].name, kind="artist")
-            elif entity_id in self.recordings:
-                nodes[entity_id] = GraphNode(
-                    id=entity_id, label=self.recordings[entity_id].title, kind="recording"
-                )
-            elif entity_id in self.releases:
-                nodes[entity_id] = GraphNode(id=entity_id, label=self.releases[entity_id].title, kind="release")
-            else:
-                nodes[entity_id] = GraphNode(id=entity_id, label=entity_id, kind="tag")
-
-        for relation in relations.values():
-            add_node(relation.source_id)
-            add_node(relation.target_id)
-            edges.append(
-                GraphEdge(
-                    id=relation.id,
-                    source=relation.source_id,
-                    target=relation.target_id,
-                    label=relation.relation_type,
-                )
-            )
-        return GraphPayload(nodes=list(nodes.values()), edges=edges)
 
 
 @lru_cache

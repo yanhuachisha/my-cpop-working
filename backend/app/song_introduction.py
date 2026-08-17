@@ -50,6 +50,15 @@ def retain_current_song_cache(title: str | None, artist: str | None) -> None:
             _write_cache(retained)
 
 
+def cached_song_introduction(title: str, artist: str | None = None) -> dict[str, Any] | None:
+    key = _cache_key(title, artist)
+    with _cache_lock:
+        cached = _read_cache().get(key)
+    if cached and cached.get("schema_version") == 4:
+        return cached
+    return None
+
+
 def _itunes_metadata(title: str, artist: str | None) -> dict[str, Any]:
     try:
         response = httpx.get(
@@ -222,10 +231,9 @@ def _valid_subtitle(value: str, title: str) -> bool:
 
 def song_introduction(title: str, artist: str | None = None, album: str | None = None, year: int | None = None) -> dict[str, Any]:
     key = _cache_key(title, artist)
-    with _cache_lock:
-        cache = _read_cache()
-        if key in cache and cache[key].get("schema_version") == 4:
-            return cache[key]
+    cached = cached_song_introduction(title, artist)
+    if cached:
+        return cached
     result = _fallback(title, artist, album, year, None)
     generated = generate_song_portrait(title, artist, album, year, _search_song_material)
     if generated:

@@ -34,7 +34,7 @@ type AiNews = {
 
 type HotLink = { source: string; title: string; summary: string; url: string };
 type LearningPoint = { category: string; title: string; focus: string; url: string };
-type WorldTab = "github" | "news" | "hot" | "learning";
+type NewWorldTab = "github" | "news" | "hot" | "learning";
 type NewWorldPayload = {
   date: string;
   generated_at: string;
@@ -114,7 +114,7 @@ export function NewWorldContent() {
   const [traveling, setTraveling] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState<WorldTab>("github");
+  const [activeTab, setActiveTab] = useState<NewWorldTab>("github");
   const [transitionStyle, setTransitionStyle] = useState<CSSProperties>({});
   const initialLoadStarted = useRef(false);
 

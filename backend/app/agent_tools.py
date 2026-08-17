@@ -42,30 +42,16 @@ class CPopAgent:
     def search_recording(self, query: str) -> list[Recording]:
         return self.store.search_recordings(query)
 
-    def get_relations(self, entity_id: str):
-        return self.store.relations_for(entity_id)
-
     def build_artist_report(self, artist_id: str) -> str:
         artist = self.store.get_artist(artist_id)
         if not artist:
             return "没有找到该艺人。"
         releases = self.store.artist_releases(artist_id)
         recordings = self.store.artist_recordings(artist_id)
-        relations = self.store.relations_for(artist_id)
-        collaborators = [
-            relation.target_id
-            for relation in relations
-            if relation.source_id == artist_id and relation.relation_type in {"collaborated-with", "lyricist"}
-        ]
-        collaborator_names = [
-            self.store.artists[item].name if item in self.store.artists else item
-            for item in collaborators
-        ]
         return (
             f"{artist.name}目前收录 {len(releases)} 张专辑、{len(recordings)} 首示例歌曲。"
             f"代表标签：{', '.join(artist.tags)}。"
-            f"合作网络包含：{', '.join(collaborator_names[:6]) or '暂无'}。"
-            "当前版本不展示完整歌词，只基于开放元数据、标签和关系生成解释。"
+            "当前版本不展示完整歌词，只基于开放元数据和标签生成解释。"
         )
 
     def search_recording_or_artist(self, query: str) -> str:

@@ -8,8 +8,13 @@ import time
 from ctypes import wintypes
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from threading import Lock
 
 from pydantic import BaseModel, Field
+
+
+_window_cache_lock = Lock()
+_cached_kugou_window: int | None = None
 
 
 @dataclass
@@ -70,29 +75,49 @@ def _window_process_path(hwnd: int) -> str | None:
     return None
 
 
+def _window_title(hwnd: int) -> str | None:
+    user32 = ctypes.windll.user32
+    if not hwnd or not user32.IsWindow(hwnd) or not user32.IsWindowVisible(hwnd):
+        return None
+    length = user32.GetWindowTextLengthW(hwnd)
+    if length <= 0:
+        return None
+    buffer = ctypes.create_unicode_buffer(length + 1)
+    user32.GetWindowTextW(hwnd, buffer, length + 1)
+    title = buffer.value.strip()
+    if not title or not _is_kugou_process_path(_window_process_path(hwnd)):
+        return None
+    return title
+
+
 def _find_kugou_window_title() -> str | None:
+    global _cached_kugou_window
     if platform.system() != "Windows":
         return None
 
     user32 = ctypes.windll.user32
-    titles: list[str] = []
+    with _window_cache_lock:
+        cached_title = _window_title(_cached_kugou_window or 0)
+        if cached_title:
+            return cached_title
+        _cached_kugou_window = None
+
+    matches: list[tuple[int, str]] = []
     enum_proc = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
 
     def callback(hwnd: int, _lparam: int) -> bool:
-        if not user32.IsWindowVisible(hwnd):
-            return True
-        length = user32.GetWindowTextLengthW(hwnd)
-        if length <= 0:
-            return True
-        buffer = ctypes.create_unicode_buffer(length + 1)
-        user32.GetWindowTextW(hwnd, buffer, length + 1)
-        title = buffer.value.strip()
-        if ("\u9177\u72d7" in title or "kugou" in title.lower()) and _is_kugou_process_path(_window_process_path(hwnd)):
-            titles.append(title)
+        title = _window_title(hwnd)
+        if title and ("\u9177\u72d7" in title or "kugou" in title.lower()):
+            matches.append((hwnd, title))
+            return False
         return True
 
     user32.EnumWindows(enum_proc(callback), 0)
-    return titles[0] if titles else None
+    if not matches:
+        return None
+    with _window_cache_lock:
+        _cached_kugou_window = matches[0][0]
+    return matches[0][1]
 
 
 def _find_kugou_window_handle() -> int | None:

@@ -26,7 +26,7 @@
 
 - MusicBrainz：音乐主数据，核心数据 CC0。
 - Apple iTunes Search API：补充公开返回的曲目与艺人目录元数据。
-- Wikidata：艺人知识图谱和外部 ID，CC0。
+- Wikidata：艺人开放元数据和外部 ID，CC0。
 - ListenBrainz：开放听歌趋势和 public stats。
 - Discogs：发行、厂牌、实体版本 dumps。
 - Deezer public preview API：仅用于公开 30 秒试听 URL。
@@ -124,7 +124,6 @@ npm run dev -- --hostname 0.0.0.0 --port 3000
 - `GET /api/daily-pick/diagnostics`
 - `GET /api/daily-pick/diagnostics?live_preview=true`
 - `GET /api/recordings/{recording_id}`
-- `GET /api/graph`
 - `POST /api/agent/query`
 - `GET /api/agent/status`
 - `POST /api/agent/run`

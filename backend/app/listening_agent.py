@@ -27,7 +27,7 @@ from app.listener_memory import (
 )
 from app.models import SourceRef
 from app.recommender import DailyRecommender
-from app.song_introduction import retain_current_song_cache, song_introduction
+from app.song_introduction import cached_song_introduction, retain_current_song_cache, song_introduction
 from app.sources import OPEN_DATA_SOURCES, SEED_SOURCE
 
 
@@ -57,6 +57,13 @@ class ListeningChatRequest(BaseModel):
     artist: str | None = None
     lyric_excerpt: str | None = Field(default=None, max_length=500)
     recent_messages: list[ListeningChatTurn] = Field(default_factory=list, max_length=8)
+
+
+class ListeningStoryRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=200)
+    artist: str | None = Field(default=None, max_length=120)
+    album: str | None = Field(default=None, max_length=200)
+    year: int | None = Field(default=None, ge=1900, le=2100)
 
 
 class ListeningChatResponse(BaseModel):
@@ -176,7 +183,7 @@ class ListeningAgent:
             raw_title=now_playing.get("raw_title"),
             source=str(now_playing.get("source") or "windows-window-title"),
         )
-        story = self._story_for(current, guide, recording)
+        story = self._story_for(current, cached_only=True)
         return ListeningContextResponse(
             current=current,
             story=story,
@@ -188,6 +195,19 @@ class ListeningAgent:
             ),
             sources=[*OPEN_DATA_SOURCES[:3], SEED_SOURCE],
         )
+
+    def story(self, request: ListeningStoryRequest) -> SongStory:
+        current = TrackState(
+            status="live",
+            available=True,
+            title=request.title,
+            artist=request.artist,
+            album=request.album,
+            year=request.year,
+            raw_title=None,
+            source="listening-story-request",
+        )
+        return self._story_for(current, cached_only=False)
 
     def analyze_lyrics(self, request: LyricAnalysisRequest) -> LyricAnalysis:
         excerpt = request.excerpt.strip()
@@ -330,13 +350,16 @@ class ListeningAgent:
             model,
             tools_list,
             system_prompt=(
-                "你是此刻正在播放歌曲的音乐陪伴 Agent。必须通过标准 Agent Loop 工作："
+                "你是听歌房里的音乐陪伴者，只围绕此刻正在播放的这一首歌，陪用户细腻地听、感受和品味。"
+                "优先回应用户听见的画面、情绪、声音细节和私人联想，可以提出最多一个温和的问题帮助用户继续听下去。"
+                "不要像全能音乐助理一样做宽泛的数据报告、账户总结或理性长分析；事实与感受要分开，不能替用户断言情绪。"
+                "必须通过标准 Agent Loop 工作："
                 "先理解用户意图，需要保存、推荐、歌词分析、歌曲资料或联网故事时必须调用对应工具，"
                 "读取工具 observation 后再回答；必要时可以继续调用下一个工具。"
                 "保存歌词或音乐笔记属于写操作，只能在当前这条用户消息明确要求收藏、保存、记下或记录时调用；"
                 "不能因为历史消息里出现了感受就自动保存。通常只调用 1 到 2 个必要工具。"
                 "普通情绪交流可以直接回应，但涉及事实不得猜测。不要暴露工具名、内部步骤或思考过程，"
-                "不要补全歌词，回答自然、克制、有陪伴感。"
+                "不要补全歌词，回答自然、细腻、克制、有陪伴感，通常控制在 220 字以内。"
             ),
             middleware=[
                 ToolCallLimitMiddleware(run_limit=4, exit_behavior="continue"),
@@ -547,7 +570,7 @@ class ListeningAgent:
             } if guide else None,
         }
         return self._invoke_ai(
-            "你是专注此时此刻正在播放歌曲的中文音乐陪伴者。回答自然、克制、有听感，不假装知道未提供的事实。不要自称 Agent，不展示思考过程。若用户给出歌词短句，可以讨论其画面、情绪和写法，但不要补全歌词。回答控制在 220 字以内。",
+            "你是听歌房里的中文音乐陪伴者，只围绕此刻正在播放的这一首歌。回应应细腻、克制、有听感，关注声音、画面、情绪和用户自己的联想；不要做宽泛的数据报告，不替用户断言感受。不要假装知道未提供的事实，不自称 Agent，不展示思考过程。若用户给出歌词短句，可以讨论其画面、情绪和写法，但不要补全歌词。回答控制在 220 字以内。",
             context,
         )
 
@@ -605,25 +628,26 @@ class ListeningAgent:
             return candidate
         return None
 
-    def _story_for(self, current: TrackState, guide: dict[str, object] | None, recording) -> SongStory | None:
-        if current.title:
-            introduction = song_introduction(
-                current.title,
-                current.artist,
-                current.album,
-                current.year,
-            )
-            return SongStory(
-                title=current.title,
-                subtitle=str(introduction["subtitle"]),
-                narrative=str(introduction["narrative"]),
-                themes=list(introduction["themes"]),
-                listening_points=list(introduction["listening_points"]),
-                story_type=str(introduction["story_type"]),
-                facts=list(introduction.get("facts", [])),
-                source_urls=list(introduction.get("source_urls", [])),
-            )
-        return None
+    def _story_for(self, current: TrackState, cached_only: bool) -> SongStory | None:
+        if not current.title:
+            return None
+        introduction = (
+            cached_song_introduction(current.title, current.artist)
+            if cached_only
+            else song_introduction(current.title, current.artist, current.album, current.year)
+        )
+        if not introduction:
+            return None
+        return SongStory(
+            title=current.title,
+            subtitle=str(introduction["subtitle"]),
+            narrative=str(introduction["narrative"]),
+            themes=list(introduction["themes"]),
+            listening_points=list(introduction["listening_points"]),
+            story_type=str(introduction["story_type"]),
+            facts=list(introduction.get("facts", [])),
+            source_urls=list(introduction.get("source_urls", [])),
+        )
 
     def _quick_prompts(self, current: TrackState) -> list[str]:
         return [

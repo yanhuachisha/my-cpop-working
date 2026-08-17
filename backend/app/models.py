@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Literal
-
 from pydantic import BaseModel, Field
 
 
@@ -56,15 +54,6 @@ class Recording(BaseModel):
     source_urls: list[str] = Field(default_factory=list)
 
 
-class Relation(BaseModel):
-    id: str
-    source_id: str
-    target_id: str
-    relation_type: str
-    evidence_url: str | None = None
-    source_name: str = "seed"
-
-
 class DailyPick(BaseModel):
     pick_date: date
     user_id: str = "anonymous"
@@ -92,7 +81,6 @@ class RecommendationDiagnostics(BaseModel):
     release_count: int
     recording_count: int
     cpop_recording_count: int
-    relation_count: int
     daily_pick_ready: bool
     preview_checked: bool
     preview_available_count: int
@@ -116,24 +104,6 @@ class RecommendationOptionItem(BaseModel):
 class RecommendationOptions(BaseModel):
     tags: list[RecommendationOptionItem] = Field(default_factory=list)
     moods: list[RecommendationOptionItem] = Field(default_factory=list)
-
-
-class GraphNode(BaseModel):
-    id: str
-    label: str
-    kind: Literal["artist", "recording", "release", "tag"]
-
-
-class GraphEdge(BaseModel):
-    id: str
-    source: str
-    target: str
-    label: str
-
-
-class GraphPayload(BaseModel):
-    nodes: list[GraphNode]
-    edges: list[GraphEdge]
 
 
 class AgentQuery(BaseModel):

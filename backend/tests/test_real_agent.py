@@ -68,5 +68,6 @@ def test_music_assistant_uses_real_langchain_loop(monkeypatch):
     assert response.tools_used == ["listener_preference_profile_tool"]
     assert response.iterations == 1
     assert "listener_preference_profile_tool" in captured["tools"]
-    assert not any(name.startswith("kg_") for name in captured["tools"])
+    assert "全能、偏理性" in captured["system_prompt"]
+    assert "先给结论" in captured["system_prompt"]
     assert captured["payload"]["messages"][0]["content"] == "我工作时喜欢听歌。"

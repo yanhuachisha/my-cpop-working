@@ -41,6 +41,11 @@ def test_only_current_song_introduction_cache_is_retained(monkeypatch, tmp_path)
     assert song_introduction._read_cache() == {second_key: {"title": "乙"}}
 
 
+def test_cached_song_introduction_does_not_generate(monkeypatch, tmp_path):
+    monkeypatch.setattr(song_introduction, "CACHE_PATH", tmp_path / "song_introductions.json")
+    assert song_introduction.cached_song_introduction("未缓存歌曲", "歌手") is None
+
+
 def test_emotional_fallback_uses_poetic_title_and_no_disclaimer(monkeypatch, tmp_path):
     monkeypatch.setattr(song_introduction, "CACHE_PATH", tmp_path / "song_introductions.json")
     monkeypatch.setattr(song_introduction, "generate_song_portrait", lambda *args: None)

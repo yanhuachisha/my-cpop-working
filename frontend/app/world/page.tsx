@@ -2,6 +2,6 @@ import { NewWorldContent } from "./NewWorldContent";
 
 export const dynamic = 'force-dynamic';
 
-export default function GraphPage() {
+export default function WorldPage() {
   return <NewWorldContent />;
 }
