@@ -164,6 +164,14 @@ def _format_duration(seconds: float) -> str:
     return f"{remaining_seconds} 秒"
 
 
+def _listening_local_time(value: datetime | None = None) -> datetime:
+    if value is None:
+        return datetime.now().astimezone()
+    if value.tzinfo is None:
+        return value.astimezone()
+    return value
+
+
 def record_daily_listening(
     recording_id: str,
     title: str,
@@ -175,7 +183,7 @@ def record_daily_listening(
     if not increment:
         return
     initialize_listening_history()
-    local_time = (listened_at or datetime.now().astimezone()).astimezone()
+    local_time = _listening_local_time(listened_at)
     listened_date = local_time.date().isoformat()
     timestamp = local_time.isoformat()
     with _connect() as connection:
@@ -203,7 +211,7 @@ def record_daily_listening(
 
 
 def today_listening_stats(now: datetime | None = None) -> dict:
-    local_time = (now or datetime.now().astimezone()).astimezone()
+    local_time = _listening_local_time(now)
     listened_date = local_time.date().isoformat()
     result = query_listening_history(
         start_date=listened_date,
