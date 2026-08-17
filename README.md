@@ -1,69 +1,112 @@
 # My C-Pop Working
 
-一个面向电脑工作场景的华语音乐陪伴 Agent。它连接本地酷狗播放状态，结合天气、华语音乐新闻、听歌记忆和推荐算法，在你工作、学习或独处时提供歌曲推荐、歌曲解读与音乐陪伴。
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)
+![LangChain](https://img.shields.io/badge/LangChain-Agent-1c3c3c)
+![Python](https://img.shields.io/badge/Python-3.11+-3776ab?logo=python&logoColor=white)
+![CI](https://img.shields.io/badge/CI-pytest%20%2B%20ruff%20%2B%20next%20build-2ea44f)
 
-## 当前能力
+一个面向电脑工作场景的华语音乐工作台。它不是简单的歌单页面，而是把当前播放、听歌历史、个人偏好、天气新闻、开放音乐数据和大模型 Agent 串起来，做成一个可以陪你听歌、解释歌曲、记录习惯、生成推荐的本地音乐系统。
 
-- 今日声景：`GET /api/today`，返回主推荐、熟悉答案、今日探索三路结果。
-- 情境推荐：支持专注、放松、怀旧、歌词等模式，并展示天气、新闻、时间和个人偏好信号。
-- 防重复：同时记录播放历史与推荐曝光历史；当天结果保持稳定，后续日期避开近 14 天已展示作品。
-- 听众记忆：支持喜欢、收藏、跳过、想听，以及歌词短句标本。
-- 听歌历史：使用 SQLite 永久保存每日听歌时长与歌曲累计，并维护每日汇总；旧版 JSON 统计会自动迁移。
-- Listening Room：读取酷狗当前播放状态，提供歌曲故事、短句分析和上下文 Agent 对话。
-- 我的收藏：检测本机酷狗目录，支持 TXT、CSV 或粘贴歌单导入；只保存歌曲元数据。
-- 可选酷狗桥：可连接 `Yu9191/KuGou` 本地服务，用于搜索并补全歌曲元数据；不代理音频和完整歌词。
-- 曲库：自动合并项目种子、MusicBrainz、Apple iTunes Search API 和用户导入数据，当前约 1150 首。
-- 兼容旧版每日推荐：`GET /api/daily-pick?user_id=demo`
-- 试听按钮：使用 Deezer public preview URL，不下载、不缓存音频。
-- 推荐解释：返回文字理由和结构化 `score_breakdown`。
-- 数据质量诊断：查看种子曲库、试听覆盖、开放数据 snapshot。
-- 开放数据同步：Wikidata seed artist snapshot、ListenBrainz trend snapshot。
-- 新世界：聚合热门 GitHub 项目、AI 新闻、技术社区热榜与学习知识点。
-- 前端页面：首页、搜索、歌曲页、听歌房、音乐助理、收藏和新世界。
+## 为什么值得看
 
-## 数据源
+- **真实 Agent 编排**：DeepSeek 通过 OpenAI-compatible API 接入 LangChain `create_agent`，结合 LangGraph memory，完成模型判断、工具调用、observation 回填和多步决策。
+- **推荐算法不是随机歌单**：`HybridRecommender` 使用多通道召回、BPR pairwise learning-to-rank、Thompson Sampling 探索和 MMR 多样性重排。
+- **桌面播放状态接入**：Windows 下监听酷狗窗口标题和播放状态，后台轮询并按阈值增量记录听歌时长，不破解私有数据库。
+- **本地记忆系统**：长期偏好存在轻量 JSON 状态中，真实听歌时长进入 SQLite，支持按天、周、月、年、自定义范围聚合。
+- **工程化完整**：Next.js 16 + React 19 + TypeScript 前端，FastAPI + Pydantic 后端，Docker Compose、CI、自动数据同步 workflow 和 18 个后端测试文件。
 
-项目优先使用开放数据和公开 API：
+## 体验入口
 
-- MusicBrainz：音乐主数据，核心数据 CC0。
-- Apple iTunes Search API：补充公开返回的曲目与艺人目录元数据。
-- Wikidata：艺人开放元数据和外部 ID，CC0。
-- ListenBrainz：开放听歌趋势和 public stats。
-- Discogs：发行、厂牌、实体版本 dumps。
-- Deezer public preview API：仅用于公开 30 秒试听 URL。
+| 模块 | 能力 |
+| --- | --- |
+| 首页 | 今日推荐、熟悉答案、探索内容和个性化音乐入口 |
+| 听歌房 | 读取当前酷狗播放，展示歌曲故事、短句分析、相似推荐和 Agent 对话 |
+| 音乐助理 | 用自然语言搜索、推荐、解释歌曲，并返回工具调用 trace |
+| 我的收藏 | 从文本、CSV、剪贴板导入歌单，只保存歌曲元数据 |
+| 新世界 | 聚合 GitHub、AI 新闻、技术社区热点和学习向知识内容 |
+| 听歌统计 | 查询今日、昨日、本周、本月、全年和自定义范围的听歌时长 |
 
-项目不保存完整歌词、不保存音频文件，也不破解或修改酷狗私有数据库。Apple 数据仅来自公开 iTunes Search API 返回的目录元数据，不读取个人 Apple Music 数据。
+## 系统架构
 
-### 可选酷狗元数据桥
-
-项目可以连接 MIT 许可的 `Yu9191/KuGou` 服务。推荐使用项目内的一键脚本安装并启动：
-
-```powershell
-.\scripts\kugou-bridge.ps1 -Action start
+```mermaid
+flowchart LR
+  UI[Next.js 16 + React 19<br/>Desktop Web UI] --> API[FastAPI API Layer<br/>Pydantic Schemas]
+  API --> Agent[LangChain create_agent<br/>DeepSeek Chat Model]
+  Agent --> Tools[Music Agent Tools<br/>Deterministic Workflows]
+  Tools --> Rec[Hybrid Recommender<br/>BPR + Thompson + MMR]
+  Tools --> Memory[Listener Memory<br/>JSON + SQLite]
+  API --> Kugou[Kugou Desktop Tracker<br/>Window Title + Polling]
+  API --> Catalog[Open Music Catalog]
+  Catalog --> MB[MusicBrainz]
+  Catalog --> WD[Wikidata]
+  Catalog --> LB[ListenBrainz]
+  Catalog --> IT[iTunes Search API]
+  API --> Preview[Deezer Public Preview URL]
+  API -. optional .-> PG[(PostgreSQL + pgvector)]
 ```
 
-查看或停止服务：
+## 技术架构
 
-```powershell
-.\scripts\kugou-bridge.ps1 -Action status
-.\scripts\kugou-bridge.ps1 -Action stop
+### Frontend
+
+- **Next.js 16 / React 19 / TypeScript**：以桌面端为主要使用场景，围绕音乐工作台、听歌房和助理对话组织信息密度。
+- **TanStack Query**：统一前端请求、缓存和刷新节奏。
+- **lucide-react**：提供一致的图标语言，适合工具型界面。
+- **页面结构**：首页、搜索、歌曲页、听歌房、音乐助理、收藏、新世界。
+
+### Backend
+
+- **FastAPI + Pydantic**：模块化 API 层，覆盖推荐、Agent、收藏、开放曲库、酷狗桥接、听歌统计等能力。
+- **异步 HTTP 聚合**：使用 `httpx` 访问 MusicBrainz、iTunes Search、Deezer preview 等公开数据源。
+- **可测试降级**：没有大模型 Key 时仍可运行确定性 workflow 和测试，避免核心功能被外部服务完全锁死。
+
+### Agent Layer
+
+当前有 3 个由大模型驱动的 Agent：
+
+| Agent | 职责 |
+| --- | --- |
+| `MusicAgent orchestrator` | 音乐问答、推荐、搜索和工具编排 |
+| `ListeningCompanionAgent` | 听歌房右侧陪伴、收藏、笔记、相似推荐、歌词短句分析 |
+| `SongPortraitAgent` | 歌曲资料检索、来源整理和情绪化歌曲画像 |
+
+Agent 循环遵循：
+
+```text
+用户问题 -> 模型判断是否需要工具 -> 调用工具 -> observation 回填 -> 继续决策或生成最终回答
 ```
 
-默认探测 `http://127.0.0.1:9191`，也可以通过 `KUGOU_BRIDGE_URL` 修改地址。当前只启用搜索元数据能力；该服务没有账号收藏歌单接口，因此不能替代酷狗收藏文本导入。第三方接口可能随酷狗服务变化而失效，使用前请自行确认相关服务条款。
+服务端会返回 `trace`、`tools_used`、`iterations`、`latency_ms` 等调试信息，便于判断 Agent 是否真的调用了工具，而不是只在文案里假装智能。
 
-## 本地启动
+### Recommendation Layer
 
-### Windows 一键启动 EXE
+推荐链路由确定性 workflow 承担，Agent 只负责理解意图和选择工具：
 
-项目根目录提供 `My-C-Pop-Working.exe`。双击后会启动前端、后端、已安装的酷狗元数据桥，打开酷狗音乐并在浏览器中打开项目。重新构建启动器：
+1. **Multi-channel recall**：从 itemCF、用户画像、内容相似、上下文、热度和新鲜度召回候选。
+2. **BPR ranking**：用隐式反馈做 pairwise 排序，让喜欢、收藏、跳过、曝光等信号进入排序。
+3. **Thompson Sampling**：在稳定偏好之外保留探索，避免推荐池变成固定几首歌。
+4. **MMR diversity**：控制相似歌曲扎堆，让结果兼顾相关性和多样性。
+5. **Explainability**：返回文字理由和结构化 `score_breakdown`，便于前端展示推荐原因。
 
-```powershell
-.\scripts\build-launcher.ps1
-```
+### Data & Memory
 
-酷狗播放满 30 秒后会自动记录一次播放；同一首连续播放不会被后台轮询重复累计。收藏同步不读取或破解酷狗的私有加密数据库：在酷狗“我的收藏”列表中全选并复制，然后进入网页“我的收藏”，点击“从剪贴板一键同步”。
+- **开放曲库**：合并项目 seed、MusicBrainz、Wikidata、ListenBrainz、iTunes Search API 和用户导入歌单。
+- **用户状态**：`listener_state.json` 保存长期偏好、收藏、跳过、想听和歌词短句样本。
+- **听歌历史**：SQLite `data/listening_history.db` 记录 daily track listening 和 daily summary，支持 legacy JSON 自动迁移。
+- **向量扩展**：`migrations/001_init.sql` 提供 PostgreSQL + pgvector schema，`recordings.embedding` 使用 `vector(384)`。
 
-Windows 推荐一键启动：
+### Desktop Integration
+
+- 默认读取 Windows 酷狗当前播放信息。
+- `KugouPlaybackTracker` 后台轮询，播放满 30 秒后增量记录，避免同一首歌被重复累计。
+- 可选连接 `Yu9191/KuGou` 本地服务用于搜索和补全元数据。
+- 项目不破解、不读取、不修改酷狗私有加密数据库。
+
+## 快速开始
+
+推荐 Windows 一键启动：
 
 ```powershell
 .\scripts\dev-up.ps1
@@ -71,17 +114,21 @@ Windows 推荐一键启动：
 
 默认地址：
 
-- Web: http://localhost:3000
-- API: http://localhost:8001
-- API Docs: http://localhost:8001/docs
+| 服务 | 地址 |
+| --- | --- |
+| Web | http://localhost:3000 |
+| API | http://localhost:8001 |
+| API Docs | http://localhost:8001/docs |
 
-手动启动：
+手动启动后端：
 
 ```powershell
 cd backend
 pip install -e ".[dev]"
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8001
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
 ```
+
+手动启动前端：
 
 ```powershell
 cd frontend
@@ -90,140 +137,127 @@ $env:NEXT_PUBLIC_API_BASE_URL="http://localhost:8001"
 npm run dev -- --hostname 0.0.0.0 --port 3000
 ```
 
+## 环境变量
+
+复制 `.env.example` 为 `.env`，按需填写：
+
+```env
+DEEPSEEK_API_KEY=your_api_key_here
+DEEPSEEK_MODEL=deepseek-v4-flash
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8001
+KUGOU_BRIDGE_URL=http://127.0.0.1:9191
+```
+
+没有 `DEEPSEEK_API_KEY` 时，LLM Agent 能力会受限，但曲库、统计、推荐 workflow 和大部分本地能力仍可开发调试。
+
 ## Docker
+
+启动 Web + API：
 
 ```powershell
 .\scripts\docker-up.ps1
 ```
 
-只检查 Docker/Compose 配置：
+检查 Docker/Compose 配置：
 
 ```powershell
 .\scripts\docker-check.ps1
 ```
 
-默认 Docker 只跑 Web + API，使用 seed 数据即可打开项目。需要 PostgreSQL + pgvector：
+需要 PostgreSQL + pgvector：
 
 ```powershell
 .\scripts\docker-up.ps1 -WithDb
 ```
 
+Docker Compose 默认端口为 Web `3000`、API `8000`。本地开发脚本默认 API 端口是 `8001`。
+
 ## 关键 API
 
-- `GET /health`
-- `GET /api/today?mode=auto`
-- `POST /api/listener/feedback`
-- `GET /api/listener/profile`
-- `GET|POST /api/listener/lyrics`
-- `GET /api/library/kugou/discover`
-- `GET /api/kugou/bridge/status`
-- `GET /api/kugou/bridge/search?q=周杰伦`
-- `GET /api/library/status`
-- `POST /api/library/import`
-- `GET /api/catalog/stats`
-- `GET /api/daily-pick?user_id=demo`
-- `GET /api/daily-pick/diagnostics`
-- `GET /api/daily-pick/diagnostics?live_preview=true`
-- `GET /api/recordings/{recording_id}`
-- `POST /api/agent/query`
-- `GET /api/agent/status`
-- `POST /api/agent/run`
-- `GET|POST|DELETE /api/agent/sessions`
-- `GET /api/agent/evaluate`
-- `GET /api/listening/today-stats`
+| API | 用途 |
+| --- | --- |
+| `GET /health` | 服务健康检查 |
+| `GET /api/today?mode=auto` | 今日推荐和首页聚合 |
+| `POST /api/agent/query` | Agent 自然语言问答 |
+| `POST /api/agent/run` | Agent 执行入口 |
+| `GET /api/agent/status` | Agent 状态、模型和工具信息 |
+| `GET /api/agent/evaluate` | 固定题集评估工具选择、关键字命中、循环步数和延迟 |
+| `GET /api/recommendations/hybrid` | 混合推荐 |
+| `GET /api/listening/today-stats` | 今日听歌统计 |
+| `GET /api/agent/weekly-report` | 基于真实听歌历史生成周报 |
+| `GET /api/kugou/bridge/status` | 酷狗桥接状态 |
+| `GET /api/kugou/bridge/search?q=周杰伦` | 酷狗桥接搜索 |
+| `POST /api/library/import` | 导入收藏歌单 |
+| `GET /api/catalog/stats` | 曲库统计 |
+| `GET /api/new-world` | 新世界聚合内容 |
 
-## 真实 Agent 架构
+## 数据来源与边界
 
-当前有 **3 个真正由大模型驱动的 Agent**：`MusicAgent orchestrator` 负责音乐问答、推荐与工具编排；`ListeningCompanionAgent` 负责听歌房右侧的收藏、笔记、相似推荐、歌词分析和联网资料对话；`SongPortraitAgent` 负责歌曲资料检索与情绪画像。三个 Agent 都使用 LangChain `create_agent` 执行“模型判断 → 工具调用 → observation 回填 → 继续决策或回答”的真实循环。`TodayRecommender` 等推荐模块仍是确定性业务模块，不把普通函数虚报为 Agent。
+项目优先使用开放数据和公开 API：
 
-复制 `.env.example` 为 `.env`，然后填写 DeepSeek API Key：
+- **MusicBrainz**：音乐主数据，核心数据 CC0。
+- **Wikidata**：艺人元数据和外部 ID，CC0。
+- **ListenBrainz**：开放听歌趋势和 public stats。
+- **Apple iTunes Search API**：公开返回的曲目、艺人和专辑目录元数据。
+- **Deezer public preview API**：只用于公开 30 秒试听 URL。
+- **用户导入歌单**：来自 TXT、CSV 或剪贴板文本，只保存歌曲元数据。
 
-```powershell
-DEEPSEEK_API_KEY=在这里填写你的_API_Key
-DEEPSEEK_MODEL=deepseek-v4-flash
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-```
+项目不保存完整歌词，不保存音频文件，不代理音频，不读取个人 Apple Music 数据，也不破解酷狗私有数据库。
 
-Agent Loop：用户问题 → DeepSeek 判断是否调用工具 → 执行工具 → 工具结果回填模型 → 模型继续调用或生成最终答案。服务端通过 `recursion_limit` 和 `max_steps` 控制最大循环次数，并返回完整 `trace`、工具列表、迭代数和延迟。
+## 测试与质量
 
-当前工具：
-
-架构原则：Agent 负责不确定的语义理解、Tool 选择与参数决策；确定性的联网聚合、推荐排序、记忆组合和统计查询由 `music_agent_workflows.py` 编排，Tool 只作为 LangChain 的薄接口。
-
-- `search_music`：调用确定性搜索 Workflow，联网聚合 Apple iTunes Search API 与 MusicBrainz；无结果时回退本地曲库。
-- `recommend_music`：统一单曲与多曲推荐，Workflow 内使用内容过滤、隐式反馈、BPR、Thompson Sampling 和 MMR。
-- `query_listener_memory`：按 `recent`、`long_term`、`combined` 编排近期行为情绪与长期音乐偏好，避免两个记忆 Tool 重复取数。
-- `query_listening_history`：查询任意日期范围的真实听歌时长；`overview` 一次返回每日趋势、歌曲排行、歌手排行和上周期对比，周期报告由 Agent 基于这些结果动态生成。
-- `get_current_song_context`：只读取当前歌曲身份与已有缓存，不会在 Tool 内触发歌曲画像 Agent。
-- `find_similar_recordings`：通过确定性相似度 Workflow 推荐本地曲库作品。
-- `save_listening_memory`：仅在用户明确要求时，将用户原文保存为歌词标本或音乐笔记。
-- `search_song_sources`：只联网返回可追溯事实与来源，最终故事由音乐陪伴 Agent 组织；歌词情绪理解也直接由该 Agent 完成。
-- `search_song_material`：检索歌曲可核实的歌手、专辑、年份、流派与来源，再生成情绪化歌曲画像；没有找到的事实不会显示。
-
-Agent 评测使用固定问题集，当前指标包括：工具选择准确率、答案关键词落地率、循环步数和延迟。执行：
+后端测试：
 
 ```powershell
-Invoke-RestMethod http://localhost:8001/api/agent/evaluate
+cd backend
+pytest -q
 ```
 
-未填写 API Key 时使用可复现的本地 fallback，方便 CI 测试；填写 Key 后才进入真实 DeepSeek + LangChain 循环。
-
-听歌历史保存在本地 `data/listening_history.db`。播放追踪器只对当前日期和歌曲执行增量 UPSERT，避免反复重写整个用户状态文件；音乐助理通过 `query_listening_history` Tool 按需读取历史，不会把完整长期记录塞入每轮 Prompt。
-
-## 开放数据同步
-
-生成 Wikidata 种子艺人快照：
+后端 lint：
 
 ```powershell
-python scripts\sync_open_data.py --source wikidata
+cd backend
+ruff check .
 ```
 
-生成 ListenBrainz 趋势快照：
+前端构建：
 
 ```powershell
-python scripts\sync_open_data.py --source listenbrainz --per-artist-limit 10
-```
-
-输出目录：
-
-```text
-data/snapshots/
-```
-
-这些 snapshot 用于人工审查和扩展 seed 数据，不会自动覆盖主数据。
-
-## 验收命令
-
-```powershell
-pytest backend\tests -q
-ruff check backend scripts
 cd frontend
 npm run build
 ```
 
-真实检查试听覆盖：
+CI 会在 push 和 pull request 中执行：
 
-```powershell
-$env:CPOP_RUN_LIVE_PREVIEW_TESTS="1"
-pytest backend\tests\test_preview_live.py -q
+- Python 3.12 安装后端并运行 `pytest backend/tests -q`
+- `ruff check backend scripts`
+- Node 22 安装前端依赖并运行 `npm run build`
+
+## 仓库结构
+
+```text
+.
+├── backend/                 # FastAPI 服务、Agent、推荐算法、数据同步和测试
+│   ├── app/
+│   │   ├── langchain_agent.py
+│   │   ├── music_agent_workflows.py
+│   │   ├── hybrid_recommender.py
+│   │   └── listening_history.py
+│   └── tests/
+├── frontend/                # Next.js 16 + React 19 桌面端 Web UI
+├── data/                    # seed 数据、用户状态、听歌历史和开放数据 snapshot
+├── migrations/              # PostgreSQL + pgvector schema
+├── scripts/                 # Windows 启动、Docker、酷狗桥接和数据同步脚本
+├── .github/workflows/       # CI 与每日开放数据同步
+└── docker-compose.yml
 ```
 
-真实检查 seed MusicBrainz MBID：
+## Roadmap
 
-```powershell
-$env:CPOP_RUN_LIVE_MUSICBRAINZ_TESTS="1"
-pytest backend\tests\test_musicbrainz_live.py -q
-```
-
-公开试听覆盖会随第三方临时 URL 变化；试听不可用时，推荐与故事功能仍可正常使用。
-
-GitHub Actions 已配置：
-
-- `CI`：自动运行后端测试、Ruff 和前端 build。
-- `Sync open music data`：每日执行开放数据同步 dry-run，也支持手动触发。
-
-## 当前状态
-
-这是一个可运行的本地音乐陪伴 Agent：今日声景、天气与新闻情境、三路推荐、曝光去重、听众反馈、Listening Room、歌词标本和酷狗歌单文本导入均已接通。酷狗收藏自动同步仍受其本地私有数据库格式限制，目前采用用户可控的文本导入方案。
-
-更详细的需求验收、证据和剩余限制见 [docs/project-status.md](docs/project-status.md)。
+- 更稳定的桌面端听歌房布局和大屏信息密度。
+- 更多学习向内容源，让“新世界”偏向可学习材料而不是论文索引。
+- Agent 评估集扩展到更多真实听歌场景。
+- 推荐解释可视化，展示各路召回和重排对最终结果的影响。
+- pgvector 检索与本地曲库画像进一步打通。
