@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import json
 from pathlib import Path
 
@@ -43,9 +42,6 @@ def build_recommendation_diagnostics(
         preview_available_count=len(preview_available),
         preview_coverage=round(preview_coverage, 4),
         preview_missing=preview_missing,
-        jay_instagram_configured=bool(
-            os.getenv("JAY_INSTAGRAM_USER_ID") and os.getenv("INSTAGRAM_ACCESS_TOKEN")
-        ),
         wikidata_snapshot_artist_count=snapshot_summary["wikidata_artist_count"],
         musicbrainz_snapshot_artist_count=snapshot_summary["musicbrainz_artist_count"],
         musicbrainz_snapshot_error_count=snapshot_summary["musicbrainz_error_count"],

@@ -51,16 +51,10 @@
 - 不保存音频或 MV 文件。
 - 不依赖私有、逆向或违反 ToS 的音乐平台接口。
 
-## 试听与社媒
+## 试听资源
 
 ### Deezer public preview API
 
 - 用途：为每日推荐和相似歌曲补 30 秒试听片段。
 - 约束：只使用 `preview` URL，不下载、不缓存音频文件；匹配必须校验歌名。
 - 文档：https://developers.deezer.com/api/search
-
-### Instagram Graph API
-
-- 用途：周杰伦专题展示最新 Instagram 媒体。
-- 约束：需要 `JAY_INSTAGRAM_USER_ID` 和 `INSTAGRAM_ACCESS_TOKEN`；未配置时只展示官方主页入口。
-- 文档：https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media

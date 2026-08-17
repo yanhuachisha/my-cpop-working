@@ -66,12 +66,6 @@ $env:CPOP_RUN_LIVE_MUSICBRAINZ_TESTS="1"
 pytest backend\tests\test_musicbrainz_live.py -q
 ```
 
-### 周杰伦专题
-
-- 专辑时间线、作品试听、关系图谱和 Agent 报告。
-- Instagram 使用官方 Graph API。
-- 配置 token 后前端展示媒体卡片；未配置 token 时展示主页入口和状态说明。
-
 ### 工程交付
 
 - 本地前后端：Web `3000`，API `8001`。
@@ -84,7 +78,6 @@ pytest backend\tests\test_musicbrainz_live.py -q
 
 - 华语新闻来自公开 RSS，受源站更新频率和网络状态影响；失败时会降级为空列表。
 - ListenBrainz artist popularity API 可能因服务端负载暂时不可用，脚本会保存 sitewide 趋势作为 fallback。
-- Instagram 最新媒体需要用户自己的 `JAY_INSTAGRAM_USER_ID` 和 `INSTAGRAM_ACCESS_TOKEN`；没有凭据时不能验证真实账号媒体。
 - Deezer preview URL 是外部临时资源，失效时推荐仍返回，但试听按钮会提示暂不可用。
 - PostgreSQL/pgvector schema 已准备，当前 MVP 主流程仍使用 seed 文件。
 - 酷狗收藏尚不能从私有数据库全自动读取，目前需要复制或导出歌单文本后导入。
@@ -94,4 +87,3 @@ pytest backend\tests\test_musicbrainz_live.py -q
 1. 增加可配置的华语新闻源与事件可信度排序。
 2. 在用户授权且格式可识别的前提下，探索更顺滑的酷狗歌单导出助手。
 3. 将反馈记忆升级为可解释的长期口味画像和月度听歌回顾。
-4. 配置正式 Instagram Graph API 后做真实媒体回归测试。

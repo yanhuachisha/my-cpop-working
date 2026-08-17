@@ -431,16 +431,6 @@ class ListeningAgent:
         return None
 
     def _story_for(self, current: TrackState, guide: dict[str, object] | None, recording) -> SongStory | None:
-        if guide:
-            return SongStory(
-                title=self._guide_title(guide),
-                subtitle=str(guide["subtitle"]),
-                narrative=str(guide["narrative"]),
-                themes=list(guide["themes"]),
-                listening_points=list(guide["listening_points"]),
-                story_type="curated-guide",
-                facts=[f"演唱：{guide['artist']}", f"收录：{guide['album']}", f"发行：{guide['year']} 年"],
-            )
         if current.title:
             introduction = song_introduction(
                 current.title,

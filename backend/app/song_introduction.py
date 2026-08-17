@@ -2,16 +2,16 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
 from datetime import UTC, datetime
 from pathlib import Path
 from threading import RLock
 from typing import Any
+from urllib.parse import quote_plus
 
 import httpx
-from langchain_openai import ChatOpenAI
-from openai import OpenAIError
+
+from app.song_portrait_agent import generate_song_portrait
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 CACHE_PATH = DATA_DIR / "song_introductions.json"
@@ -55,7 +55,7 @@ def _itunes_metadata(title: str, artist: str | None) -> dict[str, Any]:
         response = httpx.get(
             "https://itunes.apple.com/search",
             params={"term": f"{artist or ''} {title}".strip(), "country": "CN", "media": "music", "entity": "song", "limit": 12},
-            headers={"User-Agent": "C-Pop-Atlas/0.3"},
+            headers={"User-Agent": "My-CPop-Working/0.4 song-material-tool"},
             timeout=5.0,
         )
         response.raise_for_status()
@@ -86,22 +86,87 @@ def _itunes_metadata(title: str, artist: str | None) -> dict[str, Any]:
     }
 
 
+def _musicbrainz_metadata(title: str, artist: str | None) -> dict[str, Any]:
+    query = f'recording:"{title}" AND artist:"{artist or ""}"'
+    try:
+        response = httpx.get(
+            "https://musicbrainz.org/ws/2/recording/",
+            params={"query": query, "fmt": "json", "limit": 5},
+            headers={"User-Agent": "My-CPop-Working/0.4 song-material-tool"},
+            timeout=7.0,
+        )
+        response.raise_for_status()
+    except httpx.HTTPError:
+        return {}
+    title_key = _normalize(title)
+    artist_key = _normalize(artist)
+    for item in response.json().get("recordings", []):
+        if _normalize(item.get("title")) != title_key:
+            continue
+        credit = " ".join(
+            str(entry.get("name") or "")
+            for entry in item.get("artist-credit", [])
+            if isinstance(entry, dict)
+        )
+        if artist_key and _normalize(credit) != artist_key:
+            continue
+        releases = [release for release in item.get("releases", []) if release.get("title")]
+        first_release = str(item.get("first-release-date") or "")
+        return {
+            "artist": credit or artist,
+            "album": releases[0]["title"] if releases else None,
+            "year": int(first_release[:4]) if first_release[:4].isdigit() else None,
+            "source_url": f"https://musicbrainz.org/search?query={quote_plus(query)}&type=recording&method=indexed",
+        }
+    return {}
+
+
+def _search_song_material(
+    title: str,
+    artist: str | None,
+    album: str | None,
+    year: int | None,
+) -> dict[str, Any]:
+    itunes = _itunes_metadata(title, artist)
+    musicbrainz = _musicbrainz_metadata(title, artist)
+    resolved_artist = str(itunes.get("artist") or musicbrainz.get("artist") or artist or "") or None
+    resolved_album = str(itunes.get("album") or musicbrainz.get("album") or album or "") or None
+    resolved_year = itunes.get("year") or musicbrainz.get("year") or year
+    genre = str(itunes.get("genre") or "") or None
+    facts = []
+    if resolved_artist:
+        facts.append(f"演唱：{resolved_artist}")
+    if resolved_album:
+        facts.append(f"收录：{resolved_album}")
+    if resolved_year:
+        facts.append(f"发行：{resolved_year} 年")
+    if genre:
+        facts.append(f"类型：{genre}")
+    source_urls = list(dict.fromkeys(
+        url for url in (itunes.get("source_url"), musicbrainz.get("source_url")) if url
+    ))
+    return {
+        "artist": resolved_artist,
+        "album": resolved_album,
+        "year": resolved_year,
+        "genre": genre,
+        "facts": facts,
+        "source_urls": source_urls,
+    }
+
+
 def _fallback(title: str, artist: str | None, album: str | None, year: int | None, genre: str | None) -> dict[str, Any]:
-    performer = artist or "暂未识别歌手"
-    facts = [f"演唱：{performer}"]
+    performer = artist or "这位演唱者"
+    facts = [f"演唱：{artist}"] if artist else []
     if album:
         facts.append(f"收录：{album}")
     if year:
         facts.append(f"发行：{year} 年")
     if genre:
         facts.append(f"类型：{genre}")
-    known = "，".join(facts[1:])
-    narrative = f"《{title}》是{performer}演唱的作品"
-    narrative += f"，{known}" if known else ""
-    narrative += "。这段简介只采用能够核实的目录资料；暂未找到可靠来源的创作背景不会被写成事实。聆听时可以继续关注演唱表达、段落推进和整体声音气质。"
     return {
-        "subtitle": f"《{title}》歌曲简介",
-        "narrative": narrative,
+        "subtitle": _poetic_subtitle(title),
+        "narrative": _emotional_fallback(title, performer),
         "themes": [genre] if genre else [],
         "listening_points": [
             f"先听{performer}如何用第一句为《{title}》定下情绪",
@@ -109,72 +174,82 @@ def _fallback(title: str, artist: str | None, album: str | None, year: int | Non
             f"找出最能代表《{title}》气质的一种声音，并观察它何时出现",
         ],
         "facts": facts,
-        "story_type": "catalog-introduction",
+        "story_type": "emotional-fallback",
     }
 
 
-def _model_introduction(title: str, artist: str | None, facts: dict[str, Any]) -> dict[str, Any] | None:
-    api_key = os.getenv("DEEPSEEK_API_KEY")
-    if not api_key:
-        return None
-    prompt = {
-        "song": title,
-        "artist": artist,
-        "verified_catalog_facts": facts,
-    }
-    try:
-        model = ChatOpenAI(
-            model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
-            api_key=api_key,
-            base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
-            temperature=0.2,
-            timeout=16,
-            max_retries=0,
-            max_tokens=500,
-        )
-        message = model.invoke([
-            {
-                "role": "system",
-                "content": "你是严谨的中文歌曲资料编辑。根据已核实目录事实写歌曲简介。不得编造专辑、年份、词曲作者、获奖、创作背景或人物关系；事实不足时明确说公开资料有限。可以给出克制的听感解读，但要与事实区分。不要输出数据库标签、英文内部字段或完整歌词。只输出 JSON：subtitle、narrative、themes、listening_points。themes 最多3项，listening_points固定3项。",
-            },
-            {"role": "user", "content": json.dumps(prompt, ensure_ascii=False)},
-        ])
-        content = str(message.content).strip()
-        if content.startswith("```"):
-            content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content, flags=re.IGNORECASE)
-        parsed = json.loads(content)
-        if not isinstance(parsed.get("narrative"), str):
-            return None
-        return parsed
-    except (KeyError, TypeError, ValueError, json.JSONDecodeError, RuntimeError, OpenAIError):
-        return None
+def _poetic_subtitle(title: str) -> str:
+    normalized = title.casefold()
+    if "不是真正的快乐" in title:
+        return "微笑底下的裂痕"
+    if "monster" in normalized or "怪物" in title:
+        return "与心里的怪物对视"
+    if "快乐" in title or "微笑" in title:
+        return "笑意背后的暗潮"
+    if "雨" in title:
+        return "雨声里的旧回音"
+    if "夜" in title:
+        return "夜色没有说完"
+    if "爱" in title or "love" in normalized:
+        return "靠近之前的犹豫"
+    return "情绪拐弯的地方"
+
+
+def _emotional_fallback(title: str, performer: str) -> str:
+    normalized = title.casefold()
+    if "不是真正的快乐" in title:
+        return "它写的不是失去快乐，而是一个人已经习惯把难过藏进正常表情里。越平静的段落，越像在压住快要浮上来的情绪；等旋律真正抬高时，才听见那份努力维持的体面正在松动。"
+    if "monster" in normalized or "怪物" in title:
+        return "它更像一次对内心阴影的凝视：害怕、孤独和自我怀疑被放到眼前，却没有急着给出答案。声音向前推进时，那些无法命名的情绪也慢慢获得轮廓，像终于承认脆弱本身并不可耻。"
+    return f"《{title}》像一段迟迟没有说完的心事。{performer}的声音一次次靠近情绪的边缘：表面仍然克制，里面却有某种感受正在变重，直到旋律替人承认那一部分一直被藏起来的自己。"
+
+
+def _clean_narrative(value: str, fallback: str) -> str:
+    cleaned = re.sub(
+        r"[^。！？]*(?:公开资料|资料有限|此处不作展开|暂未找到|无法确认|不做推测)[^。！？]*[。！？]?",
+        "",
+        value,
+    ).strip()
+    return cleaned if len(cleaned) >= 35 else fallback
+
+
+def _valid_subtitle(value: str, title: str) -> bool:
+    text = value.strip().strip("《》‘’“”")
+    return 4 <= len(text) <= 14 and title not in text and not any(
+        word in text for word in ("歌曲简介", "演唱", "专辑", "发行", "现场版")
+    )
 
 
 def song_introduction(title: str, artist: str | None = None, album: str | None = None, year: int | None = None) -> dict[str, Any]:
     key = _cache_key(title, artist)
     with _cache_lock:
         cache = _read_cache()
-        if key in cache and cache[key].get("schema_version") == 3:
+        if key in cache and cache[key].get("schema_version") == 4:
             return cache[key]
-    online = _itunes_metadata(title, artist)
-    resolved_artist = str(online.get("artist") or artist or "未知歌手")
-    resolved_album = str(online.get("album") or album or "") or None
-    resolved_year = online.get("year") or year
-    genre = str(online.get("genre") or "") or None
-    verified = {"artist": resolved_artist, "album": resolved_album, "year": resolved_year, "genre": genre}
-    result = _fallback(title, resolved_artist, resolved_album, resolved_year, genre)
-    generated = _model_introduction(title, resolved_artist, verified)
+    result = _fallback(title, artist, album, year, None)
+    generated = generate_song_portrait(title, artist, album, year, _search_song_material)
     if generated:
+        verified = generated.get("verified", {})
+        resolved_artist = verified.get("artist") or artist
+        resolved_album = verified.get("album") or album
+        resolved_year = verified.get("year") or year
+        genre = verified.get("genre")
+        fallback = _fallback(title, resolved_artist, resolved_album, resolved_year, genre)
+        subtitle = str(generated.get("subtitle") or "").strip()
         result.update({
-            "subtitle": str(generated.get("subtitle") or result["subtitle"]),
-            "narrative": str(generated.get("narrative") or result["narrative"]),
+            "subtitle": subtitle if _valid_subtitle(subtitle, title) else fallback["subtitle"],
+            "narrative": _clean_narrative(str(generated.get("narrative") or ""), fallback["narrative"]),
             "themes": [str(item) for item in generated.get("themes", [])[:3]],
-            "listening_points": [str(item) for item in generated.get("listening_points", [])[:3]] or result["listening_points"],
-            "story_type": "ai-introduction",
+            "listening_points": [str(item) for item in generated.get("listening_points", [])[:3]] or fallback["listening_points"],
+            "facts": list(verified.get("facts", [])),
+            "source_urls": list(verified.get("source_urls", [])),
+            "tools_used": list(generated.get("tools_used", [])),
+            "story_type": "langchain-agent-portrait",
         })
-    result["source_urls"] = [online["source_url"]] if online.get("source_url") else []
+    result.setdefault("source_urls", [])
+    result.setdefault("tools_used", [])
     result["generated_at"] = datetime.now(UTC).isoformat()
-    result["schema_version"] = 3
+    result["schema_version"] = 4
     with _cache_lock:
         cache = _read_cache()
         cache[key] = result

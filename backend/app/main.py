@@ -9,7 +9,6 @@ from fastapi.responses import FileResponse
 from app.agent_tools import CPopAgent
 from app.data_store import get_store
 from app.diagnostics import build_recommendation_diagnostics
-from app.instagram import get_jay_instagram_feed
 from app.kugou import KugouSearchRequest, get_now_playing, open_kugou, search_kugou
 from app.kugou_bridge import bridge_status, search_bridge
 from app.langchain_agent import AgentRunRequest, MusicAgent, agent_status
@@ -39,7 +38,6 @@ from app.models import (
     AgentAnswer,
     AgentQuery,
     DailyPick,
-    InstagramFeed,
     RecommendationDiagnostics,
     RecommendationOptions,
 )
@@ -361,29 +359,6 @@ def daily_pick_diagnostics(live_preview: bool = False):
 @app.get("/api/daily-pick/options", response_model=RecommendationOptions)
 def daily_pick_options(limit: int = 8):
     return build_recommendation_options(get_store(), limit=max(1, min(limit, 20)))
-
-
-@app.get("/api/jay")
-def jay():
-    store = get_store()
-    artist_id = "jay-chou"
-    artist = store.get_artist(artist_id)
-    if not artist:
-        raise HTTPException(status_code=404, detail="Jay Chou seed data missing")
-    agent = CPopAgent(store)
-    recordings = attach_preview_urls(store.artist_recordings(artist_id), store.artists)
-    return {
-        "artist": artist,
-        "timeline": store.artist_releases(artist_id),
-        "recordings": recordings,
-        "graph": store.graph(focus_artist_id=artist_id),
-        "report": agent.build_artist_report(artist_id),
-    }
-
-
-@app.get("/api/jay/instagram", response_model=InstagramFeed)
-def jay_instagram(limit: int = 6):
-    return get_jay_instagram_feed(limit=limit)
 
 
 @app.get("/api/new-world")

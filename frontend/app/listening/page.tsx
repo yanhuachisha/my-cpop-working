@@ -83,7 +83,7 @@ export default function ListeningRoomPage() {
     if (contextLoading.current) return;
     contextLoading.current = true;
     try {
-      const nextContext = await fetchApiClient<ListeningContext>("/api/listening/context", { retries: 1, timeoutMs: 30000 });
+      const nextContext = await fetchApiClient<ListeningContext>("/api/listening/context", { retries: 1, timeoutMs: 70000 });
       setContext(nextContext);
     } finally {
       contextLoading.current = false;
@@ -237,7 +237,7 @@ export default function ListeningRoomPage() {
             <div className="story-view">
               {context?.story ? (
                 <>
-                  <div className="story-intro-label"><span>歌曲简介</span><small>{context.story.story_type === "ai-introduction" ? "AI + VERIFIED DATA" : context.story.story_type === "curated-guide" ? "CURATED INTRO" : "CATALOG INTRO"}</small></div>
+                  <div className="story-intro-label"><span>情绪画像</span><small>EMOTIONAL PORTRAIT</small></div>
                   <h2>{context.story.subtitle}</h2>
                   <p className="story-narrative">{context.story.narrative}</p>
                   {context.story.facts.length ? <div className="story-facts">{context.story.facts.map((fact) => <span key={fact}>{fact}</span>)}</div> : null}

@@ -26,10 +26,6 @@ class CPopAgent:
             )
             return self._with_sources(answer, tools_used)
 
-        if "周杰伦" in text or "jay" in text:
-            tools_used.extend(["search_artist", "get_relations", "build_artist_report"])
-            return self._with_sources(self.build_artist_report("jay-chou"), tools_used)
-
         matches = self.search_recording_or_artist(query.query)
         tools_used.extend(["search_artist", "search_recording"])
         if matches:
@@ -66,7 +62,7 @@ class CPopAgent:
             for item in collaborators
         ]
         return (
-            f"{artist.name}专题已收录 {len(releases)} 张专辑、{len(recordings)} 首示例歌曲。"
+            f"{artist.name}目前收录 {len(releases)} 张专辑、{len(recordings)} 首示例歌曲。"
             f"代表标签：{', '.join(artist.tags)}。"
             f"合作网络包含：{', '.join(collaborator_names[:6]) or '暂无'}。"
             "当前版本不展示完整歌词，只基于开放元数据、标签和关系生成解释。"

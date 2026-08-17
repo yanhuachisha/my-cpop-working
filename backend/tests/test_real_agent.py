@@ -29,3 +29,5 @@ def test_agent_status_exposes_deepseek_configuration(monkeypatch):
     assert agent_status()["configured"] is True
     assert agent_status()["provider"] == "DeepSeek"
     assert agent_status()["model"] == "deepseek-v4-flash"
+    assert agent_status()["llm_agent_count"] == 2
+    assert "search_song_material" in agent_status()["tools"]

@@ -1,6 +1,6 @@
-# C-Pop Atlas
+# My C-Pop Working
 
-开放数据驱动的华语音乐陪伴 Agent。它会结合当天华语乐坛新闻、IP 所在地天气、电脑活跃状态与个人听歌记忆，生成一份有解释、会成长的“今日声景”。周杰伦是第一个深度专题板块。
+一个面向电脑工作场景的华语音乐陪伴 Agent。它连接本地酷狗播放状态，结合天气、华语音乐新闻、听歌记忆和推荐算法，在你工作、学习或独处时提供歌曲推荐、歌曲解读与音乐陪伴。
 
 ## 当前能力
 
@@ -17,8 +17,8 @@
 - 推荐解释：返回文字理由和结构化 `score_breakdown`。
 - 数据质量诊断：查看种子曲库、试听覆盖、开放数据 snapshot。
 - 开放数据同步：Wikidata seed artist snapshot、ListenBrainz trend snapshot。
-- 周杰伦专题：专辑时间线、关系图谱、示例歌曲试听、Instagram Graph API 入口。
-- 前端页面：首页、搜索、歌曲页、周杰伦专题页、关系图谱页。
+- 新世界：聚合热门 GitHub 项目、AI 新闻、技术社区热榜与学习知识点。
+- 前端页面：首页、搜索、歌曲页、听歌房、音乐助理、收藏和新世界。
 
 ## 数据源
 
@@ -30,7 +30,6 @@
 - ListenBrainz：开放听歌趋势和 public stats。
 - Discogs：发行、厂牌、实体版本 dumps。
 - Deezer public preview API：仅用于公开 30 秒试听 URL。
-- Instagram Graph API：需要用户自行配置 token。
 
 项目不保存完整歌词、不保存音频文件，也不破解或修改酷狗私有数据库。Apple 数据仅来自公开 iTunes Search API 返回的目录元数据，不读取个人 Apple Music 数据。
 
@@ -125,8 +124,6 @@ npm run dev -- --hostname 0.0.0.0 --port 3000
 - `GET /api/daily-pick/diagnostics`
 - `GET /api/daily-pick/diagnostics?live_preview=true`
 - `GET /api/recordings/{recording_id}`
-- `GET /api/jay`
-- `GET /api/jay/instagram`
 - `GET /api/graph`
 - `POST /api/agent/query`
 - `GET /api/agent/status`
@@ -137,7 +134,7 @@ npm run dev -- --hostname 0.0.0.0 --port 3000
 
 ## 真实 Agent 架构
 
-当前只有 **1 个真正由大模型驱动的 Agent**：`MusicAgent orchestrator`。它使用 LangChain `create_agent` 与 DeepSeek 模型执行工具调用循环。原来的 `ListeningAgent` 和 `TodayRecommender` 仍是确定性业务模块，不把它们虚报为大模型 Agent。
+当前有 **2 个真正由大模型驱动的 Agent**：`MusicAgent orchestrator` 负责音乐问答、推荐与工具编排；`SongPortraitAgent` 负责听歌房的歌曲资料检索与情绪画像。二者都使用 LangChain `create_agent` 与 DeepSeek 模型执行工具调用。原来的 `ListeningAgent` 和 `TodayRecommender` 仍是确定性业务模块，不把它们虚报为大模型 Agent。
 
 复制 `.env.example` 为 `.env`，然后填写 DeepSeek API Key：
 
@@ -155,6 +152,7 @@ Agent Loop：用户问题 → DeepSeek 判断是否调用工具 → 执行工具
 - `kg_neighbors`：查询实体的一跳三元组关系。
 - `kg_shortest_path`：使用 BFS 计算两个音乐实体之间的最短解释路径。
 - `daily_recommendation`：调用现有个性化推荐算法。
+- `search_song_material`：检索歌曲可核实的歌手、专辑、年份、流派与来源，再生成情绪化歌曲画像；没有找到的事实不会显示。
 
 Agent 评测使用固定问题集，当前指标包括：工具选择准确率、答案关键词落地率、循环步数和延迟。执行：
 
@@ -185,20 +183,6 @@ data/snapshots/
 ```
 
 这些 snapshot 用于人工审查和扩展 seed 数据，不会自动覆盖主数据。
-
-## Jay Instagram
-
-未配置 token 时，`/api/jay/instagram` 会返回周杰伦 Instagram 主页链接。
-
-要读取最新媒体，需要在环境变量中配置：
-
-```bash
-JAY_INSTAGRAM_USER_ID=
-INSTAGRAM_ACCESS_TOKEN=
-META_GRAPH_API_VERSION=v23.0
-```
-
-项目只使用官方 Instagram Graph API，不做未授权抓取。
 
 ## 验收命令
 

@@ -2,7 +2,7 @@
 
 ## 目标
 
-当前阶段只把“每日推荐一首华语歌”做好。周杰伦专题保留，但它服务于推荐解释和专题入口，不抢主线。
+当前阶段重点把“每日推荐一首华语歌”做好，所有艺人都使用统一的曲库、推荐与歌曲解读能力。
 
 成功标准：
 
@@ -27,12 +27,6 @@
 - Deezer public preview API：只使用公开 30 秒 preview URL。
 - preview URL 只作为临时播放链接，不下载、不缓存音频文件。
 - 匹配时必须校验歌名，宁可无试听，也不播错歌。
-
-周杰伦 Instagram：
-
-- 可持续方案是 Instagram Graph API 的 IG User Media endpoint。
-- 需要配置 `JAY_INSTAGRAM_USER_ID` 和 `INSTAGRAM_ACCESS_TOKEN`。
-- 未配置 token 时显示官方主页入口和配置状态，不做硬爬虫。
 
 ## 推荐算法
 

@@ -748,57 +748,6 @@ main {
   margin: 0;
 }
 
-.instagram-grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  margin-top: 18px;
-}
-
-.instagram-post {
-  background: rgba(255, 253, 248, 0.76);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: var(--shadow-soft);
-  display: grid;
-  gap: 12px;
-  overflow: hidden;
-  transition:
-    border-color 150ms ease,
-    transform 150ms ease;
-}
-
-.instagram-post:hover {
-  border-color: rgba(199, 61, 43, 0.3);
-  transform: translateY(-2px);
-}
-
-.instagram-post img,
-.instagram-placeholder {
-  aspect-ratio: 1;
-  background: var(--bg-soft);
-  object-fit: cover;
-  width: 100%;
-}
-
-.instagram-placeholder {
-  align-items: center;
-  color: var(--muted);
-  display: flex;
-  justify-content: center;
-}
-
-.instagram-post div:last-child {
-  display: grid;
-  gap: 8px;
-  padding: 0 14px 14px;
-}
-
-.instagram-post strong {
-  font-size: 14px;
-  line-height: 1.45;
-}
-
 .node {
   border: 1px solid var(--line);
   border-radius: 999px;

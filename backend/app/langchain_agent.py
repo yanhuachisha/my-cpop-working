@@ -46,8 +46,8 @@ def agent_status() -> dict[str, Any]:
         "model": os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
         "framework": "LangChain create_agent",
         "loop": "tool-calling / ReAct-style",
-        "llm_agent_count": 1,
-        "llm_agents": ["MusicAgent orchestrator"],
+        "llm_agent_count": 2,
+        "llm_agents": ["MusicAgent orchestrator", "SongPortraitAgent"],
         "legacy_modules": ["ListeningAgent rules", "TodayRecommender scoring"],
         "tools": [
             "search_music",
@@ -59,6 +59,7 @@ def agent_status() -> dict[str, Any]:
             "listener_emotion_memory",
             "listener_preference_profile_tool",
             "weekly_listening_report",
+            "search_song_material",
         ],
         "algorithms": ["react", "plan_execute", "reflection", "auto_router"],
         "fallback_available": True,

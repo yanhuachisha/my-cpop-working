@@ -98,7 +98,6 @@ class RecommendationDiagnostics(BaseModel):
     preview_available_count: int
     preview_coverage: float
     preview_missing: list[str] = Field(default_factory=list)
-    jay_instagram_configured: bool
     wikidata_snapshot_artist_count: int | None = None
     musicbrainz_snapshot_artist_count: int | None = None
     musicbrainz_snapshot_error_count: int | None = None
@@ -146,20 +145,3 @@ class AgentAnswer(BaseModel):
     answer: str
     tools_used: list[str]
     sources: list[SourceRef]
-
-
-class InstagramPost(BaseModel):
-    id: str
-    caption: str | None = None
-    media_type: str | None = None
-    media_url: str | None = None
-    permalink: str
-    timestamp: str | None = None
-
-
-class InstagramFeed(BaseModel):
-    configured: bool
-    profile_url: str
-    message: str
-    posts: list[InstagramPost] = Field(default_factory=list)
-    sources: list[SourceRef] = Field(default_factory=list)

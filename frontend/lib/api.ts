@@ -69,21 +69,6 @@ export type GraphPayload = {
   edges: { id: string; source: string; target: string; label: string }[];
 };
 
-export type InstagramFeed = {
-  configured: boolean;
-  profile_url: string;
-  message: string;
-  posts: {
-    id: string;
-    caption?: string | null;
-    media_type?: string | null;
-    media_url?: string | null;
-    permalink: string;
-    timestamp?: string | null;
-  }[];
-  sources: { name: string; url: string; license: string }[];
-};
-
 export class ApiError extends Error {
   constructor(
     public status: number,
