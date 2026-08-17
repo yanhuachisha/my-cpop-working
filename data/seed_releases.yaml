@@ -1,0 +1,84 @@
+- id: jay-chou-jay
+  title: Jay
+  artist_id: jay-chou
+  release_date: "2000-11-07"
+  release_type: album
+  tags: [debut, r&b, mandopop]
+- id: jay-chou-fantasy
+  title: 范特西
+  artist_id: jay-chou
+  release_date: "2001-09-14"
+  release_type: album
+  tags: [r&b, hip-hop, mandopop]
+- id: jay-chou-ye-hui-mei
+  title: 叶惠美
+  artist_id: jay-chou
+  release_date: "2003-07-31"
+  release_type: album
+  tags: [chinese-style, dark-pop, r&b]
+- id: jay-chou-qilixiang
+  title: 七里香
+  artist_id: jay-chou
+  release_date: "2004-08-03"
+  release_type: album
+  tags: [ballad, campus, mandopop]
+- id: tao-im-ok
+  title: I'm OK
+  artist_id: tao
+  release_date: "1999-12-10"
+  release_type: album
+  tags: [r&b, soul]
+- id: leehom-shangri-la
+  title: 心中的日月
+  artist_id: leehom-wang
+  release_date: "2004-12-31"
+  release_type: album
+  tags: [chinese-style, r&b]
+- id: jj-second-heaven
+  title: 第二天堂
+  artist_id: jj-lin
+  release_date: "2004-06-04"
+  release_type: album
+  tags: [mandopop, ballad, r&b]
+- id: stefanie-sun-yanzi
+  title: 孙燕姿
+  artist_id: stefanie-sun
+  release_date: "2000-06-09"
+  release_type: album
+  tags: [mandopop, ballad]
+- id: eason-special-thanks-to
+  title: Special Thanks To...
+  artist_id: eason-chan
+  release_date: "2002-04-02"
+  release_type: album
+  tags: [cantopop, mandopop, ballad]
+- id: mayday-time-machine
+  title: 时光机
+  artist_id: mayday
+  release_date: "2003-11-11"
+  release_type: album
+  tags: [rock, band, mandopop]
+- id: fish-leong-courage
+  title: 勇气
+  artist_id: fish-leong
+  release_date: "2000-08-02"
+  release_type: album
+  tags: [mandopop, ballad, karaoke]
+- id: a-mei-bad-boy
+  title: Bad Boy
+  artist_id: a-mei
+  release_date: "1997-06-11"
+  release_type: album
+  tags: [mandopop, diva, pop]
+- id: khalil-fong-soulboy
+  title: Soul Boy
+  artist_id: khalil-fong
+  release_date: "2005-11-18"
+  release_type: album
+  tags: [r&b, soul, mandopop]
+- id: sodagreen-small-universe
+  title: 小宇宙
+  artist_id: sodagreen
+  release_date: "2006-10-20"
+  release_type: album
+  tags: [indie, band, mandopop]

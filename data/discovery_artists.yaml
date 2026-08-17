@@ -1,0 +1,80 @@
+- id: gem-tang
+  name: 邓紫棋
+  tags: [mandopop, pop, r&b]
+  aliases: [G.E.M., G.E.M. 邓紫棋, 鄧紫棋]
+- id: joker-xue
+  name: 薛之谦
+  tags: [mandopop, ballad]
+  aliases: [Joker Xue, 薛之謙]
+- id: mao-buyi
+  name: 毛不易
+  tags: [mandopop, folk, ballad]
+  aliases: [Mao Buyi]
+- id: li-ronghao
+  name: 李荣浩
+  tags: [mandopop, r&b, rock]
+  aliases: [Li Ronghao, 李榮浩]
+- id: zhou-shen
+  name: 周深
+  tags: [mandopop, ballad]
+  aliases: [Charlie Zhou]
+- id: wang-sulong
+  name: 汪苏泷
+  tags: [mandopop, pop]
+  aliases: [Silence Wang, 汪蘇瀧]
+- id: xu-song
+  name: 许嵩
+  tags: [mandopop, chinese-style]
+  aliases: [Vae, 許嵩]
+- id: zhang-jie
+  name: 张杰
+  tags: [mandopop, pop-rock]
+  aliases: [Jason Zhang, 張杰]
+- id: angela-zhang
+  name: 张韶涵
+  tags: [mandopop, pop]
+  aliases: [Angela Zhang, 張韶涵]
+- id: faye-wong
+  name: 王菲
+  tags: [mandopop, cantopop, alternative]
+  aliases: [Faye Wong]
+- id: tanya-chua
+  name: 蔡健雅
+  tags: [mandopop, folk, r&b]
+  aliases: [Tanya Chua]
+- id: jolin-tsai
+  name: 蔡依林
+  tags: [mandopop, dance-pop]
+  aliases: [Jolin Tsai]
+- id: accusefive
+  name: 告五人
+  tags: [mandopop, indie, band]
+  aliases: [Accusefive, Accuse Five]
+- id: chen-li
+  name: 陈粒
+  tags: [mandopop, indie, folk]
+  aliases: [Chen Li, 陳粒]
+- id: shan-yichun
+  name: 单依纯
+  tags: [mandopop, ballad]
+  aliases: [Shan Yichun, 單依純]
+- id: hua-chenyu
+  name: 华晨宇
+  tags: [mandopop, rock]
+  aliases: [Hua Chenyu, 華晨宇]
+- id: phoenix-legend
+  name: 凤凰传奇
+  tags: [mandopop, folk-pop, duo]
+  aliases: [Phoenix Legend, 鳳凰傳奇]
+- id: liu-yuning
+  name: 刘宇宁
+  tags: [mandopop, pop-rock]
+  aliases: [Liu Yuning, 劉宇寧]
+- id: curley-g
+  name: 希林娜依高
+  tags: [mandopop, pop]
+  aliases: [Curley G]
+- id: cyndi-wang
+  name: 王心凌
+  tags: [mandopop, dance-pop]
+  aliases: [Cyndi Wang]

@@ -1,0 +1,393 @@
+{
+  "generated_at": "2026-08-16T09:36:17.257319+00:00",
+  "source": "Wikidata",
+  "license": "CC0",
+  "license_url": "https://www.wikidata.org/wiki/Wikidata:Licensing",
+  "artist_count": 14,
+  "artists": [
+    {
+      "id": "jay-chou",
+      "name": "周杰伦",
+      "sort_name": "Jay Chou",
+      "current_wikidata_qid": "Q131285",
+      "wikidata": {
+        "qid": "Q131285",
+        "url": "https://www.wikidata.org/wiki/Q131285",
+        "labels": {
+          "zh-hans": "约翰·威廉姆斯",
+          "zh-hant": "約翰·威廉斯",
+          "en": "John Williams",
+          "zh": "約翰·威廉斯"
+        },
+        "descriptions": {
+          "en": "American composer and conductor (born 1932)",
+          "zh": "美國作曲家和指揮家（生於1932年）",
+          "zh-hans": "美国作曲家和指挥家（生于1932年）",
+          "zh-hant": "美國作曲家和指揮家（生於1932年）"
+        },
+        "aliases": {
+          "zh": [
+            "約翰·湯納·威廉斯",
+            "約翰·威廉士",
+            "约翰·威廉姆斯"
+          ]
+        },
+        "musicbrainz_artist_id": [
+          "53b106e7-0cc6-42cc-ac95-ed8d30a3a98e"
+        ],
+        "discogs_artist_id": [
+          "273394",
+          "1562416"
+        ],
+        "image": [
+          "John Williams 2024.jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "vincent-fang",
+      "name": "方文山",
+      "sort_name": "Vincent Fang",
+      "current_wikidata_qid": "Q712958",
+      "wikidata": {
+        "qid": "Q712958",
+        "url": "https://www.wikidata.org/wiki/Q712958",
+        "labels": {
+          "zh-hans": "南洋神社",
+          "zh-hant": "南洋神社",
+          "en": "Nan'yō Shrine",
+          "zh": "南洋神社"
+        },
+        "descriptions": {
+          "en": "Defunct Shinto shrine in Koror, Palau"
+        },
+        "aliases": {},
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "Nanyo Shrine Enshrinement Festival in Palau Nov 20 1940.png"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "tao",
+      "name": "陶喆",
+      "sort_name": "David Tao",
+      "current_wikidata_qid": "Q716586",
+      "wikidata": {
+        "qid": "Q716586",
+        "url": "https://www.wikidata.org/wiki/Q716586",
+        "labels": {
+          "zh-hans": "叶童",
+          "zh-hant": "葉童",
+          "en": "Cecilia Yip",
+          "zh": "葉童"
+        },
+        "descriptions": {
+          "en": "Hong Kong actress",
+          "zh": "香港女演員"
+        },
+        "aliases": {
+          "zh": [
+            "李思思",
+            "叶童"
+          ],
+          "en": [
+            "Li Sisi",
+            "Cecilia Yip Tung",
+            "Cecilia Chan",
+            "Cecilia Ip",
+            "Tong Ye",
+            "Cici Yip",
+            "Tung Yip"
+          ]
+        },
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [
+          "4896984"
+        ],
+        "image": [
+          "葉童.jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "leehom-wang",
+      "name": "王力宏",
+      "sort_name": "Wang Leehom",
+      "current_wikidata_qid": "Q160077",
+      "wikidata": {
+        "qid": "Q160077",
+        "url": "https://www.wikidata.org/wiki/Q160077",
+        "labels": {
+          "zh-hans": "君士坦丁堡的陷落",
+          "zh-hant": "君士坦丁堡的陷落",
+          "en": "Fall of Constantinople",
+          "zh": "君士坦丁堡的陷落"
+        },
+        "descriptions": {
+          "en": "1453 capture of the Byzantine capital by the Ottoman Empire",
+          "zh": "1453年5月29日奥斯曼帝国攻陷东罗马帝国首都君士坦丁堡"
+        },
+        "aliases": {
+          "zh": [
+            "君士坦丁堡之陷落",
+            "君士坦丁堡的淪陷",
+            "攻陷君士坦丁堡"
+          ],
+          "en": [
+            "conquest of Constantinople",
+            "capture of Constantinople"
+          ]
+        },
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "Le siège de Constantinople (1453) by Jean Le Tavernier after 1455.jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "stefanie-sun",
+      "name": "孙燕姿",
+      "sort_name": "Stefanie Sun",
+      "current_wikidata_qid": "Q229776",
+      "wikidata": {
+        "qid": "Q229776",
+        "url": "https://www.wikidata.org/wiki/Q229776",
+        "labels": {
+          "en": "Clearwater"
+        },
+        "descriptions": {
+          "en": "Wikimedia disambiguation page",
+          "zh": "维基媒体消歧义页",
+          "zh-hans": "维基媒体消歧义页",
+          "zh-hant": "維基媒體消歧義頁"
+        },
+        "aliases": {},
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": []
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "jj-lin",
+      "name": "林俊杰",
+      "sort_name": "JJ Lin",
+      "current_wikidata_qid": "Q713344",
+      "wikidata": {
+        "qid": "Q713344",
+        "url": "https://www.wikidata.org/wiki/Q713344",
+        "labels": {
+          "en": "Leandro Alberti"
+        },
+        "descriptions": {
+          "en": "Italian historian, philosopher, and theologian"
+        },
+        "aliases": {},
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "Leandro Alberti.jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "eason-chan",
+      "name": "陈奕迅",
+      "sort_name": "Eason Chan",
+      "current_wikidata_qid": "Q181612",
+      "wikidata": {
+        "qid": "Q181612",
+        "url": "https://www.wikidata.org/wiki/Q181612",
+        "labels": {
+          "en": "Terminalia"
+        },
+        "descriptions": {
+          "en": "Roman religious festival regarding Terminus and boundary markers"
+        },
+        "aliases": {},
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "Giovanni Benedetto Castiglione - The Feast Before the Altar of Terminus.jpeg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "mayday",
+      "name": "五月天",
+      "sort_name": "Mayday",
+      "current_wikidata_qid": "Q729674",
+      "wikidata": {
+        "qid": "Q729674",
+        "url": "https://www.wikidata.org/wiki/Q729674",
+        "labels": {
+          "en": "John Needham"
+        },
+        "descriptions": {
+          "en": "English biologist and Roman Catholic priest (1713-1781)"
+        },
+        "aliases": {
+          "en": [
+            "John Turberville Needham"
+          ]
+        },
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "John Turberville Needham.jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "fish-leong",
+      "name": "梁静茹",
+      "sort_name": "Fish Leong",
+      "current_wikidata_qid": "Q703836",
+      "wikidata": {
+        "qid": "Q703836",
+        "url": "https://www.wikidata.org/wiki/Q703836",
+        "labels": {
+          "en": "arroz con pollo",
+          "zh": "西班牙鸡肉饭"
+        },
+        "descriptions": {
+          "en": "traditional dish of Spain and Latin America"
+        },
+        "aliases": {},
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "Arroz-con-Pollo.jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "a-mei",
+      "name": "张惠妹",
+      "sort_name": "A-Mei",
+      "current_wikidata_qid": "Q229747",
+      "wikidata": {
+        "qid": "Q229747",
+        "url": "https://www.wikidata.org/wiki/Q229747",
+        "labels": {
+          "en": "Erica Durance",
+          "zh": "埃莉卡·杜兰斯",
+          "zh-hans": "埃莉卡·杜兰斯",
+          "zh-hant": "埃莉卡·杜蘭斯"
+        },
+        "descriptions": {
+          "en": "Canadian actress",
+          "zh": "加拿大女演員"
+        },
+        "aliases": {
+          "zh": [
+            "Erica Durance"
+          ]
+        },
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "Erica Durance (52272377724).jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "khalil-fong",
+      "name": "方大同",
+      "sort_name": "Khalil Fong",
+      "current_wikidata_qid": "Q715694",
+      "wikidata": {
+        "qid": "Q715694",
+        "url": "https://www.wikidata.org/wiki/Q715694",
+        "labels": {},
+        "descriptions": {},
+        "aliases": {},
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": []
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "sodagreen",
+      "name": "苏打绿",
+      "sort_name": "Sodagreen",
+      "current_wikidata_qid": "Q756433",
+      "wikidata": {
+        "qid": "Q756433",
+        "url": "https://www.wikidata.org/wiki/Q756433",
+        "labels": {
+          "en": "State Farm Stadium",
+          "zh": "州立農業體育館"
+        },
+        "descriptions": {
+          "en": "stadium in Glendale, Arizona, USA"
+        },
+        "aliases": {
+          "en": [
+            "Cardinals Stadium",
+            "University of Phoenix Stadium"
+          ],
+          "zh": [
+            "鳳凰城大學球場",
+            "鳳凰城大學體育館"
+          ]
+        },
+        "musicbrainz_artist_id": [],
+        "discogs_artist_id": [],
+        "image": [
+          "Cardinals stadium crop.jpg"
+        ]
+      },
+      "candidate_matches": []
+    },
+    {
+      "id": "michael-lin",
+      "name": "林迈可",
+      "sort_name": "Michael Lin",
+      "current_wikidata_qid": null,
+      "wikidata": null,
+      "candidate_matches": [
+        {
+          "qid": "Q13648762",
+          "label": "Michael Lindsay, 2nd Baron Lindsay of Birker",
+          "description": "British baron (1909-1994)",
+          "url": "http://www.wikidata.org/entity/Q13648762"
+        },
+        {
+          "qid": "Q9294214",
+          "label": "Michael Lin",
+          "description": "Taiwanese songwriter and record producer",
+          "url": "http://www.wikidata.org/entity/Q9294214"
+        }
+      ]
+    },
+    {
+      "id": "chung-hsing-min",
+      "name": "钟兴民",
+      "sort_name": "Chung Hsing-min",
+      "current_wikidata_qid": null,
+      "wikidata": null,
+      "candidate_matches": [
+        {
+          "qid": "Q8934543",
+          "label": "Baby Chung",
+          "description": "Taiwanese music producer (born 1966)",
+          "url": "http://www.wikidata.org/entity/Q8934543"
+        }
+      ]
+    }
+  ]
+}

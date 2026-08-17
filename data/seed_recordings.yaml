@@ -1,0 +1,126 @@
+- id: jay-chou-qilixiang-song
+  title: 七里香
+  artist_id: jay-chou
+  release_id: jay-chou-qilixiang
+  year: 2004
+  language: zh
+  is_cpop: true
+  tags: [mandopop, ballad, campus, poetic]
+  moods: [nostalgic, breezy, warm]
+- id: jay-chou-dongfengpo
+  title: 东风破
+  artist_id: jay-chou
+  release_id: jay-chou-ye-hui-mei
+  year: 2003
+  language: zh
+  is_cpop: true
+  tags: [mandopop, chinese-style, ballad, poetic]
+  moods: [nostalgic, elegant, bittersweet]
+- id: jay-chou-yifuzhiming
+  title: 以父之名
+  artist_id: jay-chou
+  release_id: jay-chou-ye-hui-mei
+  year: 2003
+  language: zh
+  is_cpop: true
+  tags: [mandopop, dark-pop, hip-hop, cinematic]
+  moods: [dramatic, dark, narrative]
+- id: jay-chou-simple-love
+  title: 简单爱
+  artist_id: jay-chou
+  release_id: jay-chou-fantasy
+  year: 2001
+  language: zh
+  is_cpop: true
+  tags: [mandopop, r&b, campus, acoustic]
+  moods: [warm, youthful, sunny]
+- id: tao-ordinary-friend
+  title: 普通朋友
+  artist_id: tao
+  release_id: tao-im-ok
+  year: 1999
+  language: zh
+  is_cpop: true
+  tags: [mandopop, r&b, soul, ballad]
+  moods: [late-night, bittersweet, intimate]
+- id: leehom-forever-love
+  title: Forever Love
+  artist_id: leehom-wang
+  release_id: leehom-shangri-la
+  year: 2004
+  language: zh
+  is_cpop: true
+  tags: [mandopop, r&b, ballad]
+  moods: [romantic, warm, sincere]
+- id: jj-jiangnan
+  title: 江南
+  artist_id: jj-lin
+  release_id: jj-second-heaven
+  year: 2004
+  language: zh
+  is_cpop: true
+  tags: [mandopop, ballad, chinese-style]
+  moods: [nostalgic, gentle, bittersweet]
+- id: stefanie-dark-day
+  title: 天黑黑
+  artist_id: stefanie-sun
+  release_id: stefanie-sun-yanzi
+  year: 2000
+  language: zh
+  is_cpop: true
+  tags: [mandopop, ballad, acoustic]
+  moods: [nostalgic, gentle, bittersweet]
+- id: eason-ten-years
+  title: 十年
+  artist_id: eason-chan
+  release_id: eason-special-thanks-to
+  year: 2003
+  language: zh
+  is_cpop: true
+  tags: [mandopop, ballad, karaoke]
+  moods: [bittersweet, reflective, late-night]
+- id: mayday-stubborn
+  title: 倔强
+  artist_id: mayday
+  release_id: mayday-time-machine
+  year: 2004
+  language: zh
+  is_cpop: true
+  tags: [mandopop, rock, band, inspirational]
+  moods: [uplifting, youthful, resilient]
+- id: fish-leong-courage-song
+  title: 勇气
+  artist_id: fish-leong
+  release_id: fish-leong-courage
+  year: 2000
+  language: zh
+  is_cpop: true
+  tags: [mandopop, ballad, karaoke]
+  moods: [romantic, warm, sincere]
+- id: a-mei-listen-to-sea
+  title: 听海
+  artist_id: a-mei
+  release_id: a-mei-bad-boy
+  year: 1997
+  language: zh
+  is_cpop: true
+  tags: [mandopop, diva, ballad]
+  moods: [dramatic, late-night, bittersweet]
+- id: khalil-fong-love-song
+  title: Love Song
+  artist_id: khalil-fong
+  release_id: khalil-fong-soulboy
+  year: 2005
+  language: zh
+  is_cpop: true
+  tags: [mandopop, r&b, soul]
+  moods: [warm, intimate, late-night]
+- id: sodagreen-little-love-song
+  title: 小情歌
+  artist_id: sodagreen
+  release_id: sodagreen-small-universe
+  year: 2006
+  language: zh
+  is_cpop: true
+  tags: [mandopop, indie, ballad, band]
+  moods: [gentle, youthful, bittersweet]

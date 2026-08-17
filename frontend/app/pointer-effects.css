@@ -1,0 +1,111 @@
+:root {
+  --pointer-x: 50vw;
+  --pointer-y: 45vh;
+  --pointer-disc-x: 0px;
+  --pointer-disc-y: 0px;
+  --pointer-copy-x: 0px;
+  --pointer-copy-y: 0px;
+}
+
+.pointer-atmosphere {
+  inset: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  transition: opacity 300ms ease;
+  z-index: 30;
+}
+
+.pointer-enabled .pointer-atmosphere {
+  opacity: 1;
+}
+
+.pointer-aura {
+  border-radius: 50%;
+  left: var(--pointer-x);
+  position: absolute;
+  top: var(--pointer-y);
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.pointer-aura-main {
+  background: radial-gradient(circle, rgba(108, 238, 214, 0.16), rgba(111, 87, 255, 0.07) 34%, transparent 70%);
+  filter: blur(8px);
+  height: 420px;
+  mix-blend-mode: screen;
+  width: 420px;
+}
+
+.pointer-aura-ring {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 22px rgba(108, 238, 214, 0.12);
+  height: 34px;
+  width: 34px;
+}
+
+[data-pointer-reactive],
+.knowledge-routes,
+.knowledge-canvas,
+.knowledge-insight,
+.kugou-bridge-lab,
+.kugou-discovery-card,
+.library-import-card {
+  backface-visibility: hidden;
+  transform: perspective(1100px) rotateX(0) rotateY(0) translate3d(0, 0, 0);
+  transform-style: preserve-3d;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms ease, filter 220ms ease;
+  will-change: transform;
+}
+
+.pointer-card-active {
+  filter: brightness(1.025);
+  transform: perspective(1100px) rotateX(var(--card-tilt-x, 0deg)) rotateY(var(--card-tilt-y, 0deg)) translate3d(0, -2px, 0);
+}
+
+.pointer-enabled .sonic-disc-wrap {
+  transform: translate3d(var(--pointer-disc-x), var(--pointer-disc-y), 0);
+}
+
+.sonic-disc-wrap {
+  transition: transform 260ms ease-out;
+}
+
+.pointer-enabled .sonic-copy,
+.pointer-enabled .agent-lab-hero > div:first-child,
+.pointer-enabled .knowledge-hero > div:first-child {
+  transform: translate3d(var(--pointer-copy-x), var(--pointer-copy-y), 0);
+}
+
+.sonic-copy,
+.agent-lab-hero > div:first-child,
+.knowledge-hero > div:first-child {
+  transition: transform 300ms ease-out;
+}
+
+.sonic-actions button.is-playing {
+  background: linear-gradient(135deg, #73e1cd, #8f7bff);
+  color: #08090b;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .pointer-atmosphere {
+    display: none;
+  }
+
+  [data-pointer-reactive],
+  .knowledge-routes,
+  .knowledge-canvas,
+  .knowledge-insight,
+  .kugou-bridge-lab,
+  .kugou-discovery-card,
+  .library-import-card,
+  .pointer-card-active,
+  .sonic-disc-wrap,
+  .sonic-copy,
+  .agent-lab-hero > div:first-child,
+  .knowledge-hero > div:first-child {
+    transform: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "generated_at": "2026-08-16T09:46:58.891556+00:00",
+  "source": "ListenBrainz popularity API",
+  "license": "Open listens and public API data",
+  "source_url": "https://listenbrainz.readthedocs.io/en/latest/users/api/popularity.html",
+  "artist_count": 1,
+  "per_artist_limit": 5,
+  "artists": [
+    {
+      "id": "jay-chou",
+      "name": "周杰伦",
+      "artist_mbid": "6a2c9bb1-4b43-4b28-9f3a-720ce0a6077c",
+      "recordings": [],
+      "error": "Server error '500 INTERNAL SERVER ERROR' for url 'https://api.listenbrainz.org/1/popularity/top-recordings-for-artist/6a2c9bb1-4b43-4b28-9f3a-720ce0a6077c'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+    }
+  ],
+  "sitewide": {
+    "range": "this_week",
+    "last_updated": 1786857683,
+    "recordings": [
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "SWIM",
+        "recording_mbid": "6f33dc05-cdc0-4a2f-8039-e8fed082eec6",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 135160,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "Come Over",
+        "recording_mbid": "53b9351d-c7af-4755-9f16-5549bb91d125",
+        "release_name": "ARIRANG",
+        "release_mbid": "efb0cfe1-ac49-449d-bbe2-2121cac844d8",
+        "total_listen_count": 106629,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "Hooligan",
+        "recording_mbid": "a045f252-ea1a-42c3-b7a5-f69979e39394",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 39963,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "2.0",
+        "recording_mbid": "1d6222e0-77eb-4047-b4fb-045a0c5636d3",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 38524,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "Body to Body",
+        "recording_mbid": "6dfdfc61-89ff-451a-a5e9-5319065beae7",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 38398,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "Merry Go Round",
+        "recording_mbid": "b9462ebb-1d6d-4477-a12b-402c0b65b206",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 37445,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "Aliens",
+        "recording_mbid": "370cb956-910e-4fde-87b4-fdce053168e9",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 37029,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "FYA",
+        "recording_mbid": "802e86e2-5da4-40c5-a265-933eb64d864b",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 36413,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "SWIM",
+        "recording_mbid": "6f33dc05-cdc0-4a2f-8039-e8fed082eec6",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 36219,
+        "total_user_count": null,
+        "caa_id": 44649429843,
+        "caa_release_mbid": "2f9b427d-cc6e-4465-9f70-9d2109381db0"
+      },
+      {
+        "artist_name": "BTS",
+        "artist_mbids": [
+          "0d79fe8e-ba27-4859-bb8c-2f255f346853"
+        ],
+        "recording_name": "One More Night",
+        "recording_mbid": "b4ae8f7c-14ea-4882-81e2-6e35fd6de44f",
+        "release_name": "ARIRANG",
+        "release_mbid": "bfa4553e-fa39-44b2-b17e-14f2875d352f",
+        "total_listen_count": 35763,
+        "total_user_count": null,
+        "caa_id": 44649543849,
+        "caa_release_mbid": "a221833b-32bd-4a78-875f-1dc25d942a81"
+      }
+    ],
+    "error": null
+  }
+}

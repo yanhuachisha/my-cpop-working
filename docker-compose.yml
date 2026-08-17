@@ -1,0 +1,39 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    profiles:
+      - db
+    environment:
+      POSTGRES_USER: cpop
+      POSTGRES_PASSWORD: cpop
+      POSTGRES_DB: cpop_atlas
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+
+  api:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql://cpop:cpop@db:5432/cpop_atlas
+      CPOP_DATA_DIR: /app/data
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data:ro
+
+  web:
+    build:
+      context: ./frontend
+    environment:
+      API_BASE_URL: http://api:8000
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

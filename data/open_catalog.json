@@ -1,0 +1,1642 @@
+{
+  "generated_at": "2026-08-16T13:32:50.751540+00:00",
+  "source": "MusicBrainz",
+  "artists": [],
+  "releases": [],
+  "recordings": [
+    {
+      "id": "mb-0bbebc12-97cd-4600-b59b-894dcc176117",
+      "title": "Catherine",
+      "artist_id": "tao",
+      "year": 2005,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "0bbebc12-97cd-4600-b59b-894dcc176117",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0bbebc12-97cd-4600-b59b-894dcc176117"
+      ]
+    },
+    {
+      "id": "mb-1d00538a-5289-4675-b803-7d9ef0d89628",
+      "title": "天天 (revised 2003 version)",
+      "artist_id": "tao",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "1d00538a-5289-4675-b803-7d9ef0d89628",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1d00538a-5289-4675-b803-7d9ef0d89628"
+      ]
+    },
+    {
+      "id": "mb-1ea5c681-b8b5-465f-af28-8ec62c042614",
+      "title": "黑色柳丁 (original voice recorder ideas)",
+      "artist_id": "tao",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "1ea5c681-b8b5-465f-af28-8ec62c042614",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1ea5c681-b8b5-465f-af28-8ec62c042614"
+      ]
+    },
+    {
+      "id": "mb-70ead5c1-41da-45a9-9d46-b1b528eb1c03",
+      "title": "追",
+      "artist_id": "tao",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "70ead5c1-41da-45a9-9d46-b1b528eb1c03",
+      "source_urls": [
+        "https://musicbrainz.org/recording/70ead5c1-41da-45a9-9d46-b1b528eb1c03"
+      ]
+    },
+    {
+      "id": "mb-d70e2b4f-4f06-447e-be20-79340ffd2f00",
+      "title": "討厭紅樓夢",
+      "artist_id": "tao",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "d70e2b4f-4f06-447e-be20-79340ffd2f00",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d70e2b4f-4f06-447e-be20-79340ffd2f00"
+      ]
+    },
+    {
+      "id": "mb-f86da817-71b9-4077-aa2a-b91996543f4e",
+      "title": "她的歌",
+      "artist_id": "tao",
+      "year": 2005,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "f86da817-71b9-4077-aa2a-b91996543f4e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f86da817-71b9-4077-aa2a-b91996543f4e"
+      ]
+    },
+    {
+      "id": "mb-fc671c45-3ea2-4246-9ffb-013aa86c8cba",
+      "title": "無緣",
+      "artist_id": "tao",
+      "year": 2005,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "fc671c45-3ea2-4246-9ffb-013aa86c8cba",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fc671c45-3ea2-4246-9ffb-013aa86c8cba"
+      ]
+    },
+    {
+      "id": "mb-34bd4be2-a558-409f-bc5a-76a8e57b18ca",
+      "title": "Susan說",
+      "artist_id": "tao",
+      "year": 2005,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "34bd4be2-a558-409f-bc5a-76a8e57b18ca",
+      "source_urls": [
+        "https://musicbrainz.org/recording/34bd4be2-a558-409f-bc5a-76a8e57b18ca"
+      ]
+    },
+    {
+      "id": "mb-e03bba89-91f1-481a-a870-d4e7333aba34",
+      "title": "[silence]",
+      "artist_id": "tao",
+      "year": 2002,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "e03bba89-91f1-481a-a870-d4e7333aba34",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e03bba89-91f1-481a-a870-d4e7333aba34"
+      ]
+    },
+    {
+      "id": "mb-6b69ad98-314b-464e-9f13-0711dcbccf24",
+      "title": "[silence]",
+      "artist_id": "tao",
+      "year": 2002,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "6b69ad98-314b-464e-9f13-0711dcbccf24",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6b69ad98-314b-464e-9f13-0711dcbccf24"
+      ]
+    },
+    {
+      "id": "mb-1950d9ad-17fd-4cf3-8f6a-25a01b884e78",
+      "title": "二十二",
+      "artist_id": "tao",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "1950d9ad-17fd-4cf3-8f6a-25a01b884e78",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1950d9ad-17fd-4cf3-8f6a-25a01b884e78"
+      ]
+    },
+    {
+      "id": "mb-83e8dbeb-5e18-4ee6-a5d1-c642f05d47f0",
+      "title": "不一樣",
+      "artist_id": "tao",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "83e8dbeb-5e18-4ee6-a5d1-c642f05d47f0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/83e8dbeb-5e18-4ee6-a5d1-c642f05d47f0"
+      ]
+    },
+    {
+      "id": "mb-0e0f7ee8-9593-4f6c-a664-65886b2d50bd",
+      "title": "爱是个什么东西",
+      "artist_id": "tao",
+      "year": 2005,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "0e0f7ee8-9593-4f6c-a664-65886b2d50bd",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0e0f7ee8-9593-4f6c-a664-65886b2d50bd"
+      ]
+    },
+    {
+      "id": "mb-090cd2c4-91ad-47fd-89c7-53ef31fae99e",
+      "title": "飞机场的10:30",
+      "artist_id": "tao",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "090cd2c4-91ad-47fd-89c7-53ef31fae99e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/090cd2c4-91ad-47fd-89c7-53ef31fae99e"
+      ]
+    },
+    {
+      "id": "mb-1147d8c6-18b5-4195-9b45-6bc45b651bb9",
+      "title": "Miss Sweetie",
+      "artist_id": "tao",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "1147d8c6-18b5-4195-9b45-6bc45b651bb9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1147d8c6-18b5-4195-9b45-6bc45b651bb9"
+      ]
+    },
+    {
+      "id": "mb-c17ddd30-c95e-4eb0-9124-315273968ab4",
+      "title": "A Big Mess",
+      "artist_id": "tao",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "c17ddd30-c95e-4eb0-9124-315273968ab4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c17ddd30-c95e-4eb0-9124-315273968ab4"
+      ]
+    },
+    {
+      "id": "mb-a7aeaa03-aec9-49ad-8758-bd455a795332",
+      "title": "Whose Oscar?",
+      "artist_id": "tao",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "a7aeaa03-aec9-49ad-8758-bd455a795332",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a7aeaa03-aec9-49ad-8758-bd455a795332"
+      ]
+    },
+    {
+      "id": "mb-a796455d-2bc8-4eed-8dad-4491dae041ec",
+      "title": "沙滩",
+      "artist_id": "tao",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "a796455d-2bc8-4eed-8dad-4491dae041ec",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a796455d-2bc8-4eed-8dad-4491dae041ec"
+      ]
+    },
+    {
+      "id": "mb-49f05ce2-c8d6-4d35-b490-e903353f6a45",
+      "title": "Big Beauty",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "49f05ce2-c8d6-4d35-b490-e903353f6a45",
+      "source_urls": [
+        "https://musicbrainz.org/recording/49f05ce2-c8d6-4d35-b490-e903353f6a45"
+      ]
+    },
+    {
+      "id": "mb-f8e293c5-2cde-41d1-a7d9-57bf23d745e1",
+      "title": "Pink Heart",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "f8e293c5-2cde-41d1-a7d9-57bf23d745e1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f8e293c5-2cde-41d1-a7d9-57bf23d745e1"
+      ]
+    },
+    {
+      "id": "mb-3f0e9ccd-9b69-4e52-a890-af9d57ccf769",
+      "title": "Shuffle On",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "3f0e9ccd-9b69-4e52-a890-af9d57ccf769",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3f0e9ccd-9b69-4e52-a890-af9d57ccf769"
+      ]
+    },
+    {
+      "id": "mb-96d4eb54-c343-48d8-b65e-7aa110711dd9",
+      "title": "Ramaya",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "96d4eb54-c343-48d8-b65e-7aa110711dd9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/96d4eb54-c343-48d8-b65e-7aa110711dd9"
+      ]
+    },
+    {
+      "id": "mb-9fe275b3-49d3-4c62-9c78-56d5f34f3097",
+      "title": "The Long Run",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "9fe275b3-49d3-4c62-9c78-56d5f34f3097",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9fe275b3-49d3-4c62-9c78-56d5f34f3097"
+      ]
+    },
+    {
+      "id": "mb-75c03979-cdc6-4094-a99f-c82c8ef1869e",
+      "title": "Pink Heart",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "75c03979-cdc6-4094-a99f-c82c8ef1869e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/75c03979-cdc6-4094-a99f-c82c8ef1869e"
+      ]
+    },
+    {
+      "id": "mb-3cb7ab6d-6207-43b8-84e1-be2c2b3c9f8d",
+      "title": "Song for You",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "3cb7ab6d-6207-43b8-84e1-be2c2b3c9f8d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3cb7ab6d-6207-43b8-84e1-be2c2b3c9f8d"
+      ]
+    },
+    {
+      "id": "mb-2ef2cd0e-d4e4-49b6-b1e4-6006ae6bb345",
+      "title": "Pink Heart",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "2ef2cd0e-d4e4-49b6-b1e4-6006ae6bb345",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2ef2cd0e-d4e4-49b6-b1e4-6006ae6bb345"
+      ]
+    },
+    {
+      "id": "mb-f7836e00-26e1-4030-b7bc-58fdb7d5e43e",
+      "title": "今天沒回家",
+      "artist_id": "tao",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "f7836e00-26e1-4030-b7bc-58fdb7d5e43e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f7836e00-26e1-4030-b7bc-58fdb7d5e43e"
+      ]
+    },
+    {
+      "id": "mb-7ae5ca8b-d8fb-4dc5-9479-5517114554d0",
+      "title": "宮保雞丁",
+      "artist_id": "tao",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "7ae5ca8b-d8fb-4dc5-9479-5517114554d0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7ae5ca8b-d8fb-4dc5-9479-5517114554d0"
+      ]
+    },
+    {
+      "id": "mb-2e3b353e-7f0b-4c9c-b1ee-f90c1c68fe62",
+      "title": "Song for You",
+      "artist_id": "tao",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "2e3b353e-7f0b-4c9c-b1ee-f90c1c68fe62",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2e3b353e-7f0b-4c9c-b1ee-f90c1c68fe62"
+      ]
+    },
+    {
+      "id": "mb-f8559dfd-bde5-49ae-a60e-81bb05e2e9b1",
+      "title": "寂寞的季節",
+      "artist_id": "tao",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "f8559dfd-bde5-49ae-a60e-81bb05e2e9b1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f8559dfd-bde5-49ae-a60e-81bb05e2e9b1"
+      ]
+    },
+    {
+      "id": "mb-f5fb60a2-65a7-4449-b12f-ee126fd606eb",
+      "title": "飛機場的10:30",
+      "artist_id": "tao",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "f5fb60a2-65a7-4449-b12f-ee126fd606eb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f5fb60a2-65a7-4449-b12f-ee126fd606eb"
+      ]
+    },
+    {
+      "id": "mb-306c3665-76a7-4870-a89b-93c52036b635",
+      "title": "All for Joy",
+      "artist_id": "tao",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "306c3665-76a7-4870-a89b-93c52036b635",
+      "source_urls": [
+        "https://musicbrainz.org/recording/306c3665-76a7-4870-a89b-93c52036b635"
+      ]
+    },
+    {
+      "id": "mb-f44d0017-9d12-4c04-ba21-e4bd0c12bda1",
+      "title": "誰的奧斯卡?",
+      "artist_id": "tao",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "f44d0017-9d12-4c04-ba21-e4bd0c12bda1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f44d0017-9d12-4c04-ba21-e4bd0c12bda1"
+      ]
+    },
+    {
+      "id": "mb-bf136418-a415-4909-b686-1c7e3ac88c16",
+      "title": "So Beautiful",
+      "artist_id": "tao",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "bf136418-a415-4909-b686-1c7e3ac88c16",
+      "source_urls": [
+        "https://musicbrainz.org/recording/bf136418-a415-4909-b686-1c7e3ac88c16"
+      ]
+    },
+    {
+      "id": "mb-ac8b1380-6040-4b52-8dab-17e49911c571",
+      "title": "Wang Chun Feng",
+      "artist_id": "tao",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "soul"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "intimate"
+      ],
+      "mbid": "ac8b1380-6040-4b52-8dab-17e49911c571",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ac8b1380-6040-4b52-8dab-17e49911c571"
+      ]
+    },
+    {
+      "id": "mb-c9e42683-26fa-4154-a46f-933d906d70d1",
+      "title": "謝絕推銷你的愛",
+      "artist_id": "leehom-wang",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "c9e42683-26fa-4154-a46f-933d906d70d1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c9e42683-26fa-4154-a46f-933d906d70d1"
+      ]
+    },
+    {
+      "id": "mb-a25d01d5-6511-493e-8653-4dd009cdefd0",
+      "title": "頭版搖滾",
+      "artist_id": "leehom-wang",
+      "year": 1996,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "a25d01d5-6511-493e-8653-4dd009cdefd0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a25d01d5-6511-493e-8653-4dd009cdefd0"
+      ]
+    },
+    {
+      "id": "mb-0f85ecbc-2503-43dc-9dd2-77f613312912",
+      "title": "創作前言",
+      "artist_id": "leehom-wang",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "0f85ecbc-2503-43dc-9dd2-77f613312912",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0f85ecbc-2503-43dc-9dd2-77f613312912"
+      ]
+    },
+    {
+      "id": "mb-00d5e939-0142-49fc-b2f1-9168270d27a4",
+      "title": "情難牽",
+      "artist_id": "leehom-wang",
+      "year": 1996,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "00d5e939-0142-49fc-b2f1-9168270d27a4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/00d5e939-0142-49fc-b2f1-9168270d27a4"
+      ]
+    },
+    {
+      "id": "mb-6d86ab80-fba3-49dd-b032-07fc44d2af35",
+      "title": "認真",
+      "artist_id": "leehom-wang",
+      "year": 1997,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "6d86ab80-fba3-49dd-b032-07fc44d2af35",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6d86ab80-fba3-49dd-b032-07fc44d2af35"
+      ]
+    },
+    {
+      "id": "mb-95214c6a-68a1-4fe2-acb6-87d01d4206b0",
+      "title": "君の知らない空へ",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "95214c6a-68a1-4fe2-acb6-87d01d4206b0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/95214c6a-68a1-4fe2-acb6-87d01d4206b0"
+      ]
+    },
+    {
+      "id": "mb-91e78180-48b3-4a13-bac0-1ebe4df7810c",
+      "title": "你以為我是誰",
+      "artist_id": "leehom-wang",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "91e78180-48b3-4a13-bac0-1ebe4df7810c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/91e78180-48b3-4a13-bac0-1ebe4df7810c"
+      ]
+    },
+    {
+      "id": "mb-a5640c17-e56b-4244-8e5f-2111780a0986",
+      "title": "聽雨",
+      "artist_id": "leehom-wang",
+      "year": 1995,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "a5640c17-e56b-4244-8e5f-2111780a0986",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a5640c17-e56b-4244-8e5f-2111780a0986"
+      ]
+    },
+    {
+      "id": "mb-e4a21985-d081-4ff8-97d2-91de9107911c",
+      "title": "Better Off Alone",
+      "artist_id": "leehom-wang",
+      "year": 1996,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "e4a21985-d081-4ff8-97d2-91de9107911c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e4a21985-d081-4ff8-97d2-91de9107911c"
+      ]
+    },
+    {
+      "id": "mb-e61ebdcc-07ef-4639-a3a5-665fa5c41bed",
+      "title": "天涯海角",
+      "artist_id": "leehom-wang",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "e61ebdcc-07ef-4639-a3a5-665fa5c41bed",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e61ebdcc-07ef-4639-a3a5-665fa5c41bed"
+      ]
+    },
+    {
+      "id": "mb-3218e6be-7b64-431b-8657-aae26cccd658",
+      "title": "Kiss Goodbye",
+      "artist_id": "leehom-wang",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "3218e6be-7b64-431b-8657-aae26cccd658",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3218e6be-7b64-431b-8657-aae26cccd658"
+      ]
+    },
+    {
+      "id": "mb-229921f3-e01d-405c-af85-7ea3e564123d",
+      "title": "愛的就是你",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "229921f3-e01d-405c-af85-7ea3e564123d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/229921f3-e01d-405c-af85-7ea3e564123d"
+      ]
+    },
+    {
+      "id": "mb-c5a03886-49d5-440b-819d-bea8cc2b3c4d",
+      "title": "愛因為在心中",
+      "artist_id": "leehom-wang",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "c5a03886-49d5-440b-819d-bea8cc2b3c4d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c5a03886-49d5-440b-819d-bea8cc2b3c4d"
+      ]
+    },
+    {
+      "id": "mb-dd969ba9-57de-4f58-aace-f36a79c8cb94",
+      "title": "Happiness x3 Loneliness x3",
+      "artist_id": "leehom-wang",
+      "year": 2002,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "dd969ba9-57de-4f58-aace-f36a79c8cb94",
+      "source_urls": [
+        "https://musicbrainz.org/recording/dd969ba9-57de-4f58-aace-f36a79c8cb94"
+      ]
+    },
+    {
+      "id": "mb-1e790b41-3cfb-4fa0-816c-ced578ea96de",
+      "title": "I Can't Stop Loving",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "1e790b41-3cfb-4fa0-816c-ced578ea96de",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1e790b41-3cfb-4fa0-816c-ced578ea96de"
+      ]
+    },
+    {
+      "id": "mb-237361d3-a096-4dbc-b81c-90c94cdf3ee2",
+      "title": "不說後悔",
+      "artist_id": "leehom-wang",
+      "year": 1996,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "237361d3-a096-4dbc-b81c-90c94cdf3ee2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/237361d3-a096-4dbc-b81c-90c94cdf3ee2"
+      ]
+    },
+    {
+      "id": "mb-d809cddd-b6bd-45bd-b92e-eead13c62495",
+      "title": "Last Night",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "d809cddd-b6bd-45bd-b92e-eead13c62495",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d809cddd-b6bd-45bd-b92e-eead13c62495"
+      ]
+    },
+    {
+      "id": "mb-7cd806a5-2c70-4e44-a827-9f42317a811b",
+      "title": "愛得得體",
+      "artist_id": "leehom-wang",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "7cd806a5-2c70-4e44-a827-9f42317a811b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7cd806a5-2c70-4e44-a827-9f42317a811b"
+      ]
+    },
+    {
+      "id": "mb-ff2d09ea-bdcb-4aed-9534-0226cca9fbf2",
+      "title": "巴洛克先生",
+      "artist_id": "leehom-wang",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "ff2d09ea-bdcb-4aed-9534-0226cca9fbf2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ff2d09ea-bdcb-4aed-9534-0226cca9fbf2"
+      ]
+    },
+    {
+      "id": "mb-d909a9e4-5afa-4b09-85eb-5027c8d5c130",
+      "title": "Forever Your Dad",
+      "artist_id": "leehom-wang",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "d909a9e4-5afa-4b09-85eb-5027c8d5c130",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d909a9e4-5afa-4b09-85eb-5027c8d5c130"
+      ]
+    },
+    {
+      "id": "mb-c55565dd-aaa1-412f-bffc-5c35194d3dbf",
+      "title": "女朋友",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "c55565dd-aaa1-412f-bffc-5c35194d3dbf",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c55565dd-aaa1-412f-bffc-5c35194d3dbf"
+      ]
+    },
+    {
+      "id": "mb-eefa29d8-4324-4243-9b89-fa366d33320c",
+      "title": "如果你聽見我的歌",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "eefa29d8-4324-4243-9b89-fa366d33320c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/eefa29d8-4324-4243-9b89-fa366d33320c"
+      ]
+    },
+    {
+      "id": "mb-7021bd4e-d1bb-494c-8a51-2c811a987228",
+      "title": "Introduction",
+      "artist_id": "leehom-wang",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "7021bd4e-d1bb-494c-8a51-2c811a987228",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7021bd4e-d1bb-494c-8a51-2c811a987228"
+      ]
+    },
+    {
+      "id": "mb-9d3c6d67-0c75-4f53-a9a8-d119e4c66b5f",
+      "title": "忘我",
+      "artist_id": "leehom-wang",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "9d3c6d67-0c75-4f53-a9a8-d119e4c66b5f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9d3c6d67-0c75-4f53-a9a8-d119e4c66b5f"
+      ]
+    },
+    {
+      "id": "mb-977062ae-eab7-48b6-af8d-9c1a0993a710",
+      "title": "Forever Love",
+      "artist_id": "leehom-wang",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "977062ae-eab7-48b6-af8d-9c1a0993a710",
+      "source_urls": [
+        "https://musicbrainz.org/recording/977062ae-eab7-48b6-af8d-9c1a0993a710"
+      ]
+    },
+    {
+      "id": "mb-387b083d-f4ed-4a5c-8646-0c90a919109e",
+      "title": "永遠的第一天",
+      "artist_id": "leehom-wang",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "387b083d-f4ed-4a5c-8646-0c90a919109e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/387b083d-f4ed-4a5c-8646-0c90a919109e"
+      ]
+    },
+    {
+      "id": "mb-9f555ffd-2f4c-4ad2-9617-b388a089823d",
+      "title": "第一個清晨",
+      "artist_id": "leehom-wang",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "9f555ffd-2f4c-4ad2-9617-b388a089823d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9f555ffd-2f4c-4ad2-9617-b388a089823d"
+      ]
+    },
+    {
+      "id": "mb-70d9ecfa-2d9d-40ab-8800-04a4bf3093c2",
+      "title": "缘分一道桥 (Live)",
+      "artist_id": "leehom-wang",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "70d9ecfa-2d9d-40ab-8800-04a4bf3093c2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/70d9ecfa-2d9d-40ab-8800-04a4bf3093c2"
+      ]
+    },
+    {
+      "id": "mb-1742d8c0-c0ae-4609-9010-ba3b4a6a149b",
+      "title": "不願說再見",
+      "artist_id": "leehom-wang",
+      "year": 1995,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "1742d8c0-c0ae-4609-9010-ba3b4a6a149b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1742d8c0-c0ae-4609-9010-ba3b4a6a149b"
+      ]
+    },
+    {
+      "id": "mb-11ad42d4-a6e3-47a6-9982-68141b1e8a68",
+      "title": "In Your Eyes",
+      "artist_id": "leehom-wang",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "11ad42d4-a6e3-47a6-9982-68141b1e8a68",
+      "source_urls": [
+        "https://musicbrainz.org/recording/11ad42d4-a6e3-47a6-9982-68141b1e8a68"
+      ]
+    },
+    {
+      "id": "mb-fc07e67a-2863-4dcd-9619-c971282805e5",
+      "title": "天地龍鱗(大型紀錄片《紫禁城》主題歌)",
+      "artist_id": "leehom-wang",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "fc07e67a-2863-4dcd-9619-c971282805e5",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fc07e67a-2863-4dcd-9619-c971282805e5"
+      ]
+    },
+    {
+      "id": "mb-e87e17bb-de2c-45db-8b4c-4451966b4510",
+      "title": "你是我心內的一首歌",
+      "artist_id": "leehom-wang",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "e87e17bb-de2c-45db-8b4c-4451966b4510",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e87e17bb-de2c-45db-8b4c-4451966b4510"
+      ]
+    },
+    {
+      "id": "mb-adbdc877-d783-4776-8246-3f51a2f56d3d",
+      "title": "忘了時間忘了我",
+      "artist_id": "leehom-wang",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "adbdc877-d783-4776-8246-3f51a2f56d3d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/adbdc877-d783-4776-8246-3f51a2f56d3d"
+      ]
+    },
+    {
+      "id": "mb-eec22be0-f65b-49ee-b24a-f8fb22ca0e62",
+      "title": "不可能錯過你",
+      "artist_id": "leehom-wang",
+      "year": 2002,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "eec22be0-f65b-49ee-b24a-f8fb22ca0e62",
+      "source_urls": [
+        "https://musicbrainz.org/recording/eec22be0-f65b-49ee-b24a-f8fb22ca0e62"
+      ]
+    },
+    {
+      "id": "mb-fdc62d40-f2c4-45c3-b2e8-cf30f454a1cd",
+      "title": "愛在哪裡",
+      "artist_id": "leehom-wang",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "fdc62d40-f2c4-45c3-b2e8-cf30f454a1cd",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fdc62d40-f2c4-45c3-b2e8-cf30f454a1cd"
+      ]
+    }
+  ],
+  "sync_report": [
+    {
+      "artist_id": "jay-chou",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/recording?query=arid%3Aa223958d-5c56-4b2c-a30a-87e357bc121b+AND+status%3Aofficial&limit=35&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "tao",
+      "mbid": "38fe7fb3-2bde-4672-8016-2ba6f7d1808f",
+      "recording_count": 35,
+      "status": "ok"
+    },
+    {
+      "artist_id": "leehom-wang",
+      "mbid": "ae0fd83f-8e50-4cb4-935e-ac7c0b7d7d17",
+      "recording_count": 35,
+      "status": "ok"
+    },
+    {
+      "artist_id": "stefanie-sun",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/recording?query=arid%3Aff0ecbbe-34b0-49c7-a36d-81a47700ac13+AND+status%3Aofficial&limit=35&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "jj-lin",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/recording?query=arid%3Ae5d8c705-8ea4-4820-b11d-fbf580d85ce4+AND+status%3Aofficial&limit=35&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "eason-chan",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/artist?query=artist%3A%22%E9%99%88%E5%A5%95%E8%BF%85%22&limit=5&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "mayday",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/artist?query=artist%3A%22%E4%BA%94%E6%9C%88%E5%A4%A9%22&limit=5&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "fish-leong",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/recording?query=arid%3A9e52fbe2-dcc2-4720-9ddd-9ad8202a5287+AND+status%3Aofficial&limit=35&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "a-mei",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/artist?query=artist%3A%22%E5%BC%A0%E6%83%A0%E5%A6%B9%22&limit=5&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "khalil-fong",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/artist?query=artist%3A%22%E6%96%B9%E5%A4%A7%E5%90%8C%22&limit=5&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    },
+    {
+      "artist_id": "sodagreen",
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/recording?query=arid%3Aa8fd2a44-2f72-47ea-a6ce-96e8bd7059ec+AND+status%3Aofficial&limit=35&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+    }
+  ]
+}

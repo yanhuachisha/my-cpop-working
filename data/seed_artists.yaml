@@ -1,0 +1,143 @@
+- id: jay-chou
+  name: 周杰伦
+  sort_name: Jay Chou
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  mbid: a223958d-5c56-4b2c-a30a-87e357bc121b
+  wikidata_qid: Q131285
+  discogs_id: "842937"
+  tags: [mandopop, r&b, chinese-style, hip-hop, ballad]
+  aliases: [Jay Chou, 周杰倫, 周杰伦, Jie Lun Zhou]
+  source_urls:
+    - https://musicbrainz.org/artist/a223958d-5c56-4b2c-a30a-87e357bc121b
+    - https://www.wikidata.org/wiki/Q131285
+- id: vincent-fang
+  name: 方文山
+  sort_name: Vincent Fang
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  wikidata_qid: Q712958
+  tags: [lyricist, chinese-style, mandopop]
+  aliases: [Vincent Fang, 方文山]
+  source_urls:
+    - https://www.wikidata.org/wiki/Q712958
+- id: tao
+  name: 陶喆
+  sort_name: David Tao
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  wikidata_qid: Q716586
+  tags: [mandopop, r&b, soul]
+  aliases: [David Tao, 陶喆]
+  source_urls:
+    - https://www.wikidata.org/wiki/Q716586
+- id: leehom-wang
+  name: 王力宏
+  sort_name: Wang Leehom
+  country: United States
+  area: Taiwan
+  is_cpop: true
+  wikidata_qid: Q160077
+  tags: [mandopop, r&b, chinese-style]
+  aliases: [Wang Leehom, Leehom Wang, 王力宏]
+  source_urls:
+    - https://www.wikidata.org/wiki/Q160077
+- id: stefanie-sun
+  name: 孙燕姿
+  sort_name: Stefanie Sun
+  country: Singapore
+  area: Singapore
+  is_cpop: true
+  wikidata_qid: Q229776
+  tags: [mandopop, pop-rock, ballad]
+  aliases: [Stefanie Sun, Sun Yan-Zi, 孫燕姿, 孙燕姿]
+  source_urls:
+    - https://www.wikidata.org/wiki/Q229776
+- id: jj-lin
+  name: 林俊杰
+  sort_name: JJ Lin
+  country: Singapore
+  area: Singapore
+  is_cpop: true
+  wikidata_qid: Q713344
+  tags: [mandopop, r&b, ballad]
+  aliases: [JJ Lin, 林俊傑, 林俊杰]
+  source_urls:
+    - https://www.wikidata.org/wiki/Q713344
+- id: eason-chan
+  name: 陈奕迅
+  sort_name: Eason Chan
+  country: Hong Kong
+  area: Hong Kong
+  is_cpop: true
+  wikidata_qid: Q181612
+  tags: [cantopop, mandopop, ballad]
+  aliases: [Eason Chan, 陳奕迅, 陈奕迅]
+  source_urls:
+    - https://www.wikidata.org/wiki/Q181612
+- id: mayday
+  name: 五月天
+  sort_name: Mayday
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  wikidata_qid: Q729674
+  tags: [mandopop, rock, band]
+  aliases: [Mayday, 五月天]
+  source_urls:
+    - https://www.wikidata.org/wiki/Q729674
+- id: fish-leong
+  name: 梁静茹
+  sort_name: Fish Leong
+  country: Malaysia
+  area: Malaysia
+  is_cpop: true
+  wikidata_qid: Q703836
+  tags: [mandopop, ballad, karaoke]
+  aliases: [Fish Leong, 梁靜茹, 梁静茹]
+- id: a-mei
+  name: 张惠妹
+  sort_name: A-Mei
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  wikidata_qid: Q229747
+  tags: [mandopop, pop, diva, ballad]
+  aliases: [A-Mei, 張惠妹, 张惠妹]
+- id: khalil-fong
+  name: 方大同
+  sort_name: Khalil Fong
+  country: Hong Kong
+  area: Hong Kong
+  is_cpop: true
+  wikidata_qid: Q715694
+  tags: [mandopop, r&b, soul]
+  aliases: [Khalil Fong, 方大同]
+- id: sodagreen
+  name: 苏打绿
+  sort_name: Sodagreen
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  wikidata_qid: Q756433
+  tags: [mandopop, indie, band]
+  aliases: [Sodagreen, 蘇打綠, 苏打绿]
+- id: michael-lin
+  name: 林迈可
+  sort_name: Michael Lin
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  tags: [arranger, producer, mandopop]
+  aliases: [Michael Lin, 林迈可, 林邁可]
+- id: chung-hsing-min
+  name: 钟兴民
+  sort_name: Chung Hsing-min
+  country: Taiwan
+  area: Taiwan
+  is_cpop: true
+  tags: [arranger, producer, mandopop]
+  aliases: [钟兴民, 鍾興民]

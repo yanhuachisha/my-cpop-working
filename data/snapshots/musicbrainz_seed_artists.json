@@ -1,0 +1,586 @@
+{
+  "generated_at": "2026-08-16T10:53:57.537247+00:00",
+  "source": "MusicBrainz",
+  "license": "CC0 core data",
+  "license_url": "https://musicbrainz.org/doc/About/Data_License",
+  "artist_count": 2,
+  "artists": [
+    {
+      "id": "jay-chou",
+      "name": "周杰伦",
+      "current_mbid": "a223958d-5c56-4b2c-a30a-87e357bc121b",
+      "musicbrainz": {
+        "mbid": "a223958d-5c56-4b2c-a30a-87e357bc121b",
+        "name": "周杰倫",
+        "sort_name": "Chou, Jay",
+        "country": "TW",
+        "area": "Taiwan",
+        "disambiguation": "",
+        "aliases": [
+          {
+            "name": "Chieh-Lun Chou",
+            "sort_name": "Chou, Chieh-Lun",
+            "locale": "en",
+            "primary": false
+          },
+          {
+            "name": "Jay",
+            "sort_name": "Jay",
+            "locale": "en",
+            "primary": false
+          },
+          {
+            "name": "Jay Chou",
+            "sort_name": "Chou, Jay",
+            "locale": "en",
+            "primary": true
+          },
+          {
+            "name": "Jie-Luen Jou",
+            "sort_name": "Jou, Jie-Luen",
+            "locale": "en",
+            "primary": false
+          },
+          {
+            "name": "Jie-Lun Jhou",
+            "sort_name": "Jhou, Jie-Lun",
+            "locale": "en",
+            "primary": false
+          },
+          {
+            "name": "Jie-Lun Zhou",
+            "sort_name": "Zhou, Jie-Lun",
+            "locale": "en",
+            "primary": false
+          },
+          {
+            "name": "Zhou Jie Lun",
+            "sort_name": "Zhou Jie Lun",
+            "locale": "zh_Latn",
+            "primary": false
+          },
+          {
+            "name": "Zhou Jielun",
+            "sort_name": "Zhou Jielun",
+            "locale": "zh_Latn",
+            "primary": false
+          },
+          {
+            "name": "Zhōu Jié Lún",
+            "sort_name": "Zhōu Jié Lún",
+            "locale": "zh_Latn",
+            "primary": false
+          },
+          {
+            "name": "ジェイ・チョウ",
+            "sort_name": "ジェイ・チョウ",
+            "locale": "ja",
+            "primary": true
+          },
+          {
+            "name": "周杰伦",
+            "sort_name": "周杰伦",
+            "locale": "zh_Hans",
+            "primary": true
+          },
+          {
+            "name": "周杰倫",
+            "sort_name": "周杰倫",
+            "locale": "zh_Hant",
+            "primary": true
+          },
+          {
+            "name": "周杰倫",
+            "sort_name": "周杰倫",
+            "locale": "zh_Hant_TW",
+            "primary": true
+          },
+          {
+            "name": "주걸륜",
+            "sort_name": "주걸륜",
+            "locale": "ko",
+            "primary": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "chinese",
+            "count": 3
+          },
+          {
+            "name": "contemporary r&b",
+            "count": 2
+          },
+          {
+            "name": "mandopop",
+            "count": 4
+          },
+          {
+            "name": "pop",
+            "count": 4
+          },
+          {
+            "name": "pop rap",
+            "count": 1
+          },
+          {
+            "name": "zhongguo feng",
+            "count": 1
+          }
+        ],
+        "url_relations": [
+          {
+            "type": "allmusic",
+            "target": "https://www.allmusic.com/artist/mn0000520385"
+          },
+          {
+            "type": "discography page",
+            "target": "https://discogs.fandom.com/zh/wiki/%E5%91%A8%E6%9D%B0%E4%BC%A6"
+          },
+          {
+            "type": "discography page",
+            "target": "https://gnudb.org/artists/12344-jay-chou"
+          },
+          {
+            "type": "discogs",
+            "target": "https://www.discogs.com/artist/1705275"
+          },
+          {
+            "type": "free streaming",
+            "target": "https://open.spotify.com/artist/2elBjNSdBE2Y3f0j1mjrql"
+          },
+          {
+            "type": "free streaming",
+            "target": "https://www.deezer.com/artist/69175"
+          },
+          {
+            "type": "IMDb",
+            "target": "https://www.imdb.com/name/nm1727100/"
+          },
+          {
+            "type": "last.fm",
+            "target": "https://www.last.fm/music/%E5%91%A8%E6%9D%B0%E5%80%AB"
+          },
+          {
+            "type": "lyrics",
+            "target": "https://genius.com/artists/Jay-chou"
+          },
+          {
+            "type": "other databases",
+            "target": "http://id.loc.gov/authorities/names/no2006033873"
+          },
+          {
+            "type": "other databases",
+            "target": "https://catalogue.bnf.fr/ark:/12148/cb16682648t"
+          },
+          {
+            "type": "other databases",
+            "target": "https://d-nb.info/gnd/1013199065"
+          },
+          {
+            "type": "other databases",
+            "target": "https://id.oclc.org/worldcat/entity/E39PBJyRxxXF9bRp9qtC49kdQq"
+          },
+          {
+            "type": "other databases",
+            "target": "https://imvdb.com/n/jay-chou"
+          },
+          {
+            "type": "other databases",
+            "target": "https://nla.gov.au/nla.party-1454923"
+          },
+          {
+            "type": "other databases",
+            "target": "https://rateyourmusic.com/artist/%E5%91%A8%E6%9D%B0%E5%80%AB"
+          },
+          {
+            "type": "other databases",
+            "target": "https://www.worldcat.org/identities/lccn-no2006033873"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://itunes.apple.com/artist/id300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://itunes.apple.com/cn/artist/id300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://itunes.apple.com/hk/artist/id300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://itunes.apple.com/my/artist/id300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://itunes.apple.com/tw/artist/id300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://itunes.apple.com/us/artist/id300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://mora.jp/artist/1866843/"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://music.apple.com/cn/artist/300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://music.apple.com/kr/artist/300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://music.apple.com/tw/artist/300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://music.apple.com/us/artist/300117743"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://music.bugs.co.kr/artist/63661"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://ototoy.jp/_/default/a/1140754"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://vibe.naver.com/artist/7610"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://www.genie.co.kr/detail/artistInfo?xxnm=14949012"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://www.melon.com/artist/detail.htm?artistId=51634"
+          },
+          {
+            "type": "purchase for download",
+            "target": "https://www.qobuz.com/jp-ja/interpreter/jay-chou/167422"
+          },
+          {
+            "type": "purchase for mail-order",
+            "target": "https://tower.jp/artist/337534"
+          },
+          {
+            "type": "purchase for mail-order",
+            "target": "https://www.cdjapan.co.jp/person/700165496"
+          },
+          {
+            "type": "purchase for mail-order",
+            "target": "https://www.hmv.co.jp/artist/detail/000000000171617"
+          },
+          {
+            "type": "setlistfm",
+            "target": "https://www.setlist.fm/setlists/jay-chou-4bd3d7aa.html"
+          },
+          {
+            "type": "social network",
+            "target": "https://www.facebook.com/jay"
+          },
+          {
+            "type": "social network",
+            "target": "https://www.instagram.com/jaychou/"
+          },
+          {
+            "type": "social network",
+            "target": "https://plus.google.com/109273045900306093643"
+          },
+          {
+            "type": "songkick",
+            "target": "https://www.songkick.com/artists/721432"
+          },
+          {
+            "type": "streaming",
+            "target": "https://music.amazon.co.jp/artists/B0044N2PL6"
+          },
+          {
+            "type": "streaming",
+            "target": "https://music.apple.com/tw/artist/300117743"
+          },
+          {
+            "type": "streaming",
+            "target": "https://music.bugs.co.kr/artist/63661"
+          },
+          {
+            "type": "streaming",
+            "target": "https://music.line.me/webapp/artist/mi0000000020d941ba"
+          },
+          {
+            "type": "streaming",
+            "target": "https://s.awa.fm/artist/daa46fa1b316b56aa983"
+          },
+          {
+            "type": "streaming",
+            "target": "https://tidal.com/artist/3529466"
+          },
+          {
+            "type": "streaming",
+            "target": "https://vibe.naver.com/artist/7610"
+          },
+          {
+            "type": "streaming",
+            "target": "https://www.genie.co.kr/detail/artistInfo?xxnm=14949012"
+          },
+          {
+            "type": "streaming",
+            "target": "https://www.kkbox.com/tw/artist/GtjT_E-Fw6HSCE7jgQ"
+          },
+          {
+            "type": "streaming",
+            "target": "https://www.melon.com/artist/detail.htm?artistId=51634"
+          },
+          {
+            "type": "VIAF",
+            "target": "http://viaf.org/viaf/43258607"
+          },
+          {
+            "type": "VIAF",
+            "target": "http://viaf.org/viaf/86517081"
+          },
+          {
+            "type": "wikidata",
+            "target": "https://www.wikidata.org/wiki/Q238819"
+          },
+          {
+            "type": "wikipedia",
+            "target": "https://en.wikipedia.org/wiki/Jay_Chou"
+          },
+          {
+            "type": "youtube",
+            "target": "https://www.youtube.com/channel/UCYrPdQonkZ4sTE7_u14zVjg"
+          },
+          {
+            "type": "youtube music",
+            "target": "https://music.youtube.com/channel/UCL2MDNdwEtV6aYUgNjFQGZA"
+          }
+        ],
+        "release_groups": [
+          {
+            "mbid": "877e9870-1b55-3153-8875-139cfe468679",
+            "title": "Jay",
+            "first_release_date": "2000-11-07",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "732b78cb-9f7d-383d-86cc-5cf7e43c9658",
+            "title": "范特西",
+            "first_release_date": "2001-09-20",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "796a921e-9370-3441-a755-f6d9adb2e8dc",
+            "title": "八度空間",
+            "first_release_date": "2002-07-18",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "ac2b0f62-9139-351c-8639-c5bac2a31a30",
+            "title": "葉惠美",
+            "first_release_date": "2003-07-31",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "f13d05fa-0e8d-3731-be94-2ca5cfaf5dc0",
+            "title": "七里香",
+            "first_release_date": "2004-08-03",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "463ffb62-7116-399e-9721-9b46ae412b88",
+            "title": "11月的蕭邦",
+            "first_release_date": "2005-10-31",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "bb41418c-24b7-37c2-bfe9-aaf5e571e97b",
+            "title": "依然范特西",
+            "first_release_date": "2006-09-05",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "48ec5f95-6378-3dc1-bab0-d7275124b935",
+            "title": "我很忙",
+            "first_release_date": "2007-11-02",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "277e7c44-0b3b-3349-b280-1ca1b29491d2",
+            "title": "魔杰座",
+            "first_release_date": "2008-10-15",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "affe3ada-0a7c-4b47-aaad-d8052aac5dd2",
+            "title": "跨時代",
+            "first_release_date": "2010-05-18",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "87cf88bb-468c-468e-84d2-ce677354894c",
+            "title": "驚嘆號",
+            "first_release_date": "2011-11-11",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "01385daa-0a2d-462a-bdbb-fe9a320d0f13",
+            "title": "12新作",
+            "first_release_date": "2012-12-28",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "309fbd24-c7cc-43b4-bdd1-fa23d9e9d3bb",
+            "title": "黃俊郎的黑",
+            "first_release_date": "2013-12-25",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "cb2c53b8-946d-47a5-b7d4-fc01bb25b9e0",
+            "title": "哎呦，不錯哦",
+            "first_release_date": "2014-12-26",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "38b9e328-99b7-4f56-96b4-7096166187c9",
+            "title": "周杰倫的床邊故事",
+            "first_release_date": "2016-06-24",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "8770e36c-464b-47ea-9a62-862025d27bf8",
+            "title": "最偉大的作品 (Greatest Works of Art)",
+            "first_release_date": "2022-07-08",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "35a0c2e9-5bdb-4418-87b1-8b059958f593",
+            "title": "太陽之子",
+            "first_release_date": "2026-03-24",
+            "primary_type": "Album",
+            "secondary_types": []
+          },
+          {
+            "mbid": "bd40ab7a-a2c7-323f-a4ca-f850321dd9af",
+            "title": "拍檔#周杰倫 方文山聯手創作精選",
+            "first_release_date": "2002-04-01",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Compilation"
+            ]
+          },
+          {
+            "mbid": "87235d7d-7398-3fa5-aaf2-d1baca826257",
+            "title": "Initial J: Jay Chou Greatest Hits + Original Theme Songs from “INITIAL D THE MOVIE”",
+            "first_release_date": "2005-08-31",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Compilation"
+            ]
+          },
+          {
+            "mbid": "603a6f67-8eb2-3eba-b428-ce93feb92d16",
+            "title": "我們都愛這個倫",
+            "first_release_date": "2007-11-16",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Compilation"
+            ]
+          },
+          {
+            "mbid": "55ffa130-144b-4893-bfb0-616e8af6decd",
+            "title": "三十而立",
+            "first_release_date": "2009-06-02",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Compilation"
+            ]
+          },
+          {
+            "mbid": "7c231da1-c0da-41e3-b4ff-76d24478ad97",
+            "title": "說好不哭 SACD珍藏版",
+            "first_release_date": "2019",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Compilation"
+            ]
+          },
+          {
+            "mbid": "02fd87fa-9cb1-428c-bc2d-4012c1635057",
+            "title": "Carnival",
+            "first_release_date": "2024-04-03",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Compilation"
+            ]
+          },
+          {
+            "mbid": "527fecbe-2e83-4de6-97cf-9f474d9e4b70",
+            "title": "最伟大的作品",
+            "first_release_date": "",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Compilation",
+              "Interview",
+              "Audiobook",
+              "Live",
+              "DJ-mix",
+              "Mixtape/Street",
+              "Demo",
+              "Audio drama"
+            ]
+          },
+          {
+            "mbid": "29e848d0-8635-311b-89fc-2e59bb3d1437",
+            "title": "黃金甲",
+            "first_release_date": "2006-12-08",
+            "primary_type": "Album",
+            "secondary_types": [
+              "Soundtrack"
+            ]
+          }
+        ]
+      },
+      "candidate_matches": [],
+      "error": null
+    },
+    {
+      "id": "vincent-fang",
+      "name": "方文山",
+      "current_mbid": null,
+      "musicbrainz": null,
+      "candidate_matches": [
+        {
+          "mbid": "93daca1f-825b-4ee2-a753-3e6bea4b115b",
+          "name": "方文山",
+          "sort_name": "Fang, Vincent",
+          "country": "TW",
+          "score": 100
+        }
+      ],
+      "error": null
+    }
+  ]
+}
