@@ -14,8 +14,8 @@ import { QuickMusicNote } from "../components/QuickMusicNote";
 import { SearchBar } from "../components/SearchBar";
 
 export const metadata: Metadata = {
-  title: "C-Pop Atlas Listener",
-  description: "一个懂歌词，也懂你为什么喜欢的私人音乐助理。",
+  title: "My C-Pop Working",
+  description: "陪你在电脑前工作、听歌与品味歌词的私人音乐助理。",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <PointerAtmosphere />
         <header className="topbar">
-          <Link className="brand" href="/">C-Pop Atlas</Link>
+          <Link className="brand" href="/">My C-Pop Working</Link>
           <div className="topbar-tools">
             <SearchBar />
             <KugouPlayer />
