@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 from collections import Counter
-from datetime import date, timedelta
+from datetime import date
 
 from app.data_store import DataStore
 from app.models import DailyPick, Recording, ScoreBreakdownItem
@@ -19,7 +19,7 @@ DEFAULT_WEIGHTS = {
     "exploration": 0.03,
 }
 
-ROTATION_EPOCH = date(2026, 1, 1)
+PREVIEW_CANDIDATE_LIMIT = 64
 
 USER_PROFILES = {
     "demo": {
@@ -63,9 +63,10 @@ class DailyRecommender:
             ),
             reverse=True,
         )
-        attach_preview_urls(ranked, self.store.artists)
+        preview_candidates = self._interleaved_by_artist(ranked)[:PREVIEW_CANDIDATE_LIMIT]
+        attach_preview_urls(preview_candidates, self.store.artists)
         reranked = sorted(
-            ranked,
+            preview_candidates,
             key=lambda recording: self._score(recording, user_id, today, seed, tag=tag, mood=mood),
             reverse=True,
         )
@@ -219,69 +220,15 @@ class DailyRecommender:
             return ranked[0]
 
         rotation_base = self._interleaved_by_artist(ranked)
-        return self._choose_with_rotation_history(rotation_base, today, user_id, seed) or ranked[0]
-
-    def _choose_with_rotation_history(
-        self,
-        candidates: list[Recording],
-        today: date,
-        user_id: str,
-        seed: str | None,
-    ) -> Recording | None:
-        if not candidates:
-            return None
-
-        artist_count = len({recording.artist_id for recording in candidates})
-        recording_window = min(30, max(0, len(candidates) - 1), max(0, artist_count - 1))
-        artist_window = min(7, max(0, artist_count - 1))
-        history_recording_ids: list[str] = []
-        history_artist_ids: list[str] = []
-        start_day = ROTATION_EPOCH if today >= ROTATION_EPOCH else today - timedelta(days=max(recording_window, artist_window))
-
-        total_days = (today - start_day).days
-        for offset in range(total_days + 1):
-            day = start_day + timedelta(days=offset)
-            day_seed = seed if day == today else None
-            ordered = self._rotated_order(candidates, day, user_id, day_seed)
-            recent_recording_ids = (
-                set(history_recording_ids[-recording_window:]) if recording_window else set()
-            )
-            recent_artist_ids = set(history_artist_ids[-artist_window:]) if artist_window else set()
-            choice = self._first_eligible(ordered, recent_recording_ids, recent_artist_ids)
-            history_recording_ids.append(choice.id)
-            history_artist_ids.append(choice.artist_id)
-        return candidates and self.store.recordings.get(history_recording_ids[-1])
-
-    def _first_eligible(
-        self,
-        ordered: list[Recording],
-        recent_recording_ids: set[str],
-        recent_artist_ids: set[str],
-    ) -> Recording:
-        eligible = [
-            recording
-            for recording in ordered
-            if recording.id not in recent_recording_ids and recording.artist_id not in recent_artist_ids
-        ]
-        if eligible:
-            return eligible[0]
-
-        eligible = [recording for recording in ordered if recording.artist_id not in recent_artist_ids]
-        if eligible:
-            return eligible[0]
-
-        eligible = [recording for recording in ordered if recording.id not in recent_recording_ids]
-        return (eligible or ordered)[0]
+        rotated = self._rotated_order(rotation_base, today, user_id, seed)
+        return rotated[0] if rotated else ranked[0]
 
     def _interleaved_by_artist(self, ranked: list[Recording]) -> list[Recording]:
         grouped: dict[str, list[Recording]] = {}
         for recording in ranked:
             grouped.setdefault(recording.artist_id, []).append(recording)
 
-        artist_order = sorted(
-            grouped,
-            key=lambda artist_id: ranked.index(grouped[artist_id][0]),
-        )
+        artist_order = list(grouped)
         interleaved: list[Recording] = []
         while artist_order:
             next_artist_order = []

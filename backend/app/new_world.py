@@ -276,16 +276,21 @@ def _localize_chinese(payload: dict) -> dict:
         return payload
     targets = {
         "github": [
-            {"index": index, "description": item["description"]}
-            for index, item in enumerate(payload["github"])
+            {"index": index, "description": item.get("description", "")}
+            for index, item in enumerate(payload.get("github", []))
         ],
         "ai_news": [
-            {"index": index, "title": item["title"], "summary": item["summary"]}
-            for index, item in enumerate(payload["ai_news"])
+            {"index": index, "title": item.get("title", ""), "summary": item.get("summary", "")}
+            for index, item in enumerate(payload.get("ai_news", []))
         ],
         "learning": [
-            {"index": index, "category": item["category"], "title": item["title"], "focus": item["focus"]}
-            for index, item in enumerate(payload["learning"])
+            {
+                "index": index,
+                "category": item.get("category", ""),
+                "title": item.get("title", ""),
+                "focus": item.get("focus", ""),
+            }
+            for index, item in enumerate(payload.get("learning", []))
         ],
     }
     try:

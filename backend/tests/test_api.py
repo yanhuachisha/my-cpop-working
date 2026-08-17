@@ -6,7 +6,7 @@ os.environ["CPOP_DISABLE_PREVIEW_LOOKUP"] = "1"
 
 from app.main import app
 from app.data_store import get_store
-from app.recommender import DailyRecommender
+from app.recommender import PREVIEW_CANDIDATE_LIMIT, DailyRecommender
 
 client = TestClient(app)
 
@@ -27,8 +27,10 @@ def test_daily_pick_includes_preview_when_lookup_matches(monkeypatch):
     from app import preview
 
     preview.resolve_preview_url.cache_clear()
+    lookups = []
 
     def fake_resolve(recording_id: str, *_):
+        lookups.append(recording_id)
         return f"https://preview.local/{recording_id}.mp3"
 
     monkeypatch.setattr(preview, "resolve_preview_url", fake_resolve)
@@ -42,6 +44,7 @@ def test_daily_pick_includes_preview_when_lookup_matches(monkeypatch):
     assert any("试听" in reason for reason in payload["reasons"])
     assert any(source["name"] == "Deezer public preview API" for source in payload["sources"])
     assert all(recording["preview_url"] for recording in payload["similar_recordings"])
+    assert len(lookups) <= PREVIEW_CANDIDATE_LIMIT + 3
 
 
 def test_daily_pick_rotation_avoids_stale_repetition():
