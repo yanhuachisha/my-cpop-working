@@ -7,7 +7,12 @@ from typing import Callable
 
 from app.kugou import get_now_playing
 from app.library_import import ensure_library_recording
-from app.listener_memory import FeedbackRequest, listener_summary, record_feedback
+from app.listener_memory import (
+    FeedbackRequest,
+    listener_summary,
+    record_daily_listening,
+    record_feedback,
+)
 
 
 class KugouPlaybackTracker:
@@ -28,7 +33,9 @@ class KugouPlaybackTracker:
         self._track_key: str | None = None
         self._track_title: str | None = None
         self._track_artist: str | None = None
+        self._recording_id: str | None = None
         self._track_started_at: float | None = None
+        self._last_observed_at: float | None = None
         self._counted = False
         self._current: dict[str, object] = {}
         self._last_recorded: dict[str, object] | None = None
@@ -46,30 +53,39 @@ class KugouPlaybackTracker:
         with self._lock:
             self._current = dict(snapshot)
             if not is_playing:
+                self._record_listening_delta(observed_at)
                 self._record_departure("pause", observed_at)
                 self._track_key = None
                 self._track_title = None
                 self._track_artist = None
+                self._recording_id = None
                 self._track_started_at = None
+                self._last_observed_at = None
                 self._counted = False
                 return False
 
             track_key = self._key(title, artist)
             if track_key != self._track_key:
+                self._record_listening_delta(observed_at)
                 self._record_departure("skip", observed_at)
                 self._track_key = track_key
                 self._track_title = title
                 self._track_artist = artist
+                self._recording_id = ensure_library_recording(title, artist)
                 self._track_started_at = observed_at
+                self._last_observed_at = observed_at
                 self._counted = False
                 return False
+
+            self._record_listening_delta(observed_at)
 
             started_at = self._track_started_at if self._track_started_at is not None else observed_at
             elapsed = observed_at - started_at
             if self._counted or elapsed < self.threshold_seconds:
                 return False
 
-            recording_id = ensure_library_recording(title, artist)
+            recording_id = self._recording_id or ensure_library_recording(title, artist)
+            self._recording_id = recording_id
             summary = record_feedback(FeedbackRequest(
                 recording_id=recording_id,
                 action="play",
@@ -86,13 +102,35 @@ class KugouPlaybackTracker:
             }
             return True
 
+    def _record_listening_delta(self, observed_at: float) -> None:
+        if (
+            not self._recording_id
+            or not self._track_title
+            or self._last_observed_at is None
+        ):
+            return
+        elapsed = max(0.0, observed_at - self._last_observed_at)
+        maximum_increment = max(self.poll_seconds * 3, 15.0)
+        increment = min(elapsed, maximum_increment)
+        self._last_observed_at = observed_at
+        if increment <= 0:
+            return
+        record_daily_listening(
+            recording_id=self._recording_id,
+            title=self._track_title,
+            artist=self._track_artist,
+            listened_seconds=increment,
+        )
+
     def _record_departure(self, action: str, observed_at: float) -> None:
         if not self._track_key or self._track_started_at is None or not self._track_title:
             return
         elapsed = max(0.0, observed_at - self._track_started_at)
         if elapsed < min(5.0, self.threshold_seconds):
             return
-        recording_id = ensure_library_recording(self._track_title, self._track_artist)
+        recording_id = self._recording_id or ensure_library_recording(
+            self._track_title, self._track_artist
+        )
         record_feedback(FeedbackRequest(
             recording_id=recording_id,
             action=action,

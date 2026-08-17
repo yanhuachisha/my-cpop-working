@@ -7,6 +7,7 @@ from datetime import UTC, date, datetime, timedelta
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from threading import Lock
+from urllib.parse import urlparse
 from xml.etree import ElementTree
 from zoneinfo import ZoneInfo
 
@@ -73,13 +74,13 @@ HISTORY_STORIES = [
 ]
 
 LEARNING_POINTS = [
-    ("LLM", "Transformer attention", "Explain Q, K, V, masking, and why attention scales quadratically.", "https://arxiv.org/abs/1706.03762"),
-    ("LLM", "Tokenization", "Compare BPE, WordPiece, and SentencePiece; explain token boundaries in Chinese.", "https://huggingface.co/docs/transformers/tokenizer_summary"),
-    ("LLM", "Positional encoding", "Know sinusoidal encoding, RoPE, context length, and extrapolation limits.", "https://arxiv.org/abs/2104.09864"),
-    ("LLM", "Pretraining objectives", "Contrast causal language modeling, masked modeling, and sequence-to-sequence learning.", "https://huggingface.co/docs/transformers/tasks/language_modeling"),
-    ("LLM", "SFT, RLHF, and DPO", "Explain alignment pipeline, preference data, reward models, and DPO's objective.", "https://arxiv.org/abs/2305.18290"),
-    ("LLM", "LoRA and PEFT", "Know low-rank adapters, trainable parameter count, merging, and deployment tradeoffs.", "https://arxiv.org/abs/2106.09685"),
-    ("LLM", "RAG evaluation", "Separate retrieval recall, context relevance, faithfulness, and answer usefulness.", "https://arxiv.org/abs/2005.11401"),
+    ("LLM", "Transformer attention", "Learn Q, K, V, masking, and why attention scales quadratically through visual examples.", "https://jalammar.github.io/illustrated-transformer/"),
+    ("LLM", "Tokenization", "Compare BPE, WordPiece, and SentencePiece; explain token boundaries in Chinese.", "https://huggingface.co/docs/transformers/en/tokenizer_summary"),
+    ("LLM", "Positional encoding", "Understand why transformers need order information and how positional encodings are used.", "https://www.ibm.com/think/topics/positional-encoding"),
+    ("LLM", "Pretraining objectives", "Practice causal language modeling and masked language modeling with Transformers tutorials.", "https://huggingface.co/docs/transformers/en/tasks/language_modeling"),
+    ("LLM", "SFT, RLHF, and DPO", "Follow the alignment pipeline from supervised fine-tuning to feedback-based preference training.", "https://huggingface.co/blog/rlhf"),
+    ("LLM", "LoRA and PEFT", "Learn low-rank adapters, trainable parameter count, merging, and deployment tradeoffs.", "https://huggingface.co/docs/peft/main/en/conceptual_guides/lora"),
+    ("LLM", "RAG evaluation", "Separate retrieval quality, context relevance, faithfulness, and answer usefulness in a tutorial.", "https://docs.langchain.com/langsmith/evaluate-rag-tutorial"),
     ("Python", "Asyncio concurrency", "Explain event loops, tasks, cancellation, timeouts, and when async does not help.", "https://docs.python.org/3/library/asyncio.html"),
     ("Python", "Generators and iterators", "Implement iterator protocol; explain yield, lazy evaluation, and memory behavior.", "https://docs.python.org/3/howto/functional.html#iterators"),
     ("Python", "Decorators and descriptors", "Understand function wrapping, property, class methods, and descriptor lookup.", "https://docs.python.org/3/howto/descriptor.html"),
@@ -90,15 +91,17 @@ LEARNING_POINTS = [
     ("Java", "Garbage collection", "Explain reachability, generations, pauses, throughput, and basic G1/ZGC tradeoffs.", "https://docs.oracle.com/en/java/javase/21/gctuning/"),
     ("Java", "Spring dependency injection", "Explain bean lifecycle, scopes, proxies, circular dependencies, and testability.", "https://docs.spring.io/spring-framework/reference/core/beans.html"),
     ("Java", "Transactions", "Know isolation levels, propagation, rollback behavior, and distributed transaction limits.", "https://docs.spring.io/spring-framework/reference/data-access/transaction.html"),
-    ("Agent", "ReAct loop", "Describe thought-action-observation control, tool selection, stopping, and loop protection.", "https://arxiv.org/abs/2210.03629"),
+    ("Agent", "Agent workflows", "Describe tool selection, stopping, loop protection, and workflow versus agent control flow.", "https://docs.langchain.com/oss/python/langgraph/workflows-agents"),
     ("Agent", "Tool calling", "Design strict schemas, validation, retries, idempotency, and permission boundaries.", "https://python.langchain.com/docs/concepts/tool_calling/"),
     ("Agent", "Agent memory", "Separate working, episodic, semantic, and user-profile memory; define retention policy.", "https://langchain-ai.github.io/langgraph/concepts/memory/"),
-    ("Agent", "Planning algorithms", "Compare plan-and-execute, ReAct, reflection, tree search, and task decomposition.", "https://arxiv.org/abs/2305.10601"),
-    ("Agent", "Agent evaluation", "Measure task success, tool accuracy, trajectory quality, cost, latency, and safety.", "https://arxiv.org/abs/2308.03688"),
-    ("Agent", "LangGraph state machines", "Model state, nodes, conditional edges, checkpoints, interrupts, and recovery.", "https://langchain-ai.github.io/langgraph/concepts/low_level/"),
-    ("Interview", "Design an enterprise RAG system", "Cover ingestion, chunking, hybrid retrieval, reranking, ACLs, evaluation, and observability.", "https://arxiv.org/abs/2312.10997"),
-    ("Interview", "Design a reliable coding agent", "Cover sandboxing, repository context, planning, patches, tests, rollback, and human approval.", "https://arxiv.org/abs/2405.15793"),
+    ("Agent", "Planning patterns", "Compare prompt chaining, routing, parallelization, orchestration, and evaluator-optimizer loops.", "https://docs.langchain.com/oss/python/langgraph/workflows-agents"),
+    ("Agent", "Agent evaluation", "Measure task success, tool accuracy, trajectory quality, cost, latency, and safety.", "https://docs.langchain.com/langsmith/evaluate-complex-agent"),
+    ("Agent", "LangGraph state machines", "Model state, nodes, conditional edges, checkpoints, interrupts, and recovery.", "https://docs.langchain.com/oss/python/langgraph/workflows-agents"),
+    ("System", "Build an enterprise RAG system", "Cover ingestion, chunking, retrieval, reranking, evaluation, and observability.", "https://docs.langchain.com/oss/python/langgraph/agentic-rag"),
+    ("System", "Evaluate agent workflows", "Build datasets, graders, traces, and regression checks for agent behavior.", "https://developers.openai.com/api/docs/guides/agent-evals"),
 ]
+
+RESEARCH_LINK_HOSTS = {"arxiv.org", "openreview.net", "paperswithcode.com", "aclanthology.org"}
 
 
 def _write_cache(payload: dict) -> None:
@@ -108,12 +111,36 @@ def _write_cache(payload: dict) -> None:
     temporary.replace(CACHE_PATH)
 
 
+def _is_research_link(url: str) -> bool:
+    hostname = urlparse(url).hostname or ""
+    hostname = hostname.removeprefix("www.")
+    return hostname in RESEARCH_LINK_HOSTS
+
+
+def _has_learning_resources(payload: dict) -> bool:
+    learning = payload.get("learning")
+    if not isinstance(learning, list) or not learning:
+        return False
+    return all(
+        isinstance(item, dict)
+        and isinstance(item.get("url"), str)
+        and not _is_research_link(item["url"])
+        for item in learning
+    )
+
+
 def _cached(today: date) -> dict | None:
     if not CACHE_PATH.exists():
         return None
     try:
         payload = json.loads(CACHE_PATH.read_text(encoding="utf-8"))
-        return payload if payload.get("date") == today.isoformat() and payload.get("hot_links") else None
+        if (
+            payload.get("date") == today.isoformat()
+            and payload.get("hot_links")
+            and _has_learning_resources(payload)
+        ):
+            return payload
+        return None
     except (OSError, json.JSONDecodeError):
         return None
 

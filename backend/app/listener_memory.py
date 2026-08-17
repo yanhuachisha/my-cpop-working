@@ -29,7 +29,7 @@ def _empty() -> dict:
     return {
         "events": [], "liked": [], "saved": [], "skipped": [], "play_counts": {},
         "favorite_timestamps": {}, "lyric_fragments": [], "music_notes": [],
-        "listening_conversations": {},
+        "listening_conversations": {}, "agent_sessions": {}, "daily_listening": {},
     }
 
 
@@ -106,6 +106,108 @@ def save_music_note(request: MusicNoteRequest) -> dict:
 
 def music_notes() -> list[dict]:
     return load_state().get("music_notes", [])
+
+
+def _agent_session_summary(session: dict) -> dict:
+    messages = session.get("messages", [])
+    last_message = messages[-1].get("content", "") if messages else ""
+    return {
+        "id": session.get("id"),
+        "title": session.get("title") or "新对话",
+        "preview": last_message[:80],
+        "message_count": len(messages),
+        "created_at": session.get("created_at"),
+        "updated_at": session.get("updated_at"),
+    }
+
+
+def create_agent_session(title: str | None = None) -> dict:
+    created_at = datetime.now(UTC).isoformat()
+    session_id = f"agent-{uuid4().hex}"
+    session = {
+        "id": session_id,
+        "title": (title or "新对话").strip()[:60] or "新对话",
+        "messages": [],
+        "created_at": created_at,
+        "updated_at": created_at,
+    }
+    with _lock:
+        state = load_state()
+        state.setdefault("agent_sessions", {})[session_id] = session
+        _write_state(state)
+    return _agent_session_summary(session)
+
+
+def agent_sessions() -> list[dict]:
+    sessions = [
+        _agent_session_summary(session)
+        for session in load_state().get("agent_sessions", {}).values()
+    ]
+    return sorted(sessions, key=lambda item: item.get("updated_at") or "", reverse=True)
+
+
+def agent_session(session_id: str) -> dict | None:
+    session = load_state().get("agent_sessions", {}).get(session_id)
+    if not session:
+        return None
+    return {**_agent_session_summary(session), "messages": list(session.get("messages", []))}
+
+
+def save_agent_session_turn(
+    session_id: str,
+    user_content: str,
+    assistant_content: str,
+    tools_used: list[str] | None = None,
+    model: str | None = None,
+) -> dict:
+    saved_at = datetime.now(UTC).isoformat()
+    with _lock:
+        state = load_state()
+        sessions = state.setdefault("agent_sessions", {})
+        session = sessions.get(session_id)
+        if not session:
+            session = {
+                "id": session_id,
+                "title": "新对话",
+                "messages": [],
+                "created_at": saved_at,
+                "updated_at": saved_at,
+            }
+            sessions[session_id] = session
+        if session.get("title") in {None, "", "新对话"}:
+            compact_title = " ".join(user_content.strip().split())
+            session["title"] = compact_title[:28] + ("…" if len(compact_title) > 28 else "")
+        session["messages"] = [
+            *session.get("messages", []),
+            {
+                "id": f"user-{uuid4().hex}",
+                "role": "user",
+                "content": user_content.strip(),
+                "saved_at": saved_at,
+            },
+            {
+                "id": f"assistant-{uuid4().hex}",
+                "role": "assistant",
+                "content": assistant_content.strip(),
+                "tools_used": list(tools_used or []),
+                "model": model,
+                "saved_at": saved_at,
+            },
+        ][-120:]
+        session["updated_at"] = saved_at
+        _write_state(state)
+    return {**_agent_session_summary(session), "messages": list(session["messages"])}
+
+
+def delete_agent_session(session_id: str) -> bool:
+    with _lock:
+        state = load_state()
+        sessions = state.setdefault("agent_sessions", {})
+        removed = sessions.pop(session_id, None)
+        if removed is None:
+            return False
+        _write_state(state)
+    return True
 
 
 def _conversation_key(song_title: str, artist: str | None) -> str:
@@ -210,6 +312,77 @@ def record_feedback(request: FeedbackRequest) -> dict:
             state["play_counts"][request.recording_id] = int(state["play_counts"].get(request.recording_id, 0)) + 1
         _write_state(state)
     return listener_summary(state)
+
+
+def _format_listening_duration(seconds: float) -> str:
+    rounded_seconds = max(0, int(round(seconds)))
+    hours, remainder = divmod(rounded_seconds, 3600)
+    minutes, remaining_seconds = divmod(remainder, 60)
+    if hours:
+        return f"{hours} 小时 {minutes} 分钟" if minutes else f"{hours} 小时"
+    if minutes:
+        return f"{minutes} 分钟"
+    return f"{remaining_seconds} 秒"
+
+
+def record_daily_listening(
+    recording_id: str,
+    title: str,
+    artist: str | None,
+    listened_seconds: float,
+    listened_at: datetime | None = None,
+) -> None:
+    increment = max(0.0, float(listened_seconds))
+    if not increment:
+        return
+    local_time = (listened_at or datetime.now().astimezone()).astimezone()
+    date_key = local_time.date().isoformat()
+    with _lock:
+        state = load_state()
+        daily_listening = state.setdefault("daily_listening", {})
+        day = daily_listening.setdefault(date_key, {"total_seconds": 0.0, "tracks": {}})
+        tracks = day.setdefault("tracks", {})
+        track = tracks.setdefault(recording_id, {
+            "recording_id": recording_id,
+            "title": title.strip() or "未知歌曲",
+            "artist": (artist or "未知歌手").strip() or "未知歌手",
+            "seconds": 0.0,
+            "last_listened_at": local_time.isoformat(),
+        })
+        track["title"] = title.strip() or track.get("title") or "未知歌曲"
+        track["artist"] = (artist or "未知歌手").strip() or "未知歌手"
+        track["seconds"] = round(float(track.get("seconds", 0.0)) + increment, 1)
+        track["last_listened_at"] = local_time.isoformat()
+        day["total_seconds"] = round(float(day.get("total_seconds", 0.0)) + increment, 1)
+        for expired_date in sorted(daily_listening)[:-120]:
+            daily_listening.pop(expired_date, None)
+        _write_state(state)
+
+
+def today_listening_stats(now: datetime | None = None) -> dict:
+    local_time = (now or datetime.now().astimezone()).astimezone()
+    date_key = local_time.date().isoformat()
+    day = load_state().get("daily_listening", {}).get(date_key, {})
+    total_seconds = max(0.0, float(day.get("total_seconds", 0.0)))
+    ranking = []
+    for recording_id, track in day.get("tracks", {}).items():
+        seconds = max(0.0, float(track.get("seconds", 0.0)))
+        ranking.append({
+            "recording_id": recording_id,
+            "title": track.get("title") or "未知歌曲",
+            "artist": track.get("artist") or "未知歌手",
+            "seconds": round(seconds, 1),
+            "formatted_duration": _format_listening_duration(seconds),
+            "last_listened_at": track.get("last_listened_at"),
+        })
+    ranking.sort(key=lambda item: (-item["seconds"], item["title"]))
+    return {
+        "date": date_key,
+        "total_seconds": round(total_seconds, 1),
+        "formatted_duration": _format_listening_duration(total_seconds),
+        "track_count": len(ranking),
+        "ranking": ranking,
+    }
 
 
 def record_recommendation_exposure(recording_ids: list[str], mode: str = "auto") -> None:

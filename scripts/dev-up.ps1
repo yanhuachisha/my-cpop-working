@@ -13,7 +13,7 @@ $ApiUrl = "http://localhost:$ApiPort"
 Write-Host "Starting C-Pop Atlas API on $ApiUrl"
 Start-Process `
     -FilePath "python" `
-    -ArgumentList "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "$ApiPort" `
+    -ArgumentList "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "$ApiPort", "--reload" `
     -WorkingDirectory $BackendDir `
     -WindowStyle Hidden
 

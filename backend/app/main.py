@@ -11,10 +11,16 @@ from app.data_store import get_store
 from app.diagnostics import build_recommendation_diagnostics
 from app.kugou import KugouSearchRequest, get_now_playing, open_kugou, search_kugou
 from app.kugou_bridge import bridge_status, search_bridge
-from app.langchain_agent import AgentRunRequest, MusicAgent, agent_status
+from app.langchain_agent import (
+    AgentRunRequest,
+    AgentSessionCreateRequest,
+    MusicAgent,
+    agent_status,
+    clear_agent_thread,
+)
 from app.agent_evaluation import evaluate_agent
 from app.hybrid_recommender import HybridRecommender
-from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningStoryRequest, LyricAnalysisRequest
+from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningStoryRequest
 from app.library_import import (
     LibraryImportRequest,
     discover_kugou,
@@ -26,6 +32,10 @@ from app.listener_memory import (
     FeedbackRequest,
     LyricFragmentRequest,
     MusicNoteRequest,
+    agent_session,
+    agent_sessions,
+    create_agent_session,
+    delete_agent_session,
     favorite_recordings,
     listener_summary,
     lyric_fragments,
@@ -33,6 +43,7 @@ from app.listener_memory import (
     record_feedback,
     save_music_note,
     save_lyric_fragment,
+    today_listening_stats,
 )
 from app.models import (
     AgentAnswer,
@@ -126,6 +137,32 @@ def real_agent_run(request: AgentRunRequest):
     return MusicAgent(get_store()).run(request)
 
 
+@app.get("/api/agent/sessions")
+def real_agent_sessions():
+    return {"sessions": agent_sessions()}
+
+
+@app.post("/api/agent/sessions")
+def real_agent_create_session(request: AgentSessionCreateRequest):
+    return create_agent_session(request.title)
+
+
+@app.get("/api/agent/sessions/{session_id}")
+def real_agent_session(session_id: str):
+    session = agent_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="会话不存在")
+    return session
+
+
+@app.delete("/api/agent/sessions/{session_id}")
+def real_agent_delete_session(session_id: str):
+    if not delete_agent_session(session_id):
+        raise HTTPException(status_code=404, detail="会话不存在")
+    clear_agent_thread(session_id)
+    return {"deleted": True, "session_id": session_id}
+
+
 @app.get("/api/agent/emotion-memory")
 def agent_emotion_memory(days: int = Query(default=14, ge=1, le=90)):
     return emotion_memory(days)
@@ -203,11 +240,6 @@ def listening_story(request: ListeningStoryRequest):
     return ListeningAgent(get_store()).story(request)
 
 
-@app.post("/api/listening/analyze-lyrics")
-def analyze_lyrics(request: LyricAnalysisRequest):
-    return ListeningAgent(get_store()).analyze_lyrics(request)
-
-
 @app.post("/api/listening/chat")
 def listening_chat(request: ListeningChatRequest):
     return ListeningAgent(get_store()).chat(request)
@@ -216,6 +248,11 @@ def listening_chat(request: ListeningChatRequest):
 @app.get("/api/listening/conversation")
 def listening_conversation(song_title: str = Query(min_length=1), artist: str | None = None):
     return ListeningAgent(get_store()).conversation(song_title, artist)
+
+
+@app.get("/api/listening/today-stats")
+def listening_today_stats():
+    return today_listening_stats()
 
 
 @app.get("/api/today")

@@ -248,11 +248,12 @@ class ListeningAgent:
         )
 
     def chat(self, request: ListeningChatRequest) -> ListeningChatResponse:
+        persist_conversation = self._is_current_song(request.song_title, request.artist)
         if not os.getenv("DEEPSEEK_API_KEY"):
-            return self._fallback_chat(request)
-        return self._langchain_chat(request)
+            return self._fallback_chat(request, persist_conversation)
+        return self._langchain_chat(request, persist_conversation)
 
-    def _langchain_chat(self, request: ListeningChatRequest) -> ListeningChatResponse:
+    def _langchain_chat(self, request: ListeningChatRequest, persist_conversation: bool) -> ListeningChatResponse:
         started = time.perf_counter()
         research_sources: list[SourceRef] = []
 
@@ -395,7 +396,7 @@ class ListeningAgent:
                     "content": str(message.content)[:1000],
                 })
         answer = str(result["messages"][-1].content)
-        if request.song_title:
+        if persist_conversation and request.song_title:
             save_listening_conversation_turn(request.song_title, request.artist, request.question.strip(), answer)
         return ListeningChatResponse(
             answer=answer,
@@ -408,7 +409,7 @@ class ListeningAgent:
             latency_ms=int((time.perf_counter() - started) * 1000),
         )
 
-    def _fallback_chat(self, request: ListeningChatRequest) -> ListeningChatResponse:
+    def _fallback_chat(self, request: ListeningChatRequest, persist_conversation: bool) -> ListeningChatResponse:
         started = time.perf_counter()
         question = request.question.strip()
         guide = self._guide_for(request.song_title)
@@ -467,7 +468,7 @@ class ListeningAgent:
             else:
                 answer = self._default_answer(request, guide)
 
-        if request.song_title:
+        if persist_conversation and request.song_title:
             save_listening_conversation_turn(request.song_title, request.artist, question, answer)
 
         return ListeningChatResponse(
@@ -487,6 +488,16 @@ class ListeningAgent:
             "artist": artist,
             "messages": listening_conversation(song_title, artist),
         }
+
+    def _is_current_song(self, song_title: str | None, artist: str | None) -> bool:
+        if not song_title:
+            return False
+        snapshot = get_now_playing()
+        if self._normalize(str(snapshot.get("title") or "")) != self._normalize(song_title):
+            return False
+        live_artist = self._normalize(str(snapshot.get("artist") or ""))
+        requested_artist = self._normalize(artist)
+        return not live_artist or not requested_artist or live_artist == requested_artist
 
     def _matches(self, question: str, *phrases: str) -> bool:
         return any(phrase in question for phrase in phrases)

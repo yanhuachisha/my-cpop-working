@@ -15,7 +15,7 @@ import { SearchBar } from "../components/SearchBar";
 
 export const metadata: Metadata = {
   title: "My C-Pop Working",
-  description: "陪你在电脑前工作、听歌与品味歌词的私人音乐助理。",
+  description: "陪你在电脑前工作、听歌与理解歌曲的私人音乐助理。",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

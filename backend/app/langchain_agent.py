@@ -3,29 +3,46 @@ from __future__ import annotations
 import os
 import time
 from pathlib import Path
+from threading import Lock
 from typing import Any, Literal
 
 from dotenv import load_dotenv
+from langgraph.checkpoint.memory import InMemorySaver
 from pydantic import BaseModel, Field
 
 from app.data_store import DataStore
-from app.listener_memory import listener_preference_profile
+from app.listener_memory import (
+    agent_session,
+    create_agent_session,
+    listener_preference_profile,
+    save_agent_session_turn,
+)
 from app.music_assistant_features import emotion_memory, weekly_report
 from app.hybrid_recommender import HybridRecommender
 
 
 load_dotenv(Path(__file__).resolve().parents[2] / ".env")
 
+_AGENT_CHECKPOINTER = InMemorySaver()
+_HYDRATED_THREADS: set[str] = set()
+_MEMORY_LOCK = Lock()
+
 
 class AgentRunRequest(BaseModel):
     query: str = Field(min_length=1, max_length=1000)
+    session_id: str | None = Field(default=None, max_length=80)
     user_id: str = "demo"
     max_steps: int = Field(default=8, ge=2, le=20)
     algorithm: Literal["auto", "react", "plan_execute", "reflection"] = "auto"
     recent_messages: list[dict[str, str]] = Field(default_factory=list, max_length=12)
 
 
+class AgentSessionCreateRequest(BaseModel):
+    title: str | None = Field(default=None, max_length=60)
+
+
 class AgentRunResponse(BaseModel):
+    session_id: str
     answer: str
     model: str
     provider: str
@@ -44,6 +61,11 @@ def agent_status() -> dict[str, Any]:
         "model": os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
         "framework": "LangChain create_agent",
         "loop": "tool-calling / ReAct-style",
+        "memory": {
+            "short_term": "LangGraph InMemorySaver + thread_id",
+            "durable_sessions": "data/listener_state.json",
+            "long_term_profile": "listener preference profile",
+        },
         "llm_agent_count": 3,
         "llm_agents": ["MusicAgent orchestrator", "ListeningCompanionAgent", "SongPortraitAgent"],
         "legacy_modules": ["ListeningAgent rules", "TodayRecommender scoring"],
@@ -73,9 +95,11 @@ class MusicAgent:
 
     def run(self, request: AgentRunRequest) -> AgentRunResponse:
         started = time.perf_counter()
+        session_id = request.session_id or create_agent_session()["id"]
+        persisted_session = agent_session(session_id)
         api_key = os.getenv("DEEPSEEK_API_KEY")
         if not api_key:
-            return self._fallback(request, started)
+            return self._fallback(request, started, session_id)
 
         from langchain.agents import create_agent
         from langchain.agents.middleware import ToolCallLimitMiddleware
@@ -166,6 +190,7 @@ class MusicAgent:
                     for item in tools_list
                 ],
             ],
+            checkpointer=_AGENT_CHECKPOINTER,
         )
         execution_query = request.query
         if algorithm == "plan_execute":
@@ -173,28 +198,54 @@ class MusicAgent:
             plan = str(plan_message.content)
             trace.append({"type": "plan", "tool": "deepseek_planner", "content": plan})
             execution_query = f"用户问题：{request.query}\n执行计划：{plan}\n请按计划调用工具后回答。"
-        history = [
-            {"role": item.get("role"), "content": item.get("content")}
-            for item in request.recent_messages[-12:]
-            if item.get("role") in {"user", "assistant"} and item.get("content")
-        ]
+        with _MEMORY_LOCK:
+            should_hydrate = session_id not in _HYDRATED_THREADS
+        persisted_messages = (persisted_session or {}).get("messages", [])
+        history_source = persisted_messages[-20:] if persisted_messages else request.recent_messages[-12:]
+        history = []
+        if should_hydrate:
+            history = [
+                {"role": item.get("role"), "content": item.get("content")}
+                for item in history_source
+                if item.get("role") in {"user", "assistant"} and item.get("content")
+            ]
         result = agent.invoke(
             {"messages": [*history, {"role": "user", "content": execution_query}]},
-            config={"recursion_limit": min(64, max(12, request.max_steps * 3 + 4))},
+            config={
+                "recursion_limit": min(64, max(12, request.max_steps * 3 + 4)),
+                "configurable": {"thread_id": session_id},
+            },
         )
-        for message in result["messages"]:
+        with _MEMORY_LOCK:
+            _HYDRATED_THREADS.add(session_id)
+        result_messages = result["messages"]
+        turn_start = 0
+        for index in range(len(result_messages) - 1, -1, -1):
+            message = result_messages[index]
+            if getattr(message, "type", "") == "human" and str(message.content) == execution_query:
+                turn_start = index
+                break
+        for message in result_messages[turn_start:]:
             for call in getattr(message, "tool_calls", []) or []:
                 tools.append(call["name"])
                 trace.append({"type": "tool_call", "tool": call["name"], "args": call.get("args", {})})
             if getattr(message, "type", "") == "tool":
                 trace.append({"type": "tool_result", "tool": getattr(message, "name", "tool"), "content": str(message.content)[:1000]})
-        answer = str(result["messages"][-1].content)
+        answer = str(result_messages[-1].content)
         if algorithm == "reflection":
             critique = model.invoke([{"role": "system", "content": "检查答案是否有无依据事实、遗漏工具证据或把关联误写成因果。只给修改意见。"}, {"role": "user", "content": f"问题：{request.query}\n答案：{answer}"}])
             trace.append({"type": "reflection", "tool": "deepseek_critic", "content": str(critique.content)})
             revised = model.invoke([{"role": "system", "content": "根据批评意见修订答案，保持简洁并明确事实与推断。"}, {"role": "user", "content": f"原问题：{request.query}\n原答案：{answer}\n批评：{critique.content}"}])
             answer = str(revised.content)
-        return AgentRunResponse(answer=answer, model=model_name, provider="deepseek", mode=f"langchain:{algorithm}", tools_used=list(dict.fromkeys(tools)), trace=trace, iterations=len([x for x in trace if x["type"] == "tool_call"]), latency_ms=int((time.perf_counter() - started) * 1000))
+        unique_tools = list(dict.fromkeys(tools))
+        save_agent_session_turn(
+            session_id,
+            request.query,
+            answer,
+            tools_used=unique_tools,
+            model=model_name,
+        )
+        return AgentRunResponse(session_id=session_id, answer=answer, model=model_name, provider="deepseek", mode=f"langchain:{algorithm}", tools_used=unique_tools, trace=trace, iterations=len([x for x in trace if x["type"] == "tool_call"]), latency_ms=int((time.perf_counter() - started) * 1000))
 
     @staticmethod
     def _is_preference_query(query: str) -> bool:
@@ -237,7 +288,12 @@ class MusicAgent:
         )
         return "".join(part for part in parts if part)
 
-    def _fallback(self, request: AgentRunRequest, started: float) -> AgentRunResponse:
+    def _fallback(
+        self,
+        request: AgentRunRequest,
+        started: float,
+        session_id: str,
+    ) -> AgentRunResponse:
         query = request.query
         trace = []
         if self._is_preference_query(query):
@@ -246,7 +302,15 @@ class MusicAgent:
             tool = "listener_preference_profile_tool"
             trace.append({"type": "tool_call", "tool": tool, "args": {}})
             trace.append({"type": "tool_result", "tool": tool, "content": answer})
+            save_agent_session_turn(
+                session_id,
+                request.query,
+                answer,
+                tools_used=[tool],
+                model="deterministic-fallback",
+            )
             return AgentRunResponse(
+                session_id=session_id,
                 answer=answer,
                 model="deterministic-fallback",
                 provider="local",
@@ -272,4 +336,17 @@ class MusicAgent:
             answer = "本地曲库找到：" + "、".join(names) if names else "本地曲库暂未找到匹配内容。"
         trace.append({"type": "tool_call", "tool": tool, "args": {"query": query}})
         trace.append({"type": "tool_result", "tool": tool, "content": answer})
-        return AgentRunResponse(answer=answer, model="deterministic-fallback", provider="local", mode=f"fallback:{request.algorithm}", tools_used=[tool], trace=trace, iterations=1, latency_ms=int((time.perf_counter() - started) * 1000))
+        save_agent_session_turn(
+            session_id,
+            request.query,
+            answer,
+            tools_used=[tool],
+            model="deterministic-fallback",
+        )
+        return AgentRunResponse(session_id=session_id, answer=answer, model="deterministic-fallback", provider="local", mode=f"fallback:{request.algorithm}", tools_used=[tool], trace=trace, iterations=1, latency_ms=int((time.perf_counter() - started) * 1000))
+
+
+def clear_agent_thread(session_id: str) -> None:
+    with _MEMORY_LOCK:
+        _HYDRATED_THREADS.discard(session_id)
+    _AGENT_CHECKPOINTER.delete_thread(session_id)

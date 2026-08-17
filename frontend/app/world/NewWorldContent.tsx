@@ -93,7 +93,7 @@ const COPY = {
   hotCoordinates: "\u4eca\u65e5\u7f51\u7edc\u70ed\u699c",
   hotHint: "\u4e00\u6b21\u6253\u5f00\u4e0d\u540c\u793e\u533a\u7684\u5f53\u65e5\u70ed\u70b9",
   learningMap: "\u4eca\u65e5\u5b66\u4e60\u5730\u56fe",
-  learningHint: "10 \u4e2a\u9762\u8bd5\u77e5\u8bc6\u70b9",
+  learningHint: "10 \u4e2a\u5b66\u4e60\u77e5\u8bc6\u70b9",
   knowledgePoint: "\u77e5\u8bc6\u70b9",
 };
 

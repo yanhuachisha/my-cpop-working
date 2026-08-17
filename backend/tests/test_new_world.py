@@ -10,6 +10,21 @@ def test_daily_rotations_return_requested_counts():
     assert {item["category"] for item in new_world._learning(today)}
 
 
+def test_learning_links_are_study_resources():
+    assert not any(new_world._is_research_link(point[3]) for point in new_world.LEARNING_POINTS)
+
+
+def test_cache_ignores_old_research_learning_links(monkeypatch, tmp_path):
+    cache_path = tmp_path / "new_world.json"
+    monkeypatch.setattr(new_world, "CACHE_PATH", cache_path)
+    cache_path.write_text(
+        """{"date":"2026-08-16","hot_links":[{"source":"x"}],"learning":[{"url":"https://arxiv.org/abs/1706.03762"}]}""",
+        encoding="utf-8",
+    )
+
+    assert new_world._cached(date(2026, 8, 16)) is None
+
+
 def test_feed_parser_reads_rss_items():
     payload = b"""<?xml version='1.0'?><rss><channel><item><title>New AI model</title><link>https://example.com/model</link><description>Agent research</description><pubDate>Sun, 16 Aug 2026 08:00:00 GMT</pubDate></item></channel></rss>"""
     items = new_world._parse_feed(payload, "Example", 2)

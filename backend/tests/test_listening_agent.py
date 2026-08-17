@@ -115,6 +115,42 @@ def test_listening_write_tools_require_explicit_current_intent():
     assert ListeningAgent._has_explicit_save_intent("推荐三首情绪接近的歌") is False
 
 
+def test_conversation_is_saved_for_the_current_song_even_when_paused(monkeypatch):
+    saved = []
+    monkeypatch.setattr("app.listening_agent.get_now_playing", lambda: {
+        "is_playing": False,
+        "title": "七里香",
+        "artist": "周杰伦",
+    })
+    monkeypatch.setattr("app.listening_agent.save_listening_conversation_turn", lambda *args: saved.append(args))
+
+    ListeningAgent(get_store()).chat(ListeningChatRequest(
+        question="推荐类似的歌",
+        song_title="七里香",
+        artist="周杰伦",
+    ))
+
+    assert saved and saved[0][:2] == ("七里香", "周杰伦")
+
+
+def test_conversation_is_not_saved_after_song_changes(monkeypatch):
+    saved = []
+    monkeypatch.setattr("app.listening_agent.get_now_playing", lambda: {
+        "is_playing": True,
+        "title": "晴天",
+        "artist": "周杰伦",
+    })
+    monkeypatch.setattr("app.listening_agent.save_listening_conversation_turn", lambda *args: saved.append(args))
+
+    ListeningAgent(get_store()).chat(ListeningChatRequest(
+        question="推荐类似的歌",
+        song_title="七里香",
+        artist="周杰伦",
+    ))
+
+    assert saved == []
+
+
 def test_listening_chat_extracts_real_agent_loop(monkeypatch):
     from app import listening_agent
 

@@ -1,6 +1,15 @@
+import pytest
+
+from app import langchain_agent, listener_memory
 from app.agent_evaluation import evaluate_agent
 from app.data_store import get_store
 from app.langchain_agent import AgentRunRequest, MusicAgent, agent_status
+
+
+@pytest.fixture(autouse=True)
+def isolate_agent_memory(monkeypatch, tmp_path):
+    monkeypatch.setattr(listener_memory, "STATE_PATH", tmp_path / "listener_state.json")
+    langchain_agent._HYDRATED_THREADS.clear()
 
 
 def test_agent_fallback_keeps_tool_trace(monkeypatch):
@@ -49,10 +58,11 @@ def test_music_assistant_uses_real_langchain_loop(monkeypatch):
                 FakeMessage(content="你最近更偏爱温暖、熟悉的华语歌。"),
             ]}
 
-    def fake_create_agent(model, tools, system_prompt, middleware):
+    def fake_create_agent(model, tools, system_prompt, middleware, checkpointer):
         captured["tools"] = [item.name for item in tools]
         captured["system_prompt"] = system_prompt
         captured["middleware"] = middleware
+        captured["checkpointer"] = checkpointer
         return FakeAgent()
 
     monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
@@ -71,3 +81,7 @@ def test_music_assistant_uses_real_langchain_loop(monkeypatch):
     assert "全能、偏理性" in captured["system_prompt"]
     assert "先给结论" in captured["system_prompt"]
     assert captured["payload"]["messages"][0]["content"] == "我工作时喜欢听歌。"
+    assert captured["config"]["configurable"]["thread_id"] == response.session_id
+    assert captured["checkpointer"] is langchain_agent._AGENT_CHECKPOINTER
+    saved = listener_memory.agent_session(response.session_id)
+    assert [message["role"] for message in saved["messages"]] == ["user", "assistant"]
