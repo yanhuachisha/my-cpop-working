@@ -1,6 +1,13 @@
+import pytest
+
 from app.data_store import get_store
 from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningChatTurn, LyricAnalysisRequest
 from app.models import SourceRef
+
+
+@pytest.fixture(autouse=True)
+def disable_live_model(monkeypatch):
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
 
 
 def test_listening_context_has_no_demo_mode(monkeypatch):
@@ -50,6 +57,7 @@ def test_listening_chat_routes_to_story_tool():
     )
     assert "build_song_introduction" in response.tools_used
     assert "声音电影" in response.answer
+    assert response.mode == "fallback:rules"
 
 
 def test_listening_chat_saves_lyric_specimen(monkeypatch):
@@ -90,3 +98,55 @@ def test_listening_chat_routes_to_verified_web_story(monkeypatch):
     response = agent.chat(ListeningChatRequest(question="查一下这首歌真实的创作故事", song_title="示例歌曲"))
     assert "search_song_story_web" in response.tools_used
     assert response.sources[0].name == "测试来源"
+
+
+def test_listening_write_tools_require_explicit_current_intent():
+    assert ListeningAgent._has_explicit_save_intent("记下刚才的感受") is True
+    assert ListeningAgent._has_explicit_save_intent("帮我收藏这句话") is True
+    assert ListeningAgent._has_explicit_save_intent("推荐三首情绪接近的歌") is False
+
+
+def test_listening_chat_extracts_real_agent_loop(monkeypatch):
+    from app import listening_agent
+
+    captured = {}
+
+    class FakeMessage:
+        def __init__(self, content="", message_type="ai", name=None, tool_calls=None):
+            self.content = content
+            self.type = message_type
+            self.name = name
+            self.tool_calls = tool_calls or []
+
+    class FakeAgent:
+        def invoke(self, payload, config):
+            captured["payload"] = payload
+            captured["config"] = config
+            return {"messages": [
+                FakeMessage(tool_calls=[{"name": "find_similar_recordings", "args": {}}]),
+                FakeMessage(content='{"recommendation":"推荐结果"}', message_type="tool", name="find_similar_recordings"),
+                FakeMessage(content="可以接着听三首情绪相近的歌。"),
+            ]}
+
+    def fake_create_agent(model, tools, system_prompt, middleware):
+        captured["tools"] = [item.name for item in tools]
+        captured["system_prompt"] = system_prompt
+        captured["middleware"] = middleware
+        return FakeAgent()
+
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    monkeypatch.setattr(listening_agent, "ChatOpenAI", lambda **kwargs: object())
+    monkeypatch.setattr(listening_agent, "create_agent", fake_create_agent)
+
+    response = ListeningAgent(get_store()).chat(ListeningChatRequest(
+        question="推荐类似的歌",
+        song_title="七里香",
+        artist="周杰伦",
+        recent_messages=[ListeningChatTurn(role="user", content="我喜欢这种夏天的感觉")],
+    ))
+
+    assert response.mode == "langchain:react"
+    assert response.tools_used == ["find_similar_recordings"]
+    assert response.iterations == 1
+    assert "find_similar_recordings" in captured["tools"]
+    assert captured["payload"]["messages"][0]["role"] == "user"

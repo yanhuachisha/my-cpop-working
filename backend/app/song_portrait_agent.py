@@ -9,6 +9,7 @@ from typing import Any
 
 from dotenv import load_dotenv
 from langchain.agents import create_agent
+from langchain.agents.middleware import ToolCallLimitMiddleware
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI
 from openai import OpenAIError
@@ -65,10 +66,21 @@ def generate_song_portrait(
         "task": "先检索，再写一张有文学感但不过度编造的歌曲情绪画像。",
     }
     try:
-        agent = create_agent(model, [search_song_material], system_prompt=system_prompt)
+        agent = create_agent(
+            model,
+            [search_song_material],
+            system_prompt=system_prompt,
+            middleware=[
+                ToolCallLimitMiddleware(
+                    tool_name="search_song_material",
+                    run_limit=1,
+                    exit_behavior="continue",
+                )
+            ],
+        )
         result = agent.invoke(
             {"messages": [{"role": "user", "content": json.dumps(request, ensure_ascii=False)}]},
-            config={"recursion_limit": 5},
+            config={"recursion_limit": 12},
         )
         tools_used = [
             call["name"]

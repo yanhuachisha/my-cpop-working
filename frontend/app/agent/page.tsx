@@ -23,7 +23,7 @@ const QUICK_ACTIONS = [
   { icon: Compass, label: '推荐一首', prompt: '结合今天的天气、时间和我的听歌记录，只推荐一首现在最适合听的歌，并说明理由。' },
   { icon: BrainCircuit, label: '情绪记忆', prompt: '分析我最近 14 天的听歌情绪、循环和切歌行为，告诉我最近处于什么状态。' },
   { icon: ChartNoAxesCombined, label: '本周复盘', prompt: '生成我的本周听歌复盘，概括播放时段、循环歌曲和情绪变化。' },
-  { icon: Heart, label: '理解偏爱', prompt: '结合我的收藏和播放记录，分析我为什么会喜欢周杰伦。' },
+  { icon: Heart, label: '理解偏爱', prompt: '结合我的收藏和播放记录，分析我最近真正偏爱的歌手、风格与情绪。' },
 ] as const;
 
 export default function AgentPage() {
@@ -54,7 +54,15 @@ export default function AgentPage() {
       const run = await fetchApiClient<Run>('/api/agent/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: cleanPrompt, max_steps: 8, algorithm: 'auto' }),
+        body: JSON.stringify({
+          query: cleanPrompt,
+          max_steps: 8,
+          algorithm: 'auto',
+          recent_messages: messages.slice(-10).map((message) => ({
+            role: message.role,
+            content: message.content,
+          })),
+        }),
       });
       setMessages((current) => [...current, { id: `assistant-${Date.now()}`, role: 'assistant', content: run.answer, run }]);
     } catch (requestError) {

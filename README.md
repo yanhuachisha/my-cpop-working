@@ -129,12 +129,10 @@ npm run dev -- --hostname 0.0.0.0 --port 3000
 - `GET /api/agent/status`
 - `POST /api/agent/run`
 - `GET /api/agent/evaluate`
-- `GET /api/kg/entity/{entity_id}`
-- `GET /api/kg/path?start=jay-chou&end=tao`
 
 ## 真实 Agent 架构
 
-当前有 **2 个真正由大模型驱动的 Agent**：`MusicAgent orchestrator` 负责音乐问答、推荐与工具编排；`SongPortraitAgent` 负责听歌房的歌曲资料检索与情绪画像。二者都使用 LangChain `create_agent` 与 DeepSeek 模型执行工具调用。原来的 `ListeningAgent` 和 `TodayRecommender` 仍是确定性业务模块，不把它们虚报为大模型 Agent。
+当前有 **3 个真正由大模型驱动的 Agent**：`MusicAgent orchestrator` 负责音乐问答、推荐与工具编排；`ListeningCompanionAgent` 负责听歌房右侧的收藏、笔记、相似推荐、歌词分析和联网资料对话；`SongPortraitAgent` 负责歌曲资料检索与情绪画像。三个 Agent 都使用 LangChain `create_agent` 执行“模型判断 → 工具调用 → observation 回填 → 继续决策或回答”的真实循环。`TodayRecommender` 等推荐模块仍是确定性业务模块，不把普通函数虚报为 Agent。
 
 复制 `.env.example` 为 `.env`，然后填写 DeepSeek API Key：
 
@@ -148,10 +146,13 @@ Agent Loop：用户问题 → DeepSeek 判断是否调用工具 → 执行工具
 
 当前工具：
 
-- `search_music`：搜索歌曲、歌手与 KG 实体。
-- `kg_neighbors`：查询实体的一跳三元组关系。
-- `kg_shortest_path`：使用 BFS 计算两个音乐实体之间的最短解释路径。
-- `daily_recommendation`：调用现有个性化推荐算法。
+- `search_music`：搜索本地曲库中的歌曲与歌手。
+- `daily_recommendation` / `hybrid_recommendation`：调用现有个性化推荐算法。
+- `listener_preference_profile_tool`：读取长期多维音乐偏好画像。
+- `listener_emotion_memory` / `weekly_listening_report`：读取近期情绪记忆与听歌复盘。
+- `get_current_song_context` / `find_similar_recordings`：理解当前歌曲并推荐相似作品。
+- `save_lyric_specimen` / `save_current_feeling`：仅在用户明确要求时持久化歌词标本或音乐笔记。
+- `analyze_lyric_excerpt` / `search_song_story_web`：分析用户提供的歌词短句或检索真实创作资料。
 - `search_song_material`：检索歌曲可核实的歌手、专辑、年份、流派与来源，再生成情绪化歌曲画像；没有找到的事实不会显示。
 
 Agent 评测使用固定问题集，当前指标包括：工具选择准确率、答案关键词落地率、循环步数和延迟。执行：
