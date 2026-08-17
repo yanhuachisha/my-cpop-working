@@ -4,9 +4,9 @@ from app.langchain_agent import AgentRunRequest, MusicAgent
 
 
 EVAL_CASES = [
-    {"id": "daily", "query": "给我推荐一首今天适合听的华语歌", "expected_tools": ["daily_recommendation"], "required_terms": ["推荐"]},
+    {"id": "daily", "query": "给我推荐一首今天适合听的华语歌", "expected_tools": ["recommend_music"], "required_terms": ["推荐"]},
     {"id": "entity", "query": "查一下方文山", "expected_tools": ["search_music"], "required_terms": ["方文山"]},
-    {"id": "preference", "query": "你了解我的音乐偏好吗？", "expected_tools": ["listener_preference_profile_tool"], "required_terms": ["偏好"]},
+    {"id": "preference", "query": "你了解我的音乐偏好吗？", "expected_tools": ["query_listener_memory"], "required_terms": ["偏好"]},
 ]
 
 

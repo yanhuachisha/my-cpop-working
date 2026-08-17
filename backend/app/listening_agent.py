@@ -5,7 +5,6 @@ import os
 import re
 import time
 from typing import Literal
-from urllib.parse import quote_plus
 
 import httpx
 from langchain.agents import create_agent
@@ -18,12 +17,14 @@ from pydantic import BaseModel, Field
 from app.data_store import DataStore
 from app.kugou import get_now_playing
 from app.listener_memory import (
-    LyricFragmentRequest,
-    MusicNoteRequest,
     listening_conversation,
     save_listening_conversation_turn,
-    save_lyric_fragment,
-    save_music_note,
+)
+from app.listening_companion_workflows import (
+    find_similar_recordings_workflow,
+    get_current_song_context_workflow,
+    save_listening_memory_workflow,
+    search_song_sources_workflow,
 )
 from app.models import SourceRef
 from app.recommender import DailyRecommender
@@ -259,51 +260,28 @@ class ListeningAgent:
 
         @tool
         def get_current_song_context() -> dict:
-            """读取当前歌曲的情绪画像、可核实资料与聆听提示。"""
-            if not request.song_title:
-                return {"available": False, "message": "当前没有识别到歌曲。"}
-            introduction = song_introduction(request.song_title, request.artist)
-            return {
-                "available": True,
-                "song": request.song_title,
-                "artist": request.artist,
-                "portrait": introduction.get("narrative"),
-                "themes": introduction.get("themes", []),
-                "listening_points": introduction.get("listening_points", []),
-                "facts": introduction.get("facts", []),
-            }
+            """读取当前歌曲身份与已有缓存，不触发新的模型生成。"""
+            return get_current_song_context_workflow(request.song_title, request.artist)
 
         @tool
-        def save_lyric_specimen(excerpt: str = "") -> dict:
-            """把用户明确提供的一句歌词保存到歌词标本馆。"""
+        def save_listening_memory(
+            memory_type: Literal["lyric_specimen", "music_note"],
+        ) -> dict:
+            """在用户明确要求时，把其原文保存为歌词标本或音乐笔记。"""
             if not self._has_explicit_save_intent(request.question):
                 return {"saved": False, "message": "当前消息没有明确要求保存，未执行写入。"}
-            content = excerpt.strip() or (request.lyric_excerpt or "").strip()
+            if memory_type == "lyric_specimen":
+                content = self._explicit_content(request.question) or (request.lyric_excerpt or "").strip()
+            else:
+                content = self._explicit_content(request.question) or self._previous_user_feeling(request)
             if not content:
-                return {"saved": False, "message": "用户还没有提供要收藏的歌词短句。"}
-            fragment = save_lyric_fragment(LyricFragmentRequest(
-                excerpt=content,
-                song_title=request.song_title,
-                artist=request.artist,
-                note="通过音乐陪伴收藏",
-            ))
-            return {"saved": True, "excerpt": content[:100], "saved_at": fragment.get("saved_at")}
-
-        @tool
-        def save_current_feeling(content: str = "") -> dict:
-            """把用户刚才表达的听歌感受保存为音乐笔记。"""
-            if not self._has_explicit_save_intent(request.question):
-                return {"saved": False, "message": "当前消息没有明确要求记录，未执行写入。"}
-            feeling = content.strip() or self._previous_user_feeling(request)
-            if not feeling:
-                return {"saved": False, "message": "用户还没有表达可保存的感受。"}
-            note = save_music_note(MusicNoteRequest(
-                content=feeling,
-                prompt="通过音乐陪伴记录此刻感受",
-                song_title=request.song_title,
-                artist=request.artist,
-            ))
-            return {"saved": True, "content": feeling[:120], "saved_at": note.get("saved_at")}
+                return {"saved": False, "message": "用户还没有提供可保存的原文。"}
+            return save_listening_memory_workflow(
+                memory_type,
+                content,
+                request.song_title,
+                request.artist,
+            )
 
         @tool
         def find_similar_recordings() -> dict:
@@ -311,32 +289,17 @@ class ListeningAgent:
             return {"recommendation": self._similar_answer(request.song_title)}
 
         @tool
-        def analyze_lyric_excerpt(excerpt: str = "") -> dict:
-            """分析用户提供的歌词短句中的意象、情绪与表达方式。"""
-            content = excerpt.strip() or (request.lyric_excerpt or "").strip()
-            if not content:
-                return {"available": False, "message": "用户还没有提供歌词短句。"}
-            analysis = self.analyze_lyrics(LyricAnalysisRequest(
-                excerpt=content,
-                song_title=request.song_title,
-                artist=request.artist,
-            ))
-            return analysis.model_dump()
-
-        @tool
-        def search_song_story_web() -> dict:
-            """联网检索当前歌曲真实的发行与创作资料，并返回来源。"""
-            answer, sources = self._research_song_story(request)
-            research_sources.extend(sources)
-            return {"answer": answer, "sources": [source.model_dump() for source in sources]}
+        def search_song_sources() -> dict:
+            """联网检索当前歌曲的可追溯公开资料，只返回来源和原始事实。"""
+            result = search_song_sources_workflow(request.song_title, request.artist)
+            research_sources.extend(SourceRef.model_validate(source) for source in result["sources"])
+            return result
 
         tools_list = [
             get_current_song_context,
-            save_lyric_specimen,
-            save_current_feeling,
+            save_listening_memory,
             find_similar_recordings,
-            analyze_lyric_excerpt,
-            search_song_story_web,
+            search_song_sources,
         ]
         model = ChatOpenAI(
             model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
@@ -355,8 +318,10 @@ class ListeningAgent:
                 "优先回应用户听见的画面、情绪、声音细节和私人联想，可以提出最多一个温和的问题帮助用户继续听下去。"
                 "不要像全能音乐助理一样做宽泛的数据报告、账户总结或理性长分析；事实与感受要分开，不能替用户断言情绪。"
                 "必须通过标准 Agent Loop 工作："
-                "先理解用户意图，需要保存、推荐、歌词分析、歌曲资料或联网故事时必须调用对应工具，"
+                "先理解用户意图，需要保存、相似推荐、读取当前歌曲或检索事实来源时调用对应工具，"
                 "读取工具 observation 后再回答；必要时可以继续调用下一个工具。"
+                "歌词短句的意象、情绪和表达理解属于你的语义能力，应直接结合用户原文分析，不要调用工具；"
+                "检索歌曲故事时调用 search_song_sources，并且只能依据返回的事实和来源组织回答。"
                 "保存歌词或音乐笔记属于写操作，只能在当前这条用户消息明确要求收藏、保存、记下或记录时调用；"
                 "不能因为历史消息里出现了感受就自动保存。通常只调用 1 到 2 个必要工具。"
                 "普通情绪交流可以直接回应，但涉及事实不得猜测。不要暴露工具名、内部步骤或思考过程，"
@@ -413,32 +378,32 @@ class ListeningAgent:
         started = time.perf_counter()
         question = request.question.strip()
         guide = self._guide_for(request.song_title)
-        tools_used = ["get_now_playing"]
+        tools_used: list[str] = []
         sources: list[SourceRef] = []
 
         if self._matches(question, "收藏这句话", "收藏这句", "保存这句话", "保存这句", "歌词标本"):
             excerpt = self._explicit_content(question) or (request.lyric_excerpt or "").strip()
             if excerpt:
-                save_lyric_fragment(LyricFragmentRequest(
-                    excerpt=excerpt,
-                    song_title=request.song_title,
-                    artist=request.artist,
-                    note="通过音乐陪伴收藏",
-                ))
-                tools_used.append("save_lyric_specimen")
+                save_listening_memory_workflow(
+                    "lyric_specimen",
+                    excerpt,
+                    request.song_title,
+                    request.artist,
+                )
+                tools_used.append("save_listening_memory")
                 answer = f"已经把“{excerpt[:70]}”收藏到歌词标本馆，并保留了当前歌曲和收藏时间。"
             else:
                 answer = "可以。请先在左侧写下那句歌词，或者直接对我说“帮我收藏这句话：歌词内容”。"
         elif self._matches(question, "记下刚才的感受", "记录刚才的感受", "保存音乐笔记", "记一条音乐笔记"):
             content = self._explicit_content(question) or self._previous_user_feeling(request)
             if content:
-                save_music_note(MusicNoteRequest(
-                    content=content,
-                    prompt="通过音乐陪伴记录此刻感受",
-                    song_title=request.song_title,
-                    artist=request.artist,
-                ))
-                tools_used.append("save_music_note")
+                save_listening_memory_workflow(
+                    "music_note",
+                    content,
+                    request.song_title,
+                    request.artist,
+                )
+                tools_used.append("save_listening_memory")
                 answer = f"已经把这段感受记进音乐笔记：“{content[:90]}”"
             else:
                 answer = "你想记下哪种感受？可以直接说“记下刚才的感受：此刻想到的话”，我会连同当前歌曲和时间一起保存。"
@@ -448,17 +413,17 @@ class ListeningAgent:
                 song_title=request.song_title,
                 artist=request.artist,
             ))
-            tools_used.append("analyze_lyric_excerpt")
             answer = f"{analysis.summary} 可以重点从“{'、'.join(analysis.imagery[:2])}”和“{'、'.join(analysis.emotion[:2])}”两个方向继续听。"
         elif self._matches(question, "真实的创作故事", "真实创作故事", "查一下", "资料来源", "联网查", "真实背景"):
-            answer, research_sources = self._research_song_story(request)
-            tools_used.extend(["search_song_story_web", "summarize_verified_sources"])
-            sources.extend(research_sources)
+            result = search_song_sources_workflow(request.song_title, request.artist)
+            facts = [str(item) for item in result["facts"]]
+            sources.extend(SourceRef.model_validate(source) for source in result["sources"])
+            tools_used.append("search_song_sources")
+            answer = "\n\n".join(facts[:3]) if facts else "暂时没有检索到足够可靠的公开资料。"
         elif any(word in question for word in ("推荐", "相似", "下一首")):
             tools_used.append("find_similar_recordings")
             answer = self._similar_answer(request.song_title)
         elif any(word in question for word in ("故事", "背景", "简介", "介绍", "资料", "特别", "为什么")):
-            tools_used.append("build_song_introduction")
             answer = str(guide["narrative"]) if guide else self._generic_chat_story(request)
         else:
             ai_answer = self._ai_companion_answer(request, guide)
@@ -516,58 +481,6 @@ class ListeningAgent:
     @staticmethod
     def _has_explicit_save_intent(question: str) -> bool:
         return any(token in question for token in ("收藏", "保存", "记下", "记录", "记一笔", "写进笔记"))
-
-    def _research_song_story(self, request: ListeningChatRequest) -> tuple[str, list[SourceRef]]:
-        title = request.song_title or "当前歌曲"
-        query = " ".join(part for part in (request.artist, title) if part)
-        facts: list[str] = []
-        sources: list[SourceRef] = []
-        try:
-            response = httpx.get(
-                "https://zh.wikipedia.org/w/api.php",
-                params={
-                    "action": "query", "generator": "search", "gsrsearch": query,
-                    "gsrlimit": 3, "prop": "extracts|info", "exintro": 1,
-                    "explaintext": 1, "inprop": "url", "format": "json", "origin": "*",
-                },
-                headers={"User-Agent": "C-Pop-Atlas/0.3 song-research"},
-                timeout=8.0,
-            )
-            response.raise_for_status()
-            pages = list(response.json().get("query", {}).get("pages", {}).values())
-            for page in pages[:2]:
-                extract = re.sub(r"\s+", " ", str(page.get("extract") or "")).strip()
-                if extract:
-                    facts.append(f"维基百科《{page.get('title', '')}》：{extract[:700]}")
-                if page.get("fullurl"):
-                    sources.append(SourceRef(name=f"维基百科：{page.get('title', title)}", url=page["fullurl"], license="CC BY-SA"))
-        except (httpx.HTTPError, ValueError, TypeError, KeyError):
-            pass
-        try:
-            response = httpx.get(
-                "https://musicbrainz.org/ws/2/recording/",
-                params={"query": f'recording:"{title}" AND artist:"{request.artist or ""}"', "fmt": "json", "limit": 3},
-                headers={"User-Agent": "C-Pop-Atlas/0.3 local-listening-companion"},
-                timeout=8.0,
-            )
-            response.raise_for_status()
-            recordings = response.json().get("recordings", [])
-            if recordings:
-                item = recordings[0]
-                releases = [release.get("title") for release in item.get("releases", [])[:3] if release.get("title")]
-                facts.append(f"MusicBrainz：匹配到录音《{item.get('title', title)}》，首次发行日期 {item.get('first-release-date') or '未标注'}，相关发行版本：{'、'.join(releases) or '未标注'}。")
-                sources.append(SourceRef(name="MusicBrainz recording search", url=f"https://musicbrainz.org/search?query={quote_plus(query)}&type=recording&method=indexed", license="CC0 core data"))
-        except (httpx.HTTPError, ValueError, TypeError, KeyError):
-            pass
-        if not facts:
-            introduction = song_introduction(title, request.artist)
-            return f"暂时没有检索到足够可靠的公开资料。当前只能确认：{introduction['narrative']}", sources
-        fallback = "\n\n".join(facts[:3])
-        answer = self._invoke_ai(
-            "你是严谨的中文歌曲资料编辑。只根据给定检索结果回答，不得编造创作人、采访、年份或幕后故事。资料不足时明确说明。回答控制在 260 字内，并区分已核实事实与合理听感。",
-            {"song": title, "artist": request.artist, "question": request.question, "retrieved_facts": facts},
-        )
-        return answer or fallback, sources
 
     def _ai_companion_answer(self, request: ListeningChatRequest, guide: dict[str, object] | None) -> str | None:
         context = {
@@ -673,8 +586,11 @@ class ListeningAgent:
         recording = self._recording_for(title, guide)
         if not recording:
             return "我还没有在本地曲库里匹配到这首歌。你可以告诉我更完整的歌名和歌手，我再从风格、情绪和叙事方式三个维度推荐。"
-        similar = self.recommender.similar_recordings(recording.id, limit=3)
-        names = [self._display_title(item.id, item.title) for item in similar]
+        result = find_similar_recordings_workflow(self.recommender, recording.id, limit=3)
+        names = [
+            self._display_title(str(item["recording_id"]), str(item["title"]))
+            for item in result["items"]
+        ]
         return f"可以接着听：{'、'.join(names)}。这些作品在风格标签、情绪或年代气质上与当前歌曲有交集。"
 
     def _display_title(self, recording_id: str, fallback: str) -> str:

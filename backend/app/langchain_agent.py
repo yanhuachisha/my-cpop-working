@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import time
+from datetime import datetime
 from pathlib import Path
 from threading import Lock
 from typing import Any, Literal
@@ -17,8 +18,12 @@ from app.listener_memory import (
     listener_preference_profile,
     save_agent_session_turn,
 )
-from app.music_assistant_features import emotion_memory, weekly_report
-from app.hybrid_recommender import HybridRecommender
+from app.music_agent_workflows import (
+    query_listener_memory_workflow,
+    query_listening_history_workflow,
+    recommend_music_workflow,
+    search_music_workflow,
+)
 
 
 load_dotenv(Path(__file__).resolve().parents[2] / ".env")
@@ -71,18 +76,14 @@ def agent_status() -> dict[str, Any]:
         "legacy_modules": ["ListeningAgent rules", "TodayRecommender scoring"],
         "tools": [
             "search_music",
-            "daily_recommendation",
-            "hybrid_recommendation",
-            "listener_emotion_memory",
-            "listener_preference_profile_tool",
-            "weekly_listening_report",
+            "recommend_music",
+            "query_listener_memory",
+            "query_listening_history",
             "search_song_material",
             "get_current_song_context",
-            "save_lyric_specimen",
-            "save_current_feeling",
+            "save_listening_memory",
             "find_similar_recordings",
-            "analyze_lyric_excerpt",
-            "search_song_story_web",
+            "search_song_sources",
         ],
         "algorithms": ["react", "plan_execute", "reflection", "auto_router"],
         "fallback_available": True,
@@ -107,46 +108,48 @@ class MusicAgent:
         from langchain_openai import ChatOpenAI
 
         @tool
-        def search_music(query: str) -> list[dict]:
-            """搜索本地华语曲库中的歌手和歌曲。"""
-            artists = [item.model_dump() for item in self.store.search_artists(query)[:5]]
-            songs = [item.model_dump() for item in self.store.search_recordings(query)[:5]]
-            return [{"artists": artists, "songs": songs}]
+        def search_music(query: str, limit: int = 8) -> dict:
+            """联网查询公开音乐目录；网络无结果时才回退本地曲库。"""
+            return search_music_workflow(self.store, query, limit)
 
         @tool
-        def daily_recommendation(user_id: str = "demo") -> dict:
-            """获得今天的个性化华语歌曲推荐。"""
-            recommendation = HybridRecommender(self.store).recommend(limit=1, mode="auto")
-            item = recommendation["items"][0]
-            return {
-                "recording": item["recording"],
-                "artist": item["artist"],
-                "score": item["score"],
-                "reasons": [
-                    "结合收藏、播放次数、内容标签与上下文完成混合排序。",
-                    f"命中特征：{'、'.join(item['features'][:4])}",
-                ],
-            }
+        def recommend_music(
+            limit: int = 1,
+            mode: Literal["auto", "focus", "relax", "nostalgia", "lyrics"] = "auto",
+        ) -> dict:
+            """运行确定性的混合推荐 Workflow，返回一首或多首歌曲。"""
+            return recommend_music_workflow(self.store, limit, mode)
 
         @tool
-        def hybrid_recommendation(mode: str = "auto", limit: int = 5) -> dict:
-            """使用内容过滤、隐式反馈、KG PageRank、Thompson Sampling 与 MMR 生成推荐。"""
-            return HybridRecommender(self.store).recommend(limit=min(10, limit), mode=mode)
+        def query_listener_memory(
+            scope: Literal["recent", "long_term", "combined"] = "combined",
+            days: int = 14,
+        ) -> dict:
+            """查询近期行为情绪、长期音乐偏好，或两者组合的用户音乐记忆。"""
+            return query_listener_memory_workflow(scope, days)
 
         @tool
-        def listener_emotion_memory(days: int = 14) -> dict:
-            """读取最近播放、循环、切歌、暂停和收藏反馈，生成听歌情绪记忆。"""
-            return emotion_memory(days)
-
-        @tool
-        def listener_preference_profile_tool() -> dict:
-            """Read the listener's long-term multi-dimensional music preference profile."""
-            return listener_preference_profile()
-
-        @tool
-        def weekly_listening_report() -> dict:
-            """生成只保存在本地的最近七天听歌复盘。"""
-            return weekly_report()
+        def query_listening_history(
+            period: Literal[
+                "today", "yesterday", "this_week", "last_week", "this_month",
+                "last_month", "this_year", "last_year", "7d", "30d", "90d",
+                "365d", "all", "custom"
+            ] = "7d",
+            start_date: str = "",
+            end_date: str = "",
+            group_by: Literal["day", "track", "artist"] = "day",
+            view: Literal["list", "overview"] = "list",
+            top_n: int = 10,
+        ) -> dict:
+            """查询真实听歌历史；overview 可一次返回趋势、歌曲歌手排行和上周期对比。"""
+            return query_listening_history_workflow(
+                period=period,
+                start_date=start_date,
+                end_date=end_date,
+                group_by=group_by,
+                view=view,
+                top_n=top_n,
+            )
 
         model_name = os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash")
         model = ChatOpenAI(
@@ -160,11 +163,9 @@ class MusicAgent:
         )
         tools_list = [
             search_music,
-            daily_recommendation,
-            hybrid_recommendation,
-            listener_emotion_memory,
-            listener_preference_profile_tool,
-            weekly_listening_report,
+            recommend_music,
+            query_listener_memory,
+            query_listening_history,
         ]
         trace, tools = [], []
         algorithm = request.algorithm
@@ -178,15 +179,27 @@ class MusicAgent:
                 "你的回答应先给结论，再给数据依据、判断边界和可执行建议；清楚区分事实、算法结果与主观推断。"
                 "不要模仿听歌房那种细腻陪伴口吻，不把普通问题过度情绪化。必须通过标准 Agent Loop 工作：先判断是否需要工具，"
                 "需要时调用最少数量的工具，读取工具结果后再决定继续调用或回答。"
-                "推荐、听歌记录、偏好和曲库事实查询不得凭空回答。"
-                "通常只调用 1 到 2 个工具：询问偏好只读偏好画像；询问近期状态才读情绪记忆；"
-                "只有用户明确要周报时才调用周报；单曲推荐和多曲推荐不得同时调用。"
+                "推荐、听歌记录、偏好和歌曲事实查询不得凭空回答。歌曲或歌手资料使用 search_music 联网查询；"
+                "推荐统一使用 recommend_music，limit=1 表示单曲，limit>1 表示多曲。"
+                "用户音乐记忆统一使用 query_listener_memory：近期状态用 scope=recent，长期偏好用 scope=long_term，"
+                "需要综合判断时用 scope=combined。用户要求周报、月报或周期复盘时，先调用 "
+                "query_listening_history 并设置 view=overview，再按需调用 query_listener_memory(scope=recent) 补充行为信号。"
+                "“本周、上周、本月、上月、今年、去年”必须分别使用 this_week、last_week、this_month、"
+                "last_month、this_year、last_year，不要用滚动天数替代自然周期。"
+                f"今天的本地日期是 {datetime.now().astimezone().date().isoformat()}。用户询问某天、最近一段时间、"
+                "听歌时长、历史排行或歌手收听趋势时，必须调用 query_listening_history，不得依靠会话猜测。"
+                "该工具每次都会返回区间总时长；同时询问总时长和歌曲排行时使用 group_by=track，"
+                "同时询问总时长和歌手排行时使用 group_by=artist，避免重复查询。"
                 "不要提供完整歌词；不要展示内部思考过程；表达专业、清晰、克制。"
             ),
             middleware=[
                 ToolCallLimitMiddleware(run_limit=3, exit_behavior="continue"),
                 *[
-                    ToolCallLimitMiddleware(tool_name=item.name, run_limit=1, exit_behavior="continue")
+                    ToolCallLimitMiddleware(
+                        tool_name=item.name,
+                        run_limit=2 if item.name == "query_listening_history" else 1,
+                        exit_behavior="continue",
+                    )
                     for item in tools_list
                 ],
             ],
@@ -299,8 +312,8 @@ class MusicAgent:
         if self._is_preference_query(query):
             result = listener_preference_profile()
             answer = self._preference_answer(result)
-            tool = "listener_preference_profile_tool"
-            trace.append({"type": "tool_call", "tool": tool, "args": {}})
+            tool = "query_listener_memory"
+            trace.append({"type": "tool_call", "tool": tool, "args": {"scope": "long_term"}})
             trace.append({"type": "tool_result", "tool": tool, "content": answer})
             save_agent_session_turn(
                 session_id,
@@ -321,7 +334,7 @@ class MusicAgent:
                 latency_ms=int((time.perf_counter() - started) * 1000),
             )
         if "推荐" in query:
-            tool = "daily_recommendation"
+            tool = "recommend_music"
             recording = next(item for item in self.store.recordings.values() if item.is_cpop)
             artist = self.store.get_artist(recording.artist_id)
             answer = f"今天推荐 {artist.name if artist else '华语歌手'}《{recording.title}》。离线评测只验证工具选择，不访问试听服务。"

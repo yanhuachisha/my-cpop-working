@@ -21,6 +21,7 @@ from app.langchain_agent import (
 from app.agent_evaluation import evaluate_agent
 from app.hybrid_recommender import HybridRecommender
 from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningStoryRequest
+from app.listening_history import initialize_listening_history
 from app.library_import import (
     LibraryImportRequest,
     discover_kugou,
@@ -69,6 +70,7 @@ from app.today_recommender import TodayRecommender
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    initialize_listening_history()
     playback_tracker.start()
     try:
         yield

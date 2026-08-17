@@ -164,7 +164,7 @@ def main() -> int:
         webbrowser.open("http://localhost:3000", new=2)
         return 0
     except (OSError, RuntimeError, subprocess.SubprocessError) as error:
-        message("C-Pop Atlas 启动失败", str(error), error=True)
+        message("My C-Pop Working 启动失败", str(error), error=True)
         return 1
 
 

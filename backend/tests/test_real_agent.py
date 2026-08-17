@@ -16,7 +16,7 @@ def test_agent_fallback_keeps_tool_trace(monkeypatch):
     monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
     result = MusicAgent(get_store()).run(AgentRunRequest(query="给我推荐一首今天适合听的华语歌"))
     assert result.mode.startswith("fallback")
-    assert result.tools_used == ["daily_recommendation"]
+    assert result.tools_used == ["recommend_music"]
     assert result.trace[0]["type"] == "tool_call"
 
 
@@ -33,6 +33,10 @@ def test_agent_status_exposes_deepseek_configuration(monkeypatch):
     assert agent_status()["model"] == "deepseek-v4-flash"
     assert agent_status()["llm_agent_count"] == 3
     assert "search_song_material" in agent_status()["tools"]
+    assert "save_listening_memory" in agent_status()["tools"]
+    assert "search_song_sources" in agent_status()["tools"]
+    assert "analyze_lyric_excerpt" not in agent_status()["tools"]
+    assert "search_song_story_web" not in agent_status()["tools"]
 
 
 def test_music_assistant_uses_real_langchain_loop(monkeypatch):
@@ -53,8 +57,8 @@ def test_music_assistant_uses_real_langchain_loop(monkeypatch):
             captured["payload"] = payload
             captured["config"] = config
             return {"messages": [
-                FakeMessage(tool_calls=[{"name": "listener_preference_profile_tool", "args": {}}]),
-                FakeMessage(content='{"summary":"偏好画像"}', message_type="tool", name="listener_preference_profile_tool"),
+                FakeMessage(tool_calls=[{"name": "query_listener_memory", "args": {"scope": "long_term"}}]),
+                FakeMessage(content='{"summary":"偏好画像"}', message_type="tool", name="query_listener_memory"),
                 FakeMessage(content="你最近更偏爱温暖、熟悉的华语歌。"),
             ]}
 
@@ -75,9 +79,16 @@ def test_music_assistant_uses_real_langchain_loop(monkeypatch):
     ))
 
     assert response.mode == "langchain:react"
-    assert response.tools_used == ["listener_preference_profile_tool"]
+    assert response.tools_used == ["query_listener_memory"]
     assert response.iterations == 1
-    assert "listener_preference_profile_tool" in captured["tools"]
+    assert "recommend_music" in captured["tools"]
+    assert "query_listener_memory" in captured["tools"]
+    assert "query_listening_history" in captured["tools"]
+    assert "daily_recommendation" not in captured["tools"]
+    assert "hybrid_recommendation" not in captured["tools"]
+    assert "listener_emotion_memory" not in captured["tools"]
+    assert "listener_preference_profile_tool" not in captured["tools"]
+    assert "weekly_listening_report" not in captured["tools"]
     assert "全能、偏理性" in captured["system_prompt"]
     assert "先给结论" in captured["system_prompt"]
     assert captured["payload"]["messages"][0]["content"] == "我工作时喜欢听歌。"

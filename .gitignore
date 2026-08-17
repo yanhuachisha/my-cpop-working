@@ -26,6 +26,7 @@ chrome-*.log
 data/raw/
 data/processed/
 data/listener_state.json
+data/listening_history.db*
 data/user_library*.json
 data/song_introductions.json
 data/new_world_cache.json

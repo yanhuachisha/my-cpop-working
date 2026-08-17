@@ -11,10 +11,15 @@ type SessionSummary = { id: string; title: string; preview: string; message_coun
 type SessionDetail = SessionSummary & { messages: Array<{ id: string; role: 'user' | 'assistant'; content: string; tools_used?: string[] }> };
 
 const SOURCE_LABELS: Record<string, string> = {
-  search_music: '歌曲资料',
+  search_music: '联网音乐搜索',
+  recommend_music: '个性化推荐',
+  query_listener_memory: '用户音乐记忆',
+  query_listening_history: '听歌历史',
+  // 兼容升级前保存的历史会话。
   daily_recommendation: '今日推荐',
   hybrid_recommendation: '偏好算法',
   listener_emotion_memory: '情绪记忆',
+  listener_preference_profile_tool: '长期偏好',
   weekly_listening_report: '听歌复盘',
 };
 
@@ -70,6 +75,26 @@ function AgentAnswer({ content }: { content: string }) {
       const Heading = heading[1].length === 1 ? 'h2' : 'h3';
       blocks.push(<Heading key={`heading-${index}`}>{renderInline(heading[2])}</Heading>);
       index += 1;
+      continue;
+    }
+    if (
+      line.includes('|')
+      && index + 1 < lines.length
+      && /^\s*\|?\s*:?-{3,}/.test(lines[index + 1])
+    ) {
+      const splitRow = (value: string) => value.trim().replace(/^\||\|$/g, '').split('|').map((cell) => cell.trim());
+      const headers = splitRow(line);
+      const rows: string[][] = [];
+      index += 2;
+      while (index < lines.length && lines[index].includes('|') && lines[index].trim()) {
+        rows.push(splitRow(lines[index]));
+        index += 1;
+      }
+      blocks.push(
+        <div className="agent-answer-table-wrap" key={`table-${index}`}>
+          <table><thead><tr>{headers.map((header, headerIndex) => <th key={`${header}-${headerIndex}`}>{renderInline(header)}</th>)}</tr></thead><tbody>{rows.map((row, rowIndex) => <tr key={`row-${rowIndex}`}>{row.map((cell, cellIndex) => <td key={`${cell}-${cellIndex}`}>{renderInline(cell)}</td>)}</tr>)}</tbody></table>
+        </div>,
+      );
       continue;
     }
     if (/^[-*]\s+/.test(line)) {

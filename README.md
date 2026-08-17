@@ -8,6 +8,7 @@
 - 情境推荐：支持专注、放松、怀旧、歌词等模式，并展示天气、新闻、时间和个人偏好信号。
 - 防重复：同时记录播放历史与推荐曝光历史；当天结果保持稳定，后续日期避开近 14 天已展示作品。
 - 听众记忆：支持喜欢、收藏、跳过、想听，以及歌词短句标本。
+- 听歌历史：使用 SQLite 永久保存每日听歌时长与歌曲累计，并维护每日汇总；旧版 JSON 统计会自动迁移。
 - Listening Room：读取酷狗当前播放状态，提供歌曲故事、短句分析和上下文 Agent 对话。
 - 我的收藏：检测本机酷狗目录，支持 TXT、CSV 或粘贴歌单导入；只保存歌曲元数据。
 - 可选酷狗桥：可连接 `Yu9191/KuGou` 本地服务，用于搜索并补全歌曲元数据；不代理音频和完整歌词。
@@ -54,7 +55,7 @@
 
 ### Windows 一键启动 EXE
 
-项目根目录提供 `C-Pop-Atlas.exe`。双击后会启动前端、后端、已安装的酷狗元数据桥，打开酷狗音乐并在浏览器中打开项目。重新构建启动器：
+项目根目录提供 `My-C-Pop-Working.exe`。双击后会启动前端、后端、已安装的酷狗元数据桥，打开酷狗音乐并在浏览器中打开项目。重新构建启动器：
 
 ```powershell
 .\scripts\build-launcher.ps1
@@ -127,7 +128,9 @@ npm run dev -- --hostname 0.0.0.0 --port 3000
 - `POST /api/agent/query`
 - `GET /api/agent/status`
 - `POST /api/agent/run`
+- `GET|POST|DELETE /api/agent/sessions`
 - `GET /api/agent/evaluate`
+- `GET /api/listening/today-stats`
 
 ## 真实 Agent 架构
 
@@ -145,13 +148,16 @@ Agent Loop：用户问题 → DeepSeek 判断是否调用工具 → 执行工具
 
 当前工具：
 
-- `search_music`：搜索本地曲库中的歌曲与歌手。
-- `daily_recommendation` / `hybrid_recommendation`：调用现有个性化推荐算法。
-- `listener_preference_profile_tool`：读取长期多维音乐偏好画像。
-- `listener_emotion_memory` / `weekly_listening_report`：读取近期情绪记忆与听歌复盘。
-- `get_current_song_context` / `find_similar_recordings`：理解当前歌曲并推荐相似作品。
-- `save_lyric_specimen` / `save_current_feeling`：仅在用户明确要求时持久化歌词标本或音乐笔记。
-- `analyze_lyric_excerpt` / `search_song_story_web`：分析用户提供的歌词短句或检索真实创作资料。
+架构原则：Agent 负责不确定的语义理解、Tool 选择与参数决策；确定性的联网聚合、推荐排序、记忆组合和统计查询由 `music_agent_workflows.py` 编排，Tool 只作为 LangChain 的薄接口。
+
+- `search_music`：调用确定性搜索 Workflow，联网聚合 Apple iTunes Search API 与 MusicBrainz；无结果时回退本地曲库。
+- `recommend_music`：统一单曲与多曲推荐，Workflow 内使用内容过滤、隐式反馈、BPR、Thompson Sampling 和 MMR。
+- `query_listener_memory`：按 `recent`、`long_term`、`combined` 编排近期行为情绪与长期音乐偏好，避免两个记忆 Tool 重复取数。
+- `query_listening_history`：查询任意日期范围的真实听歌时长；`overview` 一次返回每日趋势、歌曲排行、歌手排行和上周期对比，周期报告由 Agent 基于这些结果动态生成。
+- `get_current_song_context`：只读取当前歌曲身份与已有缓存，不会在 Tool 内触发歌曲画像 Agent。
+- `find_similar_recordings`：通过确定性相似度 Workflow 推荐本地曲库作品。
+- `save_listening_memory`：仅在用户明确要求时，将用户原文保存为歌词标本或音乐笔记。
+- `search_song_sources`：只联网返回可追溯事实与来源，最终故事由音乐陪伴 Agent 组织；歌词情绪理解也直接由该 Agent 完成。
 - `search_song_material`：检索歌曲可核实的歌手、专辑、年份、流派与来源，再生成情绪化歌曲画像；没有找到的事实不会显示。
 
 Agent 评测使用固定问题集，当前指标包括：工具选择准确率、答案关键词落地率、循环步数和延迟。执行：
@@ -161,6 +167,8 @@ Invoke-RestMethod http://localhost:8001/api/agent/evaluate
 ```
 
 未填写 API Key 时使用可复现的本地 fallback，方便 CI 测试；填写 Key 后才进入真实 DeepSeek + LangChain 循环。
+
+听歌历史保存在本地 `data/listening_history.db`。播放追踪器只对当前日期和歌曲执行增量 UPSERT，避免反复重写整个用户状态文件；音乐助理通过 `query_listening_history` Tool 按需读取历史，不会把完整长期记录塞入每轮 Prompt。
 
 ## 开放数据同步
 

@@ -14,6 +14,10 @@ from uuid import uuid4
 from pydantic import BaseModel, Field
 
 from app.data_store import get_store
+from app.listening_history import (
+    record_daily_listening as record_daily_listening_sqlite,
+    today_listening_stats as today_listening_stats_sqlite,
+)
 
 STATE_PATH = Path(__file__).resolve().parents[2] / "data" / "listener_state.json"
 _lock = Lock()
@@ -314,17 +318,6 @@ def record_feedback(request: FeedbackRequest) -> dict:
     return listener_summary(state)
 
 
-def _format_listening_duration(seconds: float) -> str:
-    rounded_seconds = max(0, int(round(seconds)))
-    hours, remainder = divmod(rounded_seconds, 3600)
-    minutes, remaining_seconds = divmod(remainder, 60)
-    if hours:
-        return f"{hours} 小时 {minutes} 分钟" if minutes else f"{hours} 小时"
-    if minutes:
-        return f"{minutes} 分钟"
-    return f"{remaining_seconds} 秒"
-
-
 def record_daily_listening(
     recording_id: str,
     title: str,
@@ -332,57 +325,17 @@ def record_daily_listening(
     listened_seconds: float,
     listened_at: datetime | None = None,
 ) -> None:
-    increment = max(0.0, float(listened_seconds))
-    if not increment:
-        return
-    local_time = (listened_at or datetime.now().astimezone()).astimezone()
-    date_key = local_time.date().isoformat()
-    with _lock:
-        state = load_state()
-        daily_listening = state.setdefault("daily_listening", {})
-        day = daily_listening.setdefault(date_key, {"total_seconds": 0.0, "tracks": {}})
-        tracks = day.setdefault("tracks", {})
-        track = tracks.setdefault(recording_id, {
-            "recording_id": recording_id,
-            "title": title.strip() or "未知歌曲",
-            "artist": (artist or "未知歌手").strip() or "未知歌手",
-            "seconds": 0.0,
-            "last_listened_at": local_time.isoformat(),
-        })
-        track["title"] = title.strip() or track.get("title") or "未知歌曲"
-        track["artist"] = (artist or "未知歌手").strip() or "未知歌手"
-        track["seconds"] = round(float(track.get("seconds", 0.0)) + increment, 1)
-        track["last_listened_at"] = local_time.isoformat()
-        day["total_seconds"] = round(float(day.get("total_seconds", 0.0)) + increment, 1)
-        for expired_date in sorted(daily_listening)[:-120]:
-            daily_listening.pop(expired_date, None)
-        _write_state(state)
+    record_daily_listening_sqlite(
+        recording_id,
+        title,
+        artist,
+        listened_seconds,
+        listened_at,
+    )
 
 
 def today_listening_stats(now: datetime | None = None) -> dict:
-    local_time = (now or datetime.now().astimezone()).astimezone()
-    date_key = local_time.date().isoformat()
-    day = load_state().get("daily_listening", {}).get(date_key, {})
-    total_seconds = max(0.0, float(day.get("total_seconds", 0.0)))
-    ranking = []
-    for recording_id, track in day.get("tracks", {}).items():
-        seconds = max(0.0, float(track.get("seconds", 0.0)))
-        ranking.append({
-            "recording_id": recording_id,
-            "title": track.get("title") or "未知歌曲",
-            "artist": track.get("artist") or "未知歌手",
-            "seconds": round(seconds, 1),
-            "formatted_duration": _format_listening_duration(seconds),
-            "last_listened_at": track.get("last_listened_at"),
-        })
-    ranking.sort(key=lambda item: (-item["seconds"], item["title"]))
-    return {
-        "date": date_key,
-        "total_seconds": round(total_seconds, 1),
-        "formatted_duration": _format_listening_duration(total_seconds),
-        "track_count": len(ranking),
-        "ranking": ranking,
-    }
+    return today_listening_stats_sqlite(now)
 
 
 def record_recommendation_exposure(recording_ids: list[str], mode: str = "auto") -> None:

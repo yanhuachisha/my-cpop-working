@@ -2,7 +2,6 @@ import pytest
 
 from app.data_store import get_store
 from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningChatTurn, ListeningStoryRequest, LyricAnalysisRequest
-from app.models import SourceRef
 
 
 @pytest.fixture(autouse=True)
@@ -60,37 +59,55 @@ def test_lyric_analysis_uses_user_excerpt_only():
     assert "不存储" in analysis.copyright_note
 
 
-def test_listening_chat_routes_to_story_tool():
+def test_listening_chat_answers_cached_story_without_fake_tool_trace():
     response = ListeningAgent(get_store()).chat(
         ListeningChatRequest(question="这首歌背后有什么故事？", song_title="以父之名", artist="周杰伦")
     )
-    assert "build_song_introduction" in response.tools_used
+    assert response.tools_used == []
     assert "声音电影" in response.answer
     assert response.mode == "fallback:rules"
 
 
 def test_listening_chat_saves_lyric_specimen(monkeypatch):
     saved = {}
-    monkeypatch.setattr("app.listening_agent.save_lyric_fragment", lambda request: saved.update(request.model_dump()))
+    monkeypatch.setattr(
+        "app.listening_agent.save_listening_memory_workflow",
+        lambda memory_type, content, song_title, artist: saved.update({
+            "memory_type": memory_type,
+            "content": content,
+            "song_title": song_title,
+            "artist": artist,
+        }) or {"saved": True},
+    )
     response = ListeningAgent(get_store()).chat(ListeningChatRequest(
         question="帮我收藏这句话：窗外的雨慢慢落下",
         song_title="示例歌曲",
         artist="示例歌手",
     ))
-    assert saved["excerpt"] == "窗外的雨慢慢落下"
-    assert "save_lyric_specimen" in response.tools_used
+    assert saved["memory_type"] == "lyric_specimen"
+    assert saved["content"] == "窗外的雨慢慢落下"
+    assert "save_listening_memory" in response.tools_used
 
 
 def test_listening_chat_saves_previous_feeling(monkeypatch):
     saved = {}
-    monkeypatch.setattr("app.listening_agent.save_music_note", lambda request: saved.update(request.model_dump()))
+    monkeypatch.setattr(
+        "app.listening_agent.save_listening_memory_workflow",
+        lambda memory_type, content, song_title, artist: saved.update({
+            "memory_type": memory_type,
+            "content": content,
+            "song_title": song_title,
+            "artist": artist,
+        }) or {"saved": True},
+    )
     response = ListeningAgent(get_store()).chat(ListeningChatRequest(
         question="记下刚才的感受",
         song_title="示例歌曲",
         recent_messages=[ListeningChatTurn(role="user", content="这首歌让我想起放学后的雨。")],
     ))
     assert saved["content"] == "这首歌让我想起放学后的雨。"
-    assert "save_music_note" in response.tools_used
+    assert saved["memory_type"] == "music_note"
+    assert "save_listening_memory" in response.tools_used
 
 
 def test_listening_chat_routes_to_similar_recommendations():
@@ -99,13 +116,16 @@ def test_listening_chat_routes_to_similar_recommendations():
 
 
 def test_listening_chat_routes_to_verified_web_story(monkeypatch):
-    agent = ListeningAgent(get_store())
-    monkeypatch.setattr(agent, "_research_song_story", lambda request: (
-        "这是基于公开资料整理的歌曲故事。",
-        [SourceRef(name="测试来源", url="https://example.com", license="Test")],
-    ))
-    response = agent.chat(ListeningChatRequest(question="查一下这首歌真实的创作故事", song_title="示例歌曲"))
-    assert "search_song_story_web" in response.tools_used
+    monkeypatch.setattr("app.listening_agent.search_song_sources_workflow", lambda title, artist: {
+        "available": True,
+        "facts": ["这是基于公开资料检索到的歌曲事实。"],
+        "sources": [{"name": "测试来源", "url": "https://example.com", "license": "Test"}],
+        "errors": [],
+    })
+    response = ListeningAgent(get_store()).chat(
+        ListeningChatRequest(question="查一下这首歌真实的创作故事", song_title="示例歌曲")
+    )
+    assert "search_song_sources" in response.tools_used
     assert response.sources[0].name == "测试来源"
 
 
@@ -194,6 +214,13 @@ def test_listening_chat_extracts_real_agent_loop(monkeypatch):
     assert response.tools_used == ["find_similar_recordings"]
     assert response.iterations == 1
     assert "find_similar_recordings" in captured["tools"]
+    assert "get_current_song_context" in captured["tools"]
+    assert "save_listening_memory" in captured["tools"]
+    assert "search_song_sources" in captured["tools"]
+    assert "save_lyric_specimen" not in captured["tools"]
+    assert "save_current_feeling" not in captured["tools"]
+    assert "analyze_lyric_excerpt" not in captured["tools"]
+    assert "search_song_story_web" not in captured["tools"]
     assert "只围绕此刻正在播放的这一首歌" in captured["system_prompt"]
     assert "细腻" in captured["system_prompt"]
     assert captured["payload"]["messages"][0]["role"] == "user"

@@ -73,6 +73,6 @@ def test_music_agent_answers_preference_question_from_local_memory(monkeypatch, 
         AgentRunRequest(query="\u4f60\u4e86\u89e3\u6211\u7684\u97f3\u4e50\u504f\u597d\u5417\uff1f")
     )
 
-    assert response.tools_used == ["listener_preference_profile_tool"]
+    assert response.tools_used == ["query_listener_memory"]
     assert "\u5468\u6770\u4f26" in response.answer
     assert "\u5e38\u542c\u6b4c\u624b" in response.answer

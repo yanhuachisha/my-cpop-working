@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app import listener_memory
+from app import listener_memory, listening_history
 from app.listener_memory import FeedbackRequest
 
 
@@ -31,6 +31,10 @@ def test_listening_conversation_is_persisted_per_song(monkeypatch, tmp_path):
 def test_daily_listening_is_persisted_and_ranked(monkeypatch, tmp_path):
     state_path = tmp_path / "listener_state.json"
     monkeypatch.setattr(listener_memory, "STATE_PATH", state_path)
+    database_path = tmp_path / "listening_history.db"
+    monkeypatch.setattr(listening_history, "DB_PATH", database_path)
+    monkeypatch.setattr(listening_history, "LEGACY_STATE_PATH", state_path)
+    listening_history._initialized_paths.clear()
     listened_at = datetime.fromisoformat("2026-08-17T10:00:00+08:00")
 
     listener_memory.record_daily_listening("song-a", "晴天", "周杰伦", 35, listened_at)
@@ -39,7 +43,7 @@ def test_daily_listening_is_persisted_and_ranked(monkeypatch, tmp_path):
 
     stats = listener_memory.today_listening_stats(listened_at)
 
-    assert state_path.exists()
+    assert database_path.exists()
     assert stats["total_seconds"] == 145
     assert stats["formatted_duration"] == "2 分钟"
     assert stats["track_count"] == 2
@@ -48,7 +52,11 @@ def test_daily_listening_is_persisted_and_ranked(monkeypatch, tmp_path):
 
 
 def test_daily_listening_uses_separate_date_buckets(monkeypatch, tmp_path):
-    monkeypatch.setattr(listener_memory, "STATE_PATH", tmp_path / "listener_state.json")
+    state_path = tmp_path / "listener_state.json"
+    monkeypatch.setattr(listener_memory, "STATE_PATH", state_path)
+    monkeypatch.setattr(listening_history, "DB_PATH", tmp_path / "listening_history.db")
+    monkeypatch.setattr(listening_history, "LEGACY_STATE_PATH", state_path)
+    listening_history._initialized_paths.clear()
     first_day = datetime.fromisoformat("2026-08-16T23:59:00+08:00")
     second_day = datetime.fromisoformat("2026-08-17T00:01:00+08:00")
 
@@ -68,21 +76,21 @@ def test_agent_sessions_keep_independent_persistent_history(monkeypatch, tmp_pat
         first["id"],
         "我工作时喜欢听什么？",
         "你最近更常听节奏稳定的华语歌。",
-        tools_used=["listener_preference_profile_tool"],
+        tools_used=["query_listener_memory"],
         model="deepseek-v4-flash",
     )
     listener_memory.save_agent_session_turn(
         second["id"],
         "推荐一首歌",
         "今天推荐《晴天》。",
-        tools_used=["daily_recommendation"],
+        tools_used=["recommend_music"],
         model="deepseek-v4-flash",
     )
 
     first_session = listener_memory.agent_session(first["id"])
     second_session = listener_memory.agent_session(second["id"])
     assert first_session["title"].startswith("我工作时喜欢听什么")
-    assert first_session["messages"][1]["tools_used"] == ["listener_preference_profile_tool"]
+    assert first_session["messages"][1]["tools_used"] == ["query_listener_memory"]
     assert second_session["title"] == "工作歌单"
     assert len(listener_memory.agent_sessions()) == 2
     assert listener_memory.delete_agent_session(first["id"]) is True
