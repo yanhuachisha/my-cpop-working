@@ -9,6 +9,12 @@
 
 一个面向电脑工作场景的华语音乐工作台。它不是简单的歌单页面，而是把当前播放、听歌历史、个人偏好、天气新闻、开放音乐数据和大模型 Agent 串起来，做成一个可以陪你听歌、解释歌曲、记录习惯、生成推荐的本地音乐系统。
 
+## 界面预览
+
+| 首页每日发现 | 音乐助理 Agent |
+| --- | --- |
+| ![首页每日发现](docs/screenshots/home.png) | ![音乐助理 Agent](docs/screenshots/music-agent.png) |
+
 ## 为什么值得看
 
 - **真实 Agent 编排**：DeepSeek 通过 OpenAI-compatible API 接入 LangChain `create_agent`，结合 LangGraph memory，完成模型判断、工具调用、observation 回填和多步决策。
