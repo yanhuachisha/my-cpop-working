@@ -112,6 +112,10 @@
   margin: 18px 0 8px;
   max-width: 11ch;
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .daily-song-card h2 {
@@ -207,6 +211,15 @@
   min-height: 0;
 }
 
+.home-news-list {
+  background: rgba(255, 255, 255, .28);
+  border: 1px solid rgba(25, 23, 20, .07);
+  border-radius: 18px;
+  margin-top: 14px;
+  overflow: hidden;
+  padding: 4px 18px;
+}
+
 .daily-news-list a {
   align-items: center;
   border-bottom: 1px solid rgba(25, 23, 20, .08);
@@ -215,19 +228,21 @@
   gap: 16px;
   grid-template-columns: 44px minmax(0, 1fr) 22px;
   min-height: 0;
-  padding: clamp(14px, 1.8vh, 26px) 0;
+  padding: clamp(6px, .8vh, 10px) 0;
   text-decoration: none;
   transition: color .2s ease, padding .2s ease;
 }
 
 .daily-news-list a:hover {
+  background: rgba(255, 255, 255, .42);
   color: #d45f46;
-  padding-left: 7px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 .daily-news-list i {
   color: #b8aca1;
-  font: italic clamp(18px, 1.4vw, 27px) Georgia;
+  font: italic clamp(14px, 1.05vw, 20px) Georgia;
 }
 
 .daily-news-list span,
@@ -239,7 +254,7 @@
 
 .daily-news-list strong {
   display: -webkit-box;
-  font-size: clamp(14px, 1.05vw, 20px);
+  font-size: clamp(12px, .9vw, 16px);
   line-height: 1.42;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -248,8 +263,8 @@
 
 .daily-news-list small {
   color: #948a80;
-  font-size: clamp(9px, .72vw, 12px);
-  margin-top: 8px;
+  font-size: clamp(8px, .62vw, 10px);
+  margin-top: 5px;
 }
 
 .daily-news-empty {
@@ -261,17 +276,27 @@
 
 @media (min-width: 981px) {
   .sonic-home {
-    min-height: calc(100vh - 68px);
+    height: calc(100svh - 76px);
+    min-height: 0;
+    overflow: hidden;
     padding-bottom: 12px;
   }
 
   .daily-split-stage {
-    min-height: calc(100vh - 80px);
+    height: calc(100% - 12px);
+    min-height: 0;
     padding: 12px;
+  }
+
+  .daily-weather-card {
+    margin-top: clamp(22px, 4vh, 50px);
+    padding-bottom: clamp(18px, 2.4vh, 28px);
   }
 
   .daily-song-card {
     max-width: none;
+    padding-top: clamp(24px, 4vh, 52px);
+    padding-bottom: clamp(26px, 5vh, 62px);
     padding-right: clamp(280px, 31vw, 470px);
   }
 
@@ -298,13 +323,14 @@
       repeating-radial-gradient(circle at center, #101116 0 5px, #1c1d23 6px 8px, #111217 9px 13px);
     border: 1px solid rgba(255, 255, 255, .12);
     border-radius: 50%;
-    bottom: clamp(76px, 9vh, 130px);
     box-shadow:
       0 45px 90px rgba(0, 0, 0, .48),
       0 0 90px rgba(143, 123, 255, .16),
       inset 0 0 0 18px rgba(255, 255, 255, .015);
     height: clamp(250px, 25vw, 390px);
-    right: clamp(12px, 3vw, 58px);
+    right: clamp(18px, 3vw, 52px);
+    top: 50%;
+    transform: translateY(-50%);
     width: clamp(250px, 25vw, 390px);
   }
 
@@ -314,10 +340,11 @@
       conic-gradient(from 30deg, #8f7bff, #ffb46b, #8fe4d1, #8f7bff);
     border: clamp(16px, 1.6vw, 24px) solid #111217;
     border-radius: 50%;
-    bottom: clamp(154px, 17vh, 245px);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, .08);
     height: clamp(92px, 9vw, 140px);
-    right: clamp(90px, 11vw, 185px);
+    right: clamp(92px, 11vw, 180px);
+    top: 50%;
+    transform: translateY(-50%);
     width: clamp(92px, 9vw, 140px);
   }
 }

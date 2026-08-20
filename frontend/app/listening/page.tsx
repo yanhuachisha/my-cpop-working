@@ -1,72 +1,24 @@
 'use client';
 
-import {
-  Bot,
-  ChevronRight,
-  Clock3,
-  Disc3,
-  ExternalLink,
-  Headphones,
-  LoaderCircle,
-  MessageCircleMore,
-  Music2,
-  RefreshCw,
-  Send,
-  Trophy,
-  X,
-} from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import "../listening-notes.css";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchApiClient } from "../../lib/api";
+import { CompanionChat } from "./components/CompanionChat";
+import { CompanionSettingsPanel } from "./components/CompanionSettingsPanel";
+import { NowPlayingPanel } from "./components/NowPlayingPanel";
+import { SongStoryPanel } from "./components/SongStoryPanel";
+import { TodayRankingDialog } from "./components/TodayRankingDialog";
+import { ChatMessage, ChatSource, ListeningContext, ListeningPromptSettings, SongStory, TodayListeningStats, TrackState } from "./types";
+import "./listening-room.css";
 
-type TrackState = {
-  status: "live" | "idle";
-  available: boolean;
-  title: string | null;
-  artist: string | null;
-  album: string | null;
-  year: number | null;
-  source: string;
-};
+function createClientMessageId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
+  return `listening-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
 
-type SongStory = {
-  title: string;
-  subtitle: string;
-  narrative: string;
-  themes: string[];
-  listening_points: string[];
-  story_type: string;
-  facts: string[];
-  source_urls: string[];
-};
-
-type ListeningContext = {
-  current: TrackState;
-  story: SongStory | null;
-  quick_prompts: string[];
-  profile: {
-    favorite_artist: string;
-    listener_type: string;
-    preferences: string[];
-  };
-};
-
-type ChatSource = { name: string; url: string };
-type ChatMessage = { role: "agent" | "user"; content: string; tools?: string[]; sources?: ChatSource[]; saved_at?: string };
-type ListeningRankItem = {
-  recording_id: string;
-  title: string;
-  artist: string;
-  seconds: number;
-  formatted_duration: string;
-  last_listened_at: string | null;
-};
-type TodayListeningStats = {
-  date: string;
-  total_seconds: number;
-  formatted_duration: string;
-  track_count: number;
-  ranking: ListeningRankItem[];
-};
+function nowIso() {
+  return new Date().toISOString();
+}
 
 export default function ListeningRoomPage() {
   const activeTrackKey = useRef<string | null>(null);
@@ -74,7 +26,6 @@ export default function ListeningRoomPage() {
   const storyLoadingKey = useRef<string | null>(null);
   const lockedStory = useRef<{ trackKey: string; story: SongStory } | null>(null);
   const contextLoading = useRef(false);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [context, setContext] = useState<ListeningContext | null>(null);
   const [loading, setLoading] = useState(true);
   const [storyLoading, setStoryLoading] = useState(false);
@@ -84,8 +35,18 @@ export default function ListeningRoomPage() {
   const [showIntro, setShowIntro] = useState(true);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [restoredConversation, setRestoredConversation] = useState(false);
+  const [restoredConversationAt, setRestoredConversationAt] = useState<string | null>(null);
+  const [showDetailedTimes, setShowDetailedTimes] = useState(false);
   const [todayStats, setTodayStats] = useState<TodayListeningStats | null>(null);
   const [showTodayRanking, setShowTodayRanking] = useState(false);
+  const [likeBurst, setLikeBurst] = useState(0);
+  const [showCompanionSettings, setShowCompanionSettings] = useState(false);
+  const [promptSettings, setPromptSettings] = useState<ListeningPromptSettings | null>(null);
+  const [corePromptDraft, setCorePromptDraft] = useState("");
+  const [promptDraft, setPromptDraft] = useState("");
+  const [promptSettingsLoading, setPromptSettingsLoading] = useState(false);
+  const [promptSettingsSaving, setPromptSettingsSaving] = useState(false);
+  const [promptSettingsError, setPromptSettingsError] = useState<string | null>(null);
 
   const loadStory = useCallback(async (track: TrackState, trackKey: string) => {
     if (!track.title || storyLoadingKey.current === trackKey || lockedStory.current?.trackKey === trackKey) return;
@@ -120,6 +81,7 @@ export default function ListeningRoomPage() {
         lockedStory.current = null;
         storyLoadingKey.current = null;
         setStoryLoading(false);
+        setLikeBurst(0);
       }
       detectedTrackKey.current = trackKey;
       if (nextContext.story && !lockedStory.current) lockedStory.current = { trackKey, story: nextContext.story };
@@ -135,15 +97,14 @@ export default function ListeningRoomPage() {
   }, [loadStory]);
 
   useEffect(() => {
-    loadContext();
-    const timer = window.setInterval(() => loadContext(), 1000);
+    void loadContext();
+    const timer = window.setInterval(() => void loadContext(), 1000);
     return () => window.clearInterval(timer);
   }, [loadContext]);
 
   const loadTodayStats = useCallback(async () => {
     try {
-      const stats = await fetchApiClient<TodayListeningStats>("/api/listening/today-stats", { retries: 1, timeoutMs: 5000 });
-      setTodayStats(stats);
+      setTodayStats(await fetchApiClient<TodayListeningStats>("/api/listening/today-stats", { retries: 1, timeoutMs: 5000 }));
     } catch {
     }
   }, []);
@@ -160,7 +121,6 @@ export default function ListeningRoomPage() {
   }, []);
 
   const current = context?.current;
-  const statusText = current?.status === "live" ? "酷狗实时同步" : "等待酷狗播放";
   const displayTitle = current?.title || "让音乐开始流动";
   const displayArtist = current?.artist || "打开酷狗并播放一首歌";
 
@@ -169,8 +129,10 @@ export default function ListeningRoomPage() {
     if (activeTrackKey.current === trackKey) return;
     activeTrackKey.current = trackKey;
     setRestoredConversation(false);
+    setRestoredConversationAt(null);
     const welcome: ChatMessage = {
       role: "agent",
+      saved_at: nowIso(),
       content: current?.title
         ? `正在陪你听《${current.title}》${current.artist ? `，演唱是${current.artist}` : ""}。你此刻听到什么，都可以直接告诉我。`
         : "等你在酷狗播放一首歌，我会跟随当前歌曲开始陪听。",
@@ -182,163 +144,171 @@ export default function ListeningRoomPage() {
     if (current.artist) query.set("artist", current.artist);
     fetchApiClient<{ messages: ChatMessage[] }>(`/api/listening/conversation?${query.toString()}`, { retries: 2, timeoutMs: 12000 })
       .then((saved) => {
-        if (activeTrackKey.current === requestedTrackKey && saved.messages.length) {
-          setMessages(saved.messages);
-          setRestoredConversation(true);
-        }
+        if (activeTrackKey.current !== requestedTrackKey || !saved.messages.length) return;
+        setMessages(saved.messages);
+        setRestoredConversation(true);
+        setRestoredConversationAt(saved.messages.reduce((latest, message) => {
+          if (!message.saved_at) return latest;
+          if (!latest) return message.saved_at;
+          return new Date(message.saved_at).getTime() > new Date(latest).getTime() ? message.saved_at : latest;
+        }, null as string | null));
       })
       .catch(() => undefined);
   }, [current?.artist, current?.title]);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [chatting, messages]);
   const openKugou = async () => {
     setOpening(true);
     try {
       await fetchApiClient("/api/kugou/open", { method: "POST" });
-      window.setTimeout(() => loadContext(), 1200);
+      window.setTimeout(() => void loadContext(), 1200);
     } finally {
       setOpening(false);
+    }
+  };
+
+  const likeCurrentSong = async () => {
+    if (!current?.recording_id) return;
+    setLikeBurst((value) => value + 1);
+    try {
+      await fetchApiClient("/api/listener/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recording_id: current.recording_id, action: "like", channel: "listening" }),
+      });
+    } catch {
+      setLikeBurst((value) => Math.max(0, value - 1));
+    }
+  };
+
+  const openCompanionSettings = async () => {
+    setShowCompanionSettings(true);
+    setPromptSettingsError(null);
+    if (promptSettings) return;
+    setPromptSettingsLoading(true);
+    try {
+      const settings = await fetchApiClient<ListeningPromptSettings>("/api/listening/settings", { retries: 1, timeoutMs: 8000 });
+      setPromptSettings(settings);
+      setCorePromptDraft(settings.core_prompt);
+      setPromptDraft(settings.custom_prompt);
+    } catch {
+      setPromptSettingsError("陪伴设置暂时无法读取，请确认后端已重启。设置面板会保留，不会自动消失。");
+    } finally {
+      setPromptSettingsLoading(false);
+    }
+  };
+
+  const saveCompanionSettings = async () => {
+    setPromptSettingsSaving(true);
+    setPromptSettingsError(null);
+    try {
+      const settings = await fetchApiClient<ListeningPromptSettings>("/api/listening/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ core_prompt: corePromptDraft, custom_prompt: promptDraft }),
+        retries: 1,
+        timeoutMs: 8000,
+      });
+      setPromptSettings(settings);
+      setCorePromptDraft(settings.core_prompt);
+      setPromptDraft(settings.custom_prompt);
+      setShowCompanionSettings(false);
+    } catch {
+      setPromptSettingsError("保存失败，请确认后端已重启后再试。");
+    } finally {
+      setPromptSettingsSaving(false);
     }
   };
 
   const askAgent = async (prompt = question) => {
     const nextQuestion = prompt.trim();
     if (!nextQuestion || chatting) return;
+    const clientMessageId = createClientMessageId();
     setQuestion("");
-    setMessages((items) => [...items, { role: "user", content: nextQuestion }]);
+    setMessages((items) => [...items, { role: "user", content: nextQuestion, saved_at: nowIso() }]);
     setChatting(true);
     try {
       const result = await fetchApiClient<{ answer: string; tools_used: string[]; sources: ChatSource[] }>("/api/listening/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        retries: 1,
+        timeoutMs: 45000,
         body: JSON.stringify({
           question: nextQuestion,
           song_title: current?.title,
           artist: current?.artist,
+          client_message_id: clientMessageId,
           recent_messages: messages.slice(-8).map(({ role, content }) => ({ role, content })),
         }),
       });
-      setMessages((items) => [...items, { role: "agent", content: result.answer, tools: result.tools_used, sources: result.sources }]);
+      setMessages((items) => [...items, { role: "agent", content: result.answer, tools: result.tools_used, sources: result.sources, saved_at: nowIso() }]);
     } catch {
-      setMessages((items) => [...items, { role: "agent", content: "音乐陪伴暂时没有回应，请确认服务仍在运行。" }]);
+      setMessages((items) => [...items, { role: "agent", content: "音乐陪伴暂时没有回应，请确认服务仍在运行。", saved_at: nowIso() }]);
     } finally {
       setChatting(false);
     }
   };
 
-  const vinylClass = useMemo(() => `room-vinyl${current?.status === "live" ? " spinning" : ""}`, [current?.status]);
+  const currentLikeCount = (current?.like_count || 0) + likeBurst;
 
   return (
     <main className="listening-room-page">
       <section className={`room-heading ${showIntro ? "is-visible" : "is-hidden"}`}>
-        <div>
-          <p className="atlas-eyebrow"><span />LISTENING ROOM</p>
-          <h1>听见歌里，<em>没有说完的话。</em></h1>
-        </div>
+        <div><p className="atlas-eyebrow"><span />LISTENING ROOM</p><h1>听见歌里，<em>没有说完的话。</em></h1></div>
       </section>
 
       <section className="room-grid">
         <section className="room-listening-main room-panel">
-        <aside className="room-now-playing">
-          <div className="room-panel-label"><Headphones size={16} /><span>NOW PLAYING</span><i className={current?.status === "live" ? "online" : ""} /></div>
-          <div className="room-vinyl-stage">
-            <div className="room-orbit" />
-            <div className={vinylClass}><div><Music2 size={23} /></div></div>
-            <div className="room-needle" />
-          </div>
-          <div className="room-track-copy">
-            <span className="room-status">{statusText}</span>
-            <h2>{loading ? "正在连接…" : displayTitle}</h2>
-            <p>{displayArtist}{current?.album ? ` · ${current.album}` : ""}{current?.year ? ` · ${current.year}` : ""}</p>
-          </div>
-          <div className="room-equalizer" aria-hidden="true">{Array.from({ length: 22 }).map((_, index) => <i key={index} style={{ animationDelay: `${index * 55}ms` }} />)}</div>
-          <div className="room-player-actions">
-            <button className="room-primary-button" disabled={opening} onClick={openKugou} type="button"><ExternalLink size={16} />{opening ? "正在打开" : "打开酷狗"}</button>
-            <button className="room-icon-button" onClick={() => loadContext()} type="button" aria-label="刷新当前歌曲"><RefreshCw size={17} /></button>
-          </div>
-          <button className="room-today-card" onClick={() => setShowTodayRanking(true)} type="button">
-            <span className="room-today-icon"><Clock3 size={16} /></span>
-            <span className="room-today-copy">
-              <small>今日听歌时间</small>
-              <strong>{todayStats?.formatted_duration || "0 秒"}</strong>
-            </span>
-            <span className="room-today-rank"><Trophy size={13} />{todayStats?.track_count || 0} 首<ChevronRight size={14} /></span>
-          </button>
-        </aside>
-
-        <section className="room-content">
-          <div className="story-view">
-            {context?.story ? (
-              <>
-                <div className="story-intro-label"><span>情绪画像</span><small>EMOTIONAL PORTRAIT</small></div>
-                <h2>{context.story.subtitle}</h2>
-                <p className="story-narrative">{context.story.narrative}</p>
-                {context.story.facts.length ? <div className="story-facts">{context.story.facts.map((fact) => <span key={fact}>{fact}</span>)}</div> : null}
-                {context.story.source_urls.length ? <div className="story-sources">{context.story.source_urls.map((url) => <a href={url} key={url} rel="noreferrer" target="_blank"><ExternalLink size={13} />查看资料来源</a>)}</div> : null}
-                <div className="listening-points">
-                  <h3>这一遍，可以这样听</h3>
-                  {context.story.listening_points.map((point, index) => <div key={point}><span>0{index + 1}</span><p>{point}</p></div>)}
-                </div>
-              </>
-            ) : current?.title && storyLoading ? (
-              <div className="room-empty"><LoaderCircle className="spin-icon" size={38} /><h2>歌曲已经同步</h2><p>正在补全这首歌的情绪画像，不影响继续识别下一首。</p></div>
-            ) : (
-              <div className="room-empty"><Disc3 size={42} /><h2>等待一首歌进入房间</h2><p>播放歌曲后，音乐陪伴会和你一起慢慢听懂它。</p></div>
-            )}
-          </div>
-        </section>
+          <NowPlayingPanel
+            current={current}
+            displayArtist={displayArtist}
+            displayTitle={displayTitle}
+            likeCount={currentLikeCount}
+            loading={loading}
+            opening={opening}
+            todayStats={todayStats}
+            onLike={() => void likeCurrentSong()}
+            onOpenKugou={() => void openKugou()}
+            onRefresh={() => void loadContext()}
+            onShowRanking={() => setShowTodayRanking(true)}
+          />
+          <SongStoryPanel hasCurrentTrack={Boolean(current?.title)} loading={storyLoading} story={context?.story} />
         </section>
 
-        <aside className="room-agent room-panel">
-          <div className="companion-head">
-            <div className="companion-identity"><span><Bot size={18} /></span><div><strong>音乐陪伴</strong><small>{current?.title ? `${displayTitle}${current.artist ? ` · ${current.artist}` : ""}` : "等待一首歌开始"}</small></div></div>
-            <div className={`companion-live${restoredConversation ? " restored" : ""}`}><i />{restoredConversation ? "记忆已唤醒" : "正在陪听"}</div>
-          </div>
-          <div className="companion-messages">
-            {messages.map((message, index) => (
-              <div className={`companion-turn ${message.role}`} key={`${message.role}-${index}`}>
-                {message.role === "agent" ? <div className="companion-avatar"><Bot size={14} /></div> : null}
-                <div className="companion-copy">
-                  <span>{message.role === "agent" ? "音乐陪伴" : "你"}</span>
-                  <div className="companion-bubble"><p>{message.content}</p>{message.sources?.length ? <div className="agent-message-sources">{message.sources.slice(0, 3).map((source) => <a href={source.url} key={source.url} rel="noreferrer" target="_blank"><ExternalLink size={11} />{source.name}</a>)}</div> : null}</div>
-                </div>
-              </div>
-            ))}
-            {chatting ? <div className="companion-turn agent"><div className="companion-avatar"><Bot size={14} /></div><div className="companion-copy"><span>音乐陪伴</span><div className="companion-bubble companion-thinking"><i /><i /><i /></div></div></div> : null}
-            <div ref={messagesEndRef} />
-          </div>
-          <div className="companion-actions">
-            {(context?.quick_prompts || []).slice(0, 4).map((prompt) => <button key={prompt} onClick={() => askAgent(prompt)} type="button">{prompt}</button>)}
-          </div>
-          <div className="companion-composer">
-            <MessageCircleMore size={17} />
-            <textarea aria-label="和音乐陪伴对话" onChange={(event) => setQuestion(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); askAgent(); } }} placeholder="说说你此刻在这首歌里听见了什么……" rows={1} value={question} />
-            <button disabled={!question.trim() || chatting} onClick={() => askAgent()} type="button" aria-label="发送"><Send size={16} /></button>
-          </div>
-        </aside>
+        <CompanionChat
+          chatting={chatting}
+          currentArtist={current?.artist}
+          currentTitle={current?.title}
+          messages={messages}
+          question={question}
+          quickPrompts={context?.quick_prompts || []}
+          restoredConversation={restoredConversation}
+          restoredConversationAt={restoredConversationAt}
+          showDetailedTimes={showDetailedTimes}
+          onAsk={askAgent}
+          onOpenSettings={() => void openCompanionSettings()}
+          onQuestionChange={setQuestion}
+          onToggleTimes={() => setShowDetailedTimes((value) => !value)}
+          settingsPanel={showCompanionSettings ? (
+            <CompanionSettingsPanel
+              corePrompt={promptSettings?.core_prompt || ""}
+              customPrompt={promptDraft}
+              defaultCorePrompt={promptSettings?.default_core_prompt || ""}
+              editableScope={promptSettings?.editable_scope || ""}
+              error={promptSettingsError}
+              loading={promptSettingsLoading}
+              onChange={setPromptDraft}
+              onCoreChange={setCorePromptDraft}
+              onClose={() => setShowCompanionSettings(false)}
+              onReset={() => { setCorePromptDraft(promptSettings?.default_core_prompt || ""); setPromptDraft(""); }}
+              onRetry={() => void openCompanionSettings()}
+              onSave={() => void saveCompanionSettings()}
+              saving={promptSettingsSaving}
+            />
+          ) : null}
+        />
       </section>
-      {showTodayRanking ? (
-        <div className="today-ranking-overlay" onClick={() => setShowTodayRanking(false)} role="presentation">
-          <section aria-labelledby="today-ranking-title" aria-modal="true" className="today-ranking-dialog" onClick={(event) => event.stopPropagation()} role="dialog">
-            <header>
-              <div><span><Trophy size={18} /></span><div><small>TODAY&apos;S LISTENING</small><h2 id="today-ranking-title">今日听歌排行</h2></div></div>
-              <button aria-label="关闭今日听歌排行" onClick={() => setShowTodayRanking(false)} type="button"><X size={18} /></button>
-            </header>
-            <div className="today-ranking-summary"><Clock3 size={17} /><span>今天已经听了</span><strong>{todayStats?.formatted_duration || "0 秒"}</strong><small>{todayStats?.track_count || 0} 首歌</small></div>
-            <div className="today-ranking-list">
-              {todayStats?.ranking.length ? todayStats.ranking.map((item, index) => (
-                <article key={item.recording_id}>
-                  <span className={`today-ranking-number rank-${index + 1}`}>{String(index + 1).padStart(2, "0")}</span>
-                  <div><strong>{item.title}</strong><small>{item.artist}</small></div>
-                  <time>{item.formatted_duration}</time>
-                </article>
-              )) : <div className="today-ranking-empty"><Disc3 size={30} /><p>今天的第一首歌还没开始。</p></div>}
-            </div>
-          </section>
-        </div>
-      ) : null}
+
+      {showTodayRanking ? <TodayRankingDialog onClose={() => setShowTodayRanking(false)} stats={todayStats} /> : null}
     </main>
   );
 }

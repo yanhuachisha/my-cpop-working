@@ -1,7 +1,8 @@
 'use client';
 
+import "./home-discovery.css";
+
 import {
-  Bookmark,
   CloudRain,
   Compass,
   ExternalLink,
@@ -44,35 +45,65 @@ type TodayExperience = {
     is_day: boolean;
   };
   computer: { activity: string; label: string; idle_seconds: number | null; period: string };
-  news: { title: string; url: string; publisher: string; published_at?: string | null }[];
+  news: { title: string; url: string; publisher: string; published_at?: string | null; content_type?: "video" | "text"; story_key?: string }[];
   anniversaries: { title: string; artist: string; release_date: string; years: number; distance_days: number }[];
   picks: TodayPick[];
   profile: { listener_type: string; favorite_artist: string; event_count: number; liked_count: number; saved_count: number };
   catalog_size: number;
 };
 
+const TODAY_CACHE_KEY = "my-cpop-working:today-experience:v1";
+const TODAY_CACHE_REFRESH_MS = 20 * 60 * 1000;
+
+type TodayCache = { cachedAt: number; value: TodayExperience };
+
+function localDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function readTodayCache(): TodayCache | null {
+  try {
+    const cached = JSON.parse(window.localStorage.getItem(TODAY_CACHE_KEY) || "null") as TodayCache | null;
+    if (!cached?.value || cached.value.today !== localDateKey()) return null;
+    return cached;
+  } catch {
+    return null;
+  }
+}
+
+function writeTodayCache(value: TodayExperience) {
+  window.localStorage.setItem(TODAY_CACHE_KEY, JSON.stringify({ cachedAt: Date.now(), value }));
+}
+
 export function DailyPickContent() {
   const initialLoadStarted = useRef(false);
   const [experience, setExperience] = useState<TodayExperience | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<Record<string, string>>({});
   const [openingId, setOpeningId] = useState<string | null>(null);
 
-  const loadToday = async (explore = false) => {
-    setLoading(true);
-    setError(null);
+  const loadToday = async (explore = false, quiet = false) => {
+    if (!quiet) {
+      setLoading(true);
+      setError(null);
+    }
     try {
       const seed = explore ? `&seed=${Math.random().toString(36).slice(2)}` : "";
-      setExperience(await fetchApiClient<TodayExperience>(`/api/today?user_id=demo&mode=auto${seed}`, {
+      const nextExperience = await fetchApiClient<TodayExperience>(`/api/today?user_id=demo&mode=auto${seed}`, {
         retries: 2,
         timeoutMs: 30000,
-      }));
+      });
+      setExperience(nextExperience);
+      writeTodayCache(nextExperience);
     } catch (requestError) {
+      if (quiet) return;
       const aborted = requestError instanceof DOMException && requestError.name === "AbortError";
       setError(aborted ? "首页数据准备时间较长，请稍后重试" : "今日声景暂时没有连接成功");
     } finally {
-      setLoading(false);
+      if (!quiet) setLoading(false);
     }
   };
 
@@ -80,26 +111,19 @@ export function DailyPickContent() {
     if (initialLoadStarted.current) return;
     initialLoadStarted.current = true;
     window.localStorage.removeItem("atlas-today-mode");
-    loadToday();
-  }, []);
-
-  const sendFeedback = async (recordingId: string, action: "like" | "save" | "skip" | "play") => {
-    setFeedback((value) => ({ ...value, [recordingId]: action }));
-    try {
-      await fetchApiClient("/api/listener/feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ recording_id: recordingId, action, channel: "today" }),
-      });
-    } catch {
-      setFeedback((value) => ({ ...value, [recordingId]: "" }));
+    const cached = readTodayCache();
+    if (!cached || cached.value.weather?.available === false) {
+      void loadToday();
+      return;
     }
-  };
+    setExperience(cached.value);
+    setLoading(false);
+    if (Date.now() - cached.cachedAt > TODAY_CACHE_REFRESH_MS) void loadToday(false, true);
+  }, []);
 
   const listenNow = async (pick: TodayPick) => {
     setOpeningId(pick.recording.id);
     try {
-      await sendFeedback(pick.recording.id, "play");
       await fetchApiClient("/api/kugou/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -115,6 +139,27 @@ export function DailyPickContent() {
 
   const mainPick = experience.picks[0];
   const WeatherIcon = experience.weather.kind === "clear" ? SunMedium : experience.weather.kind.includes("rain") || experience.weather.kind === "storm" ? CloudRain : Waves;
+  const newsEventKeys = (article: TodayExperience["news"][number]) => {
+    const title = article.title.replace(/\s+-\s+[^-]{2,40}$/, "").toLowerCase();
+    const quoted = Array.from(title.matchAll(/[《「『“"]([^》」』”"]{4,36})[》」』”"]/g), (match) => match[1]);
+    const latin = title.match(/[a-z][a-z0-9]{3,}/g) || [];
+    return new Set([article.story_key, ...quoted, ...latin].filter((key): key is string => typeof key === "string" && Boolean(key) && !["music", "news", "video", "live", "official"].includes(key)));
+  };
+  const visibleNews = experience.news.reduce<typeof experience.news>((items, article) => {
+    const keys = newsEventKeys(article);
+    const normalizedTitle = article.title.replace(/\s+-\s+[^-]{2,40}$/, "").replace(/[^\p{L}\p{N}]/gu, "").toLowerCase();
+    const duplicate = items.some((item) => {
+      if (item.url === article.url) return true;
+      const previousTitle = item.title.replace(/\s+-\s+[^-]{2,40}$/, "").replace(/[^\p{L}\p{N}]/gu, "").toLowerCase();
+      if (previousTitle === normalizedTitle) return true;
+      const previousKeys = newsEventKeys(item);
+      return Array.from(keys).some((key) => previousKeys.has(key));
+    });
+    if (duplicate) {
+      return items;
+    }
+    return [...items, article];
+  }, []).slice(0, 8);
 
   if (!mainPick) return <ErrorState message="今天还没有找到合适的歌曲" retry={loadToday} />;
 
@@ -135,12 +180,12 @@ export function DailyPickContent() {
             <h1>{mainPick.recording.title}</h1>
             <h2>{mainPick.artist.name}</h2>
             <p>{mainPick.headline}</p>
-            <div className="sonic-actions"><button className={openingId === mainPick.recording.id ? "is-playing" : ""} disabled={openingId === mainPick.recording.id} onClick={() => listenNow(mainPick)} type="button"><Music2 size={18} />{openingId === mainPick.recording.id ? "正在打开酷狗" : "现在就听"}</button><button className={feedback[mainPick.recording.id] === "save" ? "is-playing" : ""} onClick={() => sendFeedback(mainPick.recording.id, "save")} type="button"><Bookmark size={17} />收藏</button><Link href="/agent"><Sparkles size={17} />聊聊这首歌</Link><button className="daily-swap-button" onClick={() => loadToday(true)} title="换一首" type="button"><RefreshCw size={17} />换一首</button></div>
+            <div className="sonic-actions"><button className={openingId === mainPick.recording.id ? "is-playing" : ""} disabled={openingId === mainPick.recording.id} onClick={() => listenNow(mainPick)} type="button"><Music2 size={18} />{openingId === mainPick.recording.id ? "正在打开酷狗" : "现在就听"}</button><Link href="/agent"><Sparkles size={17} />聊聊这首歌</Link><button className="daily-swap-button" onClick={() => loadToday(true)} title="换一首" type="button"><RefreshCw size={17} />换一首</button></div>
           </div>
         </div>
         <aside className="daily-news-panel">
           <header><div><Newspaper size={20} /><span><strong>今日华语乐坛</strong><small>每天更新的音乐新闻</small></span></div><time>{experience.today}</time></header>
-          <div className="daily-news-list">{experience.news.slice(0, 6).map((article, index) => <a href={article.url} key={article.url} rel="noreferrer" target="_blank"><i>{String(index + 1).padStart(2, "0")}</i><span><strong>{article.title}</strong><small>{article.publisher}</small></span><ExternalLink size={15} /></a>)}</div>
+          <div className="daily-news-list home-news-list">{visibleNews.map((article, index) => <a href={article.url} key={article.url} rel="noreferrer" target="_blank"><i>{String(index + 1).padStart(2, "0")}</i><span><strong>{article.title}</strong><small>{article.publisher}</small></span><ExternalLink size={15} /></a>)}</div>
           {!experience.news.length ? <div className="daily-news-empty">今天的新闻源暂时没有返回内容，稍后再来看看。</div> : null}
         </aside>
       </section>

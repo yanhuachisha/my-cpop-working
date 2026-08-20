@@ -35,6 +35,7 @@ def test_agent_status_exposes_deepseek_configuration(monkeypatch):
     assert "search_song_material" in agent_status()["tools"]
     assert "save_listening_memory" in agent_status()["tools"]
     assert "search_song_sources" in agent_status()["tools"]
+    assert "research_song_public_impact" in agent_status()["tools"]
     assert "analyze_lyric_excerpt" not in agent_status()["tools"]
     assert "search_song_story_web" not in agent_status()["tools"]
 

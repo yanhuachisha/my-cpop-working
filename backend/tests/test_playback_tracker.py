@@ -53,3 +53,25 @@ def test_tracker_first_observation_does_not_add_time(monkeypatch):
     tracker.observe(_snapshot("晴天", "周杰伦"), now=10)
 
     assert increments == []
+
+
+def test_tracker_pause_snapshot_does_not_add_listening_time(monkeypatch):
+    increments = []
+    monkeypatch.setattr(playback_tracker_module, "ensure_library_recording", lambda *_: "song-a")
+    monkeypatch.setattr(
+        playback_tracker_module,
+        "record_daily_listening",
+        lambda **payload: increments.append(payload),
+    )
+    monkeypatch.setattr(
+        playback_tracker_module,
+        "record_feedback",
+        lambda request: {"total_play_count": 1},
+    )
+    tracker = KugouPlaybackTracker(threshold_seconds=30, poll_seconds=5)
+
+    tracker.observe(_snapshot("晴天", "周杰伦"), now=0)
+    tracker.observe(_snapshot("晴天", "周杰伦"), now=5)
+    tracker.observe({"title": "晴天", "artist": "周杰伦", "is_playing": False}, now=100)
+
+    assert [item["listened_seconds"] for item in increments] == [5]

@@ -15,6 +15,7 @@ from pydantic import BaseModel, Field
 
 _window_cache_lock = Lock()
 _cached_kugou_window: int | None = None
+_AUDIO_ACTIVE_THRESHOLD = 0.0005
 
 
 @dataclass
@@ -139,6 +140,39 @@ def _find_kugou_window_handle() -> int | None:
     return handles[0] if handles else None
 
 
+def _kugou_audio_active() -> bool | None:
+    if platform.system() != "Windows":
+        return None
+    try:
+        from pycaw.pycaw import AudioUtilities, IAudioMeterInformation
+    except (ImportError, OSError):
+        return None
+    found_session = False
+    try:
+        for session in AudioUtilities.GetAllSessions():
+            process = session.Process
+            if not process:
+                continue
+            try:
+                process_path = process.exe()
+            except (OSError, RuntimeError, AttributeError):
+                process_path = process.name()
+            if not _is_kugou_process_path(process_path):
+                continue
+            found_session = True
+            if getattr(session, "State", 0) == 1:
+                return True
+            try:
+                meter = session._ctl.QueryInterface(IAudioMeterInformation)
+                if float(meter.GetPeakValue()) > _AUDIO_ACTIVE_THRESHOLD:
+                    return True
+            except (OSError, RuntimeError, AttributeError, ValueError):
+                continue
+    except (OSError, RuntimeError, AttributeError):
+        return None
+    return False if found_session else None
+
+
 def _set_clipboard_text(text: str) -> None:
     user32 = ctypes.windll.user32
     kernel32 = ctypes.windll.kernel32
@@ -230,7 +264,12 @@ def get_now_playing() -> dict[str, object]:
     if not raw_title:
         return _empty()
     title, artist = _parse_window_title(raw_title)
-    return asdict(KugouNowPlaying(True, bool(title), title, artist, raw_title, "windows-kugou-process-title"))
+    audio_active = _kugou_audio_active()
+    is_playing = bool(title) if audio_active is None else bool(title and audio_active)
+    source = "windows-kugou-process-title"
+    if audio_active is not None:
+        source = f"{source}+audio-session"
+    return asdict(KugouNowPlaying(True, is_playing, title, artist, raw_title, source))
 
 
 def open_kugou() -> dict[str, object]:

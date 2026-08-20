@@ -14,6 +14,7 @@ dependencies = [
   "python-dotenv>=1.0.0",
   "python-multipart>=0.0.9",
   "imageio-ffmpeg>=0.5.1",
+  "pycaw>=20251023; platform_system == 'Windows'",
   "tzdata>=2024.1",
 ]
 

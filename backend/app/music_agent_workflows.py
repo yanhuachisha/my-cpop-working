@@ -42,6 +42,22 @@ def search_music_workflow(store: DataStore, query: str, limit: int = 8) -> dict[
     }
 
 
+def search_local_music_workflow(store: DataStore, query: str, limit: int = 8) -> dict[str, Any]:
+    """Search only the bundled catalog for deterministic offline evaluation."""
+    result_limit = max(1, min(limit, 20))
+    return {
+        "query": query,
+        "results": [],
+        "fallback": "local_catalog",
+        "local_artists": [
+            item.model_dump() for item in store.search_artists(query)[:result_limit]
+        ],
+        "local_songs": [
+            item.model_dump() for item in store.search_recordings(query)[:result_limit]
+        ],
+    }
+
+
 def recommend_music_workflow(
     store: DataStore,
     limit: int = 1,

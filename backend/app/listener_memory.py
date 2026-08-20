@@ -31,9 +31,11 @@ class FeedbackRequest(BaseModel):
 
 def _empty() -> dict:
     return {
-        "events": [], "liked": [], "saved": [], "skipped": [], "play_counts": {},
+        "events": [], "liked": [], "like_counts": {}, "saved": [], "skipped": [], "play_counts": {},
         "favorite_timestamps": {}, "lyric_fragments": [], "music_notes": [],
         "listening_conversations": {}, "agent_sessions": {}, "daily_listening": {},
+        "listening_companion_prompt": "",
+        "listening_companion_core_prompt": "",
     }
 
 
@@ -110,6 +112,32 @@ def save_music_note(request: MusicNoteRequest) -> dict:
 
 def music_notes() -> list[dict]:
     return load_state().get("music_notes", [])
+
+
+def get_listening_companion_prompt() -> str:
+    return str(load_state().get("listening_companion_prompt") or "").strip()
+
+
+def save_listening_companion_prompt(prompt: str) -> str:
+    normalized = prompt.strip()
+    with _lock:
+        state = load_state()
+        state["listening_companion_prompt"] = normalized
+        _write_state(state)
+    return normalized
+
+
+def get_listening_companion_core_prompt() -> str:
+    return str(load_state().get("listening_companion_core_prompt") or "").strip()
+
+
+def save_listening_companion_core_prompt(prompt: str) -> str:
+    normalized = prompt.strip()
+    with _lock:
+        state = load_state()
+        state["listening_companion_core_prompt"] = normalized
+        _write_state(state)
+    return normalized
 
 
 def _agent_session_summary(session: dict) -> dict:
@@ -232,19 +260,28 @@ def save_listening_conversation_turn(
     artist: str | None,
     question: str,
     answer: str,
+    turn_id: str | None = None,
 ) -> list[dict]:
     if not song_title.strip():
         return []
     saved_at = datetime.now(UTC).isoformat()
     key = _conversation_key(song_title, artist)
+    clean_question = question.strip()
+    clean_answer = answer.strip()
+    clean_turn_id = turn_id.strip() if turn_id else None
     with _lock:
         state = load_state()
         conversations = dict(state.get("listening_conversations", {}))
         existing = conversations.get(key, {})
         messages = list(existing.get("messages", []))
+        if clean_turn_id and any(message.get("turn_id") == clean_turn_id for message in messages):
+            return messages[-50:]
+        if len(messages) >= 2 and messages[-2].get("role") == "user" and messages[-1].get("role") == "agent":
+            if messages[-2].get("content") == clean_question and messages[-1].get("content") == clean_answer:
+                return messages[-50:]
         messages.extend([
-            {"role": "user", "content": question.strip(), "saved_at": saved_at},
-            {"role": "agent", "content": answer.strip(), "saved_at": saved_at},
+            {"role": "user", "content": clean_question, "saved_at": saved_at, "turn_id": clean_turn_id},
+            {"role": "agent", "content": clean_answer, "saved_at": saved_at, "turn_id": clean_turn_id},
         ])
         conversations[key] = {
             "song_title": song_title,
@@ -310,6 +347,8 @@ def record_feedback(request: FeedbackRequest) -> dict:
             key = "liked" if request.action == "like" else "saved"
             state[key] = list(dict.fromkeys([*state[key], request.recording_id]))
             state["favorite_timestamps"].setdefault(request.recording_id, event["at"])
+        if request.action == "like":
+            state["like_counts"][request.recording_id] = int(state["like_counts"].get(request.recording_id, 0)) + 1
         if request.action == "skip":
             state["skipped"] = list(dict.fromkeys([*state["skipped"][-99:], request.recording_id]))
         if request.action in {"play", "replay"}:
@@ -477,7 +516,7 @@ def listener_preference_profile(state: dict | None = None) -> dict:
                 period_scores[period] += 1
 
     for recording_id in state.get("liked", []):
-        track_stats[recording_id]["likes"] = 1
+        track_stats[recording_id]["likes"] = max(1, int(state.get("like_counts", {}).get(recording_id, 0)))
     for recording_id in state.get("saved", []):
         track_stats[recording_id]["saves"] = 1
 
@@ -550,6 +589,7 @@ def listener_preference_profile(state: dict | None = None) -> dict:
     )
     evidence_count = (
         play_actions
+        + sum(int(value) for value in state.get("like_counts", {}).values())
         + len(state.get("liked", [])) * 2
         + len(state.get("saved", [])) * 2
         + len(state.get("music_notes", []))
@@ -586,6 +626,7 @@ def listener_preference_profile(state: dict | None = None) -> dict:
             "play_actions": play_actions,
             "replay_actions": replay_actions,
             "skip_actions": skip_actions,
+            "like_actions": sum(int(value) for value in state.get("like_counts", {}).values()),
             "replay_rate": round(replay_actions / max(1, play_actions), 3),
             "skip_rate": round(skip_actions / max(1, play_actions + skip_actions), 3),
             "average_listened_seconds": round(
@@ -661,6 +702,7 @@ def listener_summary(state: dict | None = None) -> dict:
     total_play_count = sum(int(value) for value in state["play_counts"].values())
     return {
         "event_count": len(state["events"]), "liked_count": len(state["liked"]), "saved_count": len(state["saved"]),
+        "like_actions": sum(int(value) for value in state.get("like_counts", {}).values()),
         "total_play_count": total_play_count,
         "top_recordings": top_recordings[:10],
         "recent_plays": recent_plays,

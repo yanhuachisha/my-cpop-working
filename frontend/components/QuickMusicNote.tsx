@@ -4,6 +4,7 @@ import { Check, Dices, LoaderCircle, NotebookPen, Save, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { fetchApiClient } from "../lib/api";
+import "./QuickMusicNote.css";
 
 type NowPlaying = { title: string | null; artist: string | null };
 

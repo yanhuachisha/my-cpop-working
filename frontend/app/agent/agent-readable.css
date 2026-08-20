@@ -1,0 +1,156 @@
+.music-agent-page .music-agent-sidebar header small {
+  font-size: 12px;
+}
+
+.music-agent-page .agent-sidebar-label {
+  font-size: 12px;
+}
+
+.music-agent-page .agent-session-new {
+  font-size: 13px;
+  min-height: 44px;
+}
+
+.music-agent-page .agent-session-item strong {
+  font-size: 15px;
+}
+
+.music-agent-page .agent-session-item span {
+  font-size: 12px;
+}
+
+.music-agent-page .agent-session-item small {
+  font-size: 11px;
+}
+
+.music-agent-page .agent-sidebar-note p {
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.music-agent-page .music-agent-chat-header strong {
+  font-size: 17px;
+}
+
+.music-agent-page .music-agent-chat-header small {
+  font-size: 12px;
+}
+
+.music-agent-page .agent-context-pill {
+  font-size: 12px;
+  padding: 9px 12px;
+}
+
+.music-agent-page .agent-message {
+  gap: 16px;
+  max-width: 1180px;
+}
+
+.music-agent-page .agent-message-avatar {
+  font-size: 12px;
+  height: 56px;
+  width: 56px;
+}
+
+.music-agent-page .agent-message-body {
+  max-width: min(1080px, 88%);
+  padding: 25px 30px;
+}
+
+.music-agent-page .agent-message-body p,
+.music-agent-page .agent-answer p,
+.music-agent-page .agent-answer li {
+  font-size: 16px;
+  line-height: 1.76;
+}
+
+.music-agent-page .agent-answer {
+  gap: 13px;
+  max-width: 920px;
+}
+
+.music-agent-page .agent-answer p > span {
+  color: inherit;
+  display: inline;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+  word-break: normal;
+}
+
+.music-agent-page .agent-answer strong {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.music-agent-page .agent-answer h2 {
+  font-size: 22px;
+}
+
+.music-agent-page .agent-answer h3 {
+  font-size: 18px;
+}
+
+.music-agent-page .agent-answer .agent-answer-section-title {
+  border-left: 3px solid rgba(121, 102, 212, .48);
+  color: #51458a;
+  font-size: 15px;
+  letter-spacing: 0;
+  margin-top: 5px;
+  padding-left: 10px;
+}
+
+.music-agent-page .agent-answer blockquote {
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.music-agent-page .agent-answer th,
+.music-agent-page .agent-answer td {
+  font-size: 14px;
+  padding: 11px 13px;
+}
+
+.music-agent-page .agent-answer th {
+  font-size: 13px;
+}
+
+.music-agent-page .agent-message-body footer {
+  font-size: 12px;
+  margin-top: 17px;
+  padding-top: 13px;
+}
+
+.music-agent-page .agent-message-body footer span {
+  padding: 6px 10px;
+}
+
+.music-agent-page .thinking small {
+  font-size: 12px;
+}
+
+.music-agent-page .agent-welcome > span,
+.music-agent-page .agent-welcome button {
+  font-size: 12px;
+}
+
+.music-agent-page .music-agent-composer > p {
+  font-size: 12px;
+}
+
+.music-agent-page .music-agent-composer > small {
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .music-agent-page .agent-message-body {
+    max-width: 86%;
+    padding: 19px 20px;
+  }
+
+  .music-agent-page .agent-message-body p,
+  .music-agent-page .agent-answer p,
+  .music-agent-page .agent-answer li {
+    font-size: 15px;
+  }
+}

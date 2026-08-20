@@ -1,0 +1,12 @@
+.quick-note-overlay {
+  align-items: flex-start;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.quick-note-dialog {
+  margin: auto;
+  max-height: calc(100dvh - 44px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

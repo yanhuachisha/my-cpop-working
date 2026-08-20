@@ -14,7 +14,7 @@
 
 .music-agent-shell {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-columns: 284px minmax(0, 1fr);
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -57,12 +57,12 @@
 }
 
 .music-agent-sidebar header strong {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .music-agent-sidebar header small {
   color: #8b8279;
-  font-size: 9px;
+  font-size: 10px;
   margin-top: 4px;
 }
 
@@ -82,7 +82,7 @@
 
 .agent-sidebar-label {
   color: #9b9187;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 850;
   letter-spacing: 0.16em;
   padding: 7px 9px 10px;
@@ -99,7 +99,7 @@
   cursor: pointer;
   display: flex;
   font: inherit;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   gap: 8px;
   justify-content: center;
@@ -152,7 +152,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 11px 5px 11px 11px;
+  padding: 14px 7px 14px 13px;
   text-align: left;
 }
 
@@ -168,19 +168,21 @@
 
 .agent-session-item strong {
   color: #403935;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 800;
+  line-height: 1.35;
 }
 
 .agent-session-item span {
   color: #948a81;
-  font-size: 8px;
+  font-size: 11px;
+  line-height: 1.45;
   margin-top: 5px;
 }
 
 .agent-session-item small {
   color: #aaa198;
-  font-size: 7px;
+  font-size: 10px;
   margin-top: 6px;
 }
 
@@ -215,7 +217,7 @@
   color: #a0968d;
   display: flex;
   flex-direction: column;
-  font-size: 8px;
+  font-size: 11px;
   gap: 8px;
   padding: 30px 8px;
   text-align: center;
@@ -270,13 +272,16 @@
 
 .agent-sidebar-note p {
   color: #81776e;
-  font-size: 9px;
-  line-height: 1.65;
+  font-size: 10px;
+  line-height: 1.7;
   margin: 0;
 }
 
 .music-agent-chat {
-  background: rgba(255, 254, 251, 0.78);
+  background:
+    linear-gradient(180deg, rgba(255, 254, 251, .86), rgba(248, 244, 238, .94)),
+    radial-gradient(circle at 18% 8%, rgba(139, 226, 205, .16), transparent 24%),
+    radial-gradient(circle at 74% 28%, rgba(143, 123, 255, .12), transparent 25%);
   display: grid;
   grid-template-rows: 68px minmax(0, 1fr) auto;
   min-height: 0;
@@ -311,12 +316,12 @@
 }
 
 .music-agent-chat-header strong {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .music-agent-chat-header small {
   color: #968c83;
-  font-size: 8px;
+  font-size: 10px;
   margin-top: 3px;
 }
 
@@ -327,7 +332,7 @@
   border-radius: 999px;
   color: #766d65;
   display: flex !important;
-  font-size: 8px;
+  font-size: 9px;
   gap: 6px;
   padding: 7px 10px;
 }
@@ -343,8 +348,16 @@
   min-height: 0;
   overscroll-behavior: contain;
   overflow-y: auto;
-  padding: 34px clamp(28px, 7vw, 120px);
+  padding: 34px clamp(24px, 5vw, 92px);
   scroll-padding-bottom: 24px;
+  scrollbar-color: rgba(121, 102, 212, .22) transparent;
+  scrollbar-width: thin;
+}
+
+.music-agent-thread.has-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .music-agent-thread:not(.has-messages) {
@@ -353,7 +366,7 @@
 }
 
 .agent-welcome {
-  max-width: 650px;
+  max-width: 720px;
   text-align: center;
 }
 
@@ -374,14 +387,14 @@
 
 .agent-welcome > span {
   color: #7966d4;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 850;
   letter-spacing: 0.16em;
 }
 
 .agent-welcome h1 {
   color: #28231f;
-  font-size: clamp(38px, 4.5vw, 64px);
+  font-size: clamp(42px, 5vw, 72px);
   letter-spacing: -0.068em;
   line-height: 0.98;
   margin: 14px 0;
@@ -389,10 +402,10 @@
 
 .agent-welcome p {
   color: #847a71;
-  font-size: 11px;
-  line-height: 1.8;
+  font-size: 13px;
+  line-height: 1.85;
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 560px;
 }
 
 .agent-welcome > div {
@@ -409,7 +422,7 @@
   border-radius: 999px;
   color: #6f665e;
   cursor: pointer;
-  font-size: 9px;
+  font-size: 10px;
   padding: 9px 12px;
 }
 
@@ -421,60 +434,88 @@
 .agent-message {
   align-items: flex-start;
   display: flex;
-  gap: 12px;
-  margin: 0 auto 22px;
-  max-width: 920px;
+  gap: 14px;
+  margin: 0 auto;
+  max-width: 1120px;
+  width: 100%;
 }
 
 .agent-message.user {
-  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.agent-message.user .agent-message-avatar {
+  order: 2;
+}
+
+.agent-message.user .agent-message-body {
+  order: 1;
 }
 
 .agent-message-avatar {
-  background: #eee9e1;
+  background: rgba(255, 255, 255, .82);
   border: 1px solid rgba(49, 42, 35, 0.08);
-  border-radius: 11px;
+  border-radius: 15px;
+  box-shadow: 0 12px 30px rgba(52, 43, 34, .06);
   color: #6d645c;
   display: grid;
   flex: 0 0 auto;
-  font-size: 8px;
-  height: 34px;
+  font-size: 9px;
+  font-weight: 850;
+  height: 52px;
   place-items: center;
-  width: 34px;
+  width: 52px;
 }
 
 .agent-message.assistant .agent-message-avatar {
-  background: linear-gradient(145deg, #8875e8, #6c59c5);
+  background: linear-gradient(145deg, #1f1b28, #6c59c5 54%, #8875e8);
+  box-shadow: 0 16px 38px rgba(92, 72, 174, .2);
   color: #fff;
 }
 
 .agent-message-body {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(49, 42, 35, 0.08);
-  border-radius: 6px 18px 18px 18px;
-  box-shadow: 0 10px 30px rgba(55, 44, 35, 0.05);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .96), rgba(255, 253, 248, .9));
+  border: 1px solid rgba(49, 42, 35, 0.075);
+  border-radius: 10px 24px 24px 24px;
+  box-shadow: 0 18px 48px rgba(55, 44, 35, 0.075);
   color: #3b342e;
-  max-width: min(760px, 82%);
-  padding: 15px 17px;
+  max-width: min(940px, 86%);
+  padding: 22px 26px;
+  position: relative;
+}
+
+.agent-message.assistant .agent-message-body::before {
+  background: linear-gradient(180deg, #8875e8, #8be2cd);
+  border-radius: 999px;
+  content: "";
+  left: -1px;
+  opacity: .75;
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  width: 3px;
 }
 
 .agent-message.user .agent-message-body {
-  background: #e9e1f8;
+  background: linear-gradient(145deg, #342d29, #211c1f);
   border: 0;
-  border-radius: 18px 6px 18px 18px;
-  color: #302842;
+  border-radius: 24px 10px 24px 24px;
+  box-shadow: 0 18px 48px rgba(37, 31, 27, .16);
+  color: #fffaf1;
+  max-width: min(780px, 76%);
 }
 
 .agent-message-body p {
-  font-size: 12px;
-  line-height: 1.8;
+  font-size: 18px;
+  line-height: 1.82;
   margin: 0;
   white-space: pre-wrap;
 }
 
 .agent-answer {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .agent-answer h2,
@@ -485,10 +526,12 @@
   margin: 2px 0 0;
 }
 
-.agent-answer h2 { font-size: 16px; }
-.agent-answer h3 { font-size: 13px; }
+.agent-answer h2 { font-size: 22px; }
+.agent-answer h3 { font-size: 19px; }
 
 .agent-answer p {
+  font-size: 17px;
+  line-height: 1.84;
   white-space: normal;
 }
 
@@ -502,8 +545,8 @@
 
 .agent-answer li {
   color: #504741;
-  font-size: 12px;
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.8;
   padding-left: 2px;
 }
 
@@ -533,7 +576,7 @@
   border-left: 3px solid rgba(121, 102, 212, .45);
   border-radius: 0 9px 9px 0;
   color: #635a71;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
   margin: 0;
   padding: 9px 12px;
@@ -555,7 +598,7 @@
 .agent-answer th,
 .agent-answer td {
   border-bottom: 1px solid rgba(49, 42, 35, .08);
-  font-size: 10px;
+  font-size: 11px;
   padding: 9px 11px;
   text-align: left;
   white-space: nowrap;
@@ -564,7 +607,7 @@
 .agent-answer th {
   background: rgba(121, 102, 212, .07);
   color: #5d4f91;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 850;
 }
 
@@ -574,14 +617,22 @@
 
 .agent-message-body footer {
   align-items: center;
-  border-top: 1px solid rgba(49, 42, 35, 0.08);
-  color: #a0968d;
+  border-top: 1px solid rgba(49, 42, 35, 0.07);
+  color: #9b9188;
   display: flex;
-  font-size: 8px;
+  font-size: 11px;
   gap: 10px;
   justify-content: space-between;
-  margin-top: 12px;
-  padding-top: 9px;
+  margin-top: 14px;
+  padding-top: 11px;
+}
+
+.agent-message-body footer span {
+  background: rgba(14, 111, 104, .07);
+  border: 1px solid rgba(14, 111, 104, .1);
+  border-radius: 999px;
+  color: #0e6f68;
+  padding: 5px 8px;
 }
 
 .agent-thinking-dots {
@@ -613,30 +664,30 @@
 }
 
 .music-agent-composer {
-  background: linear-gradient(180deg, rgba(247, 244, 238, 0), rgba(247, 244, 238, 0.96) 25%);
-  padding: 18px clamp(28px, 7vw, 120px) 22px;
+  background: linear-gradient(180deg, rgba(247, 244, 238, 0), rgba(247, 244, 238, .98) 24%);
+  padding: 18px clamp(24px, 5vw, 92px) 22px;
   position: relative;
   z-index: 2;
 }
 
 .music-agent-composer > p {
   color: #c65343;
-  font-size: 9px;
+  font-size: 10px;
   margin: 0 auto 8px;
   max-width: 920px;
 }
 
 .music-agent-composer > div {
   align-items: end;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(49, 42, 35, 0.11);
-  border-radius: 19px;
-  box-shadow: 0 16px 48px rgba(64, 51, 40, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(49, 42, 35, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 20px 64px rgba(64, 51, 40, 0.12);
   display: flex;
   gap: 10px;
   margin: 0 auto;
-  max-width: 920px;
-  padding: 11px 11px 11px 17px;
+  max-width: 1040px;
+  padding: 14px 14px 14px 20px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -650,30 +701,30 @@
   border: 0;
   color: #302a25;
   font: inherit;
-  font-size: 12px;
-  line-height: 1.6;
-  max-height: 130px;
-  min-height: 26px;
+  font-size: 19px;
+  line-height: 1.65;
+  max-height: 150px;
+  min-height: 34px;
   outline: 0;
   resize: none;
   width: 100%;
 }
 
 .music-agent-composer textarea::placeholder {
-  color: #aaa198;
+  color: #9f958c;
 }
 
 .music-agent-composer button {
   background: linear-gradient(145deg, #8875e8, #705dc9);
   border: 0;
-  border-radius: 13px;
+  border-radius: 17px;
   color: #fff;
   cursor: pointer;
   display: grid;
   flex: 0 0 auto;
-  height: 40px;
+  height: 48px;
   place-items: center;
-  width: 40px;
+  width: 48px;
 }
 
 .music-agent-composer button:disabled {
@@ -685,7 +736,7 @@
 .music-agent-composer > small {
   color: #a0978e;
   display: block;
-  font-size: 8px;
+  font-size: 11px;
   margin: 8px auto 0;
   max-width: 920px;
   text-align: center;
@@ -712,7 +763,7 @@
   }
 
   .music-agent-shell {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: 240px minmax(0, 1fr);
   }
 
   .music-agent-sidebar {
@@ -774,7 +825,7 @@
   }
 
   .agent-welcome h1 {
-    font-size: 40px;
+    font-size: 44px;
   }
 
   .agent-message-body {

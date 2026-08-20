@@ -28,6 +28,17 @@ def test_listening_conversation_is_persisted_per_song(monkeypatch, tmp_path):
     assert listener_memory.listening_conversation("歌曲乙", "歌手甲") == []
 
 
+def test_listening_conversation_dedupes_same_client_turn(monkeypatch, tmp_path):
+    monkeypatch.setattr(listener_memory, "STATE_PATH", tmp_path / "listener_state.json")
+
+    listener_memory.save_listening_conversation_turn("歌曲甲", "歌手甲", "这首歌火吗？", "挺火。", "turn-1")
+    listener_memory.save_listening_conversation_turn("歌曲甲", "歌手甲", "这首歌火吗？", "挺火。", "turn-1")
+
+    messages = listener_memory.listening_conversation("歌曲甲", "歌手甲")
+    assert [message["content"] for message in messages] == ["这首歌火吗？", "挺火。"]
+    assert {message["turn_id"] for message in messages} == {"turn-1"}
+
+
 def test_daily_listening_is_persisted_and_ranked(monkeypatch, tmp_path):
     state_path = tmp_path / "listener_state.json"
     monkeypatch.setattr(listener_memory, "STATE_PATH", state_path)
@@ -95,3 +106,18 @@ def test_agent_sessions_keep_independent_persistent_history(monkeypatch, tmp_pat
     assert len(listener_memory.agent_sessions()) == 2
     assert listener_memory.delete_agent_session(first["id"]) is True
     assert listener_memory.agent_session(first["id"]) is None
+
+
+def test_like_feedback_counts_strength(monkeypatch, tmp_path):
+    monkeypatch.setattr(listener_memory, "STATE_PATH", tmp_path / "listener_state.json")
+    request = FeedbackRequest(recording_id="jay-chou-qilixiang-song", action="like", channel="today")
+
+    listener_memory.record_feedback(request)
+    listener_memory.record_feedback(request)
+
+    state = listener_memory.load_state()
+    profile = listener_memory.listener_preference_profile(state)
+
+    assert state["like_counts"]["jay-chou-qilixiang-song"] == 2
+    assert profile["behavior"]["like_actions"] == 2
+    assert profile["top_tracks"][0]["likes"] == 2

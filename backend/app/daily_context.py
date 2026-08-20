@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import ctypes
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from difflib import SequenceMatcher
 import email.utils
+import os
 import platform
+import re
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -38,6 +42,69 @@ _weather_cache = TimedCache()
 _news_cache = TimedCache()
 
 
+NEWS_ANCHOR_STOPWORDS = {"music", "news", "video", "live", "official"}
+
+
+def _normalize_news_title(value: str) -> str:
+    without_publisher = re.sub(r"\s+-\s+[^-]{2,40}$", "", value.strip())
+    return re.sub(r"[\W_]+", "", without_publisher.casefold())
+
+
+def _news_title_anchors(value: str) -> set[str]:
+    without_publisher = re.sub(r"\s+-\s+[^-]{2,40}$", "", value.strip())
+    quoted = re.findall(r"[《「『“\"]([^》」』”\"]{4,36})[》」』”\"]", without_publisher)
+    latin = re.findall(r"[a-zA-Z][a-zA-Z0-9]{3,}", without_publisher.casefold())
+    return {
+        normalized
+        for item in [*quoted, *latin]
+        if (normalized := _normalize_news_title(item)) and normalized not in NEWS_ANCHOR_STOPWORDS
+    }
+
+
+def _same_news_event(
+    title: str,
+    url: str,
+    anchors: set[str],
+    previous_title: str,
+    previous_url: str,
+    previous_anchors: set[str],
+) -> bool:
+    if url == previous_url or title == previous_title:
+        return True
+    if anchors & previous_anchors:
+        return True
+    return SequenceMatcher(None, title, previous_title).ratio() >= 0.72
+
+
+def _dedupe_music_news(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: list[tuple[str, str, set[str]]] = []
+    deduped: list[dict[str, Any]] = []
+    for item in items:
+        title = _normalize_news_title(str(item.get("title", "")))
+        url = re.sub(r"/+$", "", str(item.get("url", ""))).strip().casefold()
+        if not title and not url:
+            continue
+        anchors = _news_title_anchors(str(item.get("title", "")))
+        if any(
+            _same_news_event(title, url, anchors, previous_title, previous_url, previous_anchors)
+            for previous_title, previous_url, previous_anchors in seen
+        ):
+            continue
+        seen.append((title, url, anchors))
+        deduped.append({**item, "story_key": sorted(anchors)[0] if anchors else title})
+    return deduped
+
+BLOCKED_MUSIC_NEWS_PUBLISHERS = ("新浪", "Sina", "sina.com.cn")
+VIDEO_MUSIC_NEWS_HINTS = ("视频", "MV", "舞台", "演唱会", "现场", "直播", "短片", "首唱", "开唱", "综艺")
+MUSIC_NEWS_QUERIES = (
+    "华语乐坛 OR 华语音乐 when:3d",
+    "华语新歌 OR 华语歌手 when:3d",
+    "华语 MV OR 华语演唱会 OR 华语现场 when:3d",
+    "华语音乐节 OR 华语专辑 OR 华语乐评 when:3d",
+    "内地歌手 OR 台湾音乐 OR 香港音乐 when:3d",
+)
+
+
 def _safe_json(url: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
     response = httpx.get(url, params=params, timeout=3.5, headers={"User-Agent": "C-Pop-Atlas/0.2"})
     response.raise_for_status()
@@ -45,17 +112,58 @@ def _safe_json(url: str, params: dict[str, Any] | None = None) -> dict[str, Any]
 
 
 
-def _ip_location() -> dict[str, Any]:
-    try:
-        value = _safe_json("https://ipwho.is/")
-        if value.get("success", True) and value.get("latitude") is not None:
-            return value
-    except (httpx.HTTPError, KeyError, TypeError, ValueError):
-        pass
+def _location_from_ipwho() -> dict[str, Any] | None:
+    value = _safe_json("https://ipwho.is/")
+    if value.get("success", True) and value.get("latitude") is not None:
+        value["source"] = "ipwho.is"
+        return value
+    return None
+
+
+def _location_from_ipapi() -> dict[str, Any] | None:
     value = _safe_json("https://ipapi.co/json/")
+    if value.get("latitude") is None:
+        return None
     return {
         "success": True, "latitude": value.get("latitude"), "longitude": value.get("longitude"),
         "city": value.get("city"), "region": value.get("region"), "country": value.get("country_name"),
+        "source": "ipapi.co",
+    }
+
+
+def _location_from_ip_api() -> dict[str, Any] | None:
+    value = _safe_json("http://ip-api.com/json/")
+    if value.get("status") != "success" or value.get("lat") is None:
+        return None
+    return {
+        "success": True, "latitude": value.get("lat"), "longitude": value.get("lon"),
+        "city": value.get("city"), "region": value.get("regionName"), "country": value.get("country"),
+        "source": "ip-api.com",
+    }
+
+
+def _ip_location() -> dict[str, Any]:
+    providers = (_location_from_ipwho, _location_from_ipapi, _location_from_ip_api)
+    executor = ThreadPoolExecutor(max_workers=len(providers))
+    try:
+        futures = [executor.submit(provider) for provider in providers]
+        for future in as_completed(futures):
+            try:
+                value = future.result()
+            except (httpx.HTTPError, KeyError, TypeError, ValueError):
+                continue
+            if value:
+                return value
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
+    return {
+        "success": True,
+        "latitude": os.getenv("WEATHER_LATITUDE", "31.2304"),
+        "longitude": os.getenv("WEATHER_LONGITUDE", "121.4737"),
+        "city": os.getenv("WEATHER_CITY", "上海"),
+        "region": os.getenv("WEATHER_REGION", ""),
+        "country": os.getenv("WEATHER_COUNTRY", "中国"),
+        "source": "fallback-default-location",
     }
 
 def get_weather() -> dict[str, Any]:
@@ -91,7 +199,7 @@ def get_weather() -> dict[str, Any]:
             "condition": label,
             "kind": kind,
             "music_moods": WEATHER_MOODS.get(kind, []),
-            "source": "Open-Meteo + IPWho",
+            "source": f"Open-Meteo + {location.get('source', 'IP location')}",
         }
     except (httpx.HTTPError, KeyError, TypeError, ValueError):
         value = {
@@ -103,28 +211,46 @@ def get_weather() -> dict[str, Any]:
     return value
 
 
-def get_music_news(limit: int = 6) -> list[dict[str, Any]]:
-    now = time.time()
-    if _news_cache.value and _news_cache.expires_at > now:
-        return _news_cache.value[:limit]
-    query = quote_plus("华语音乐 OR 华语新歌 OR 华语乐坛 when:2d")
-    url = f"https://news.google.com/rss/search?q={query}&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
+def _fetch_music_news_query(query_text: str) -> list[dict[str, Any]]:
     items: list[dict[str, Any]] = []
+    query = quote_plus(query_text)
+    url = f"https://news.google.com/rss/search?q={query}&hl=zh-CN&gl=CN&ceid=CN:zh-Hans"
     try:
         response = httpx.get(url, timeout=4.5, headers={"User-Agent": "C-Pop-Atlas/0.2"})
         response.raise_for_status()
         root = ET.fromstring(response.text)
-        for item in root.findall("./channel/item")[:12]:
-            title = (item.findtext("title") or "").strip()
-            link = (item.findtext("link") or "").strip()
-            published = item.findtext("pubDate") or ""
-            source = item.find("source")
-            publisher = source.text.strip() if source is not None and source.text else "新闻来源"
-            if title and link:
-                parsed = email.utils.parsedate_to_datetime(published) if published else None
-                items.append({"title": title, "url": link, "publisher": publisher, "published_at": parsed.isoformat() if parsed else None})
     except (httpx.HTTPError, ET.ParseError, TypeError, ValueError):
-        items = []
+        return items
+    for item in root.findall("./channel/item")[:24]:
+        title = (item.findtext("title") or "").strip()
+        link = (item.findtext("link") or "").strip()
+        published = item.findtext("pubDate") or ""
+        source = item.find("source")
+        publisher = source.text.strip() if source is not None and source.text else "新闻来源"
+        source_text = f"{title} {link} {publisher}"
+        if any(blocked.casefold() in source_text.casefold() for blocked in BLOCKED_MUSIC_NEWS_PUBLISHERS):
+            continue
+        if title and link:
+            parsed = email.utils.parsedate_to_datetime(published) if published else None
+            content_type = "video" if any(hint.casefold() in source_text.casefold() for hint in VIDEO_MUSIC_NEWS_HINTS) else "text"
+            items.append({
+                "title": title,
+                "url": link,
+                "publisher": publisher,
+                "published_at": parsed.isoformat() if parsed else None,
+                "content_type": content_type,
+            })
+    return items
+
+
+def get_music_news(limit: int = 10) -> list[dict[str, Any]]:
+    now = time.time()
+    if _news_cache.value and _news_cache.expires_at > now:
+        return _news_cache.value[:limit]
+    with ThreadPoolExecutor(max_workers=len(MUSIC_NEWS_QUERIES)) as executor:
+        batches = executor.map(_fetch_music_news_query, MUSIC_NEWS_QUERIES)
+        items = [item for batch in batches for item in batch]
+    items = _dedupe_music_news(items)
     _news_cache.value, _news_cache.expires_at = items, now + 1200
     return items[:limit]
 

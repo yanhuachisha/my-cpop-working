@@ -1,4 +1,5 @@
 import pytest
+from langgraph.errors import GraphRecursionError
 
 from app.data_store import get_store
 from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningChatTurn, ListeningStoryRequest, LyricAnalysisRequest
@@ -116,17 +117,40 @@ def test_listening_chat_routes_to_similar_recommendations():
 
 
 def test_listening_chat_routes_to_verified_web_story(monkeypatch):
-    monkeypatch.setattr("app.listening_agent.search_song_sources_workflow", lambda title, artist: {
+    monkeypatch.setattr("app.listening_agent.web_search_workflow", lambda query, song_title, artist: {
         "available": True,
-        "facts": ["这是基于公开资料检索到的歌曲事实。"],
+        "facts": ["这是基于网页搜索和正文读取到的歌曲事实。"],
         "sources": [{"name": "测试来源", "url": "https://example.com", "license": "Test"}],
+        "documents": [{"title": "测试网页", "url": "https://example.com", "text": "正文"}],
         "errors": [],
     })
     response = ListeningAgent(get_store()).chat(
         ListeningChatRequest(question="查一下这首歌真实的创作故事", song_title="示例歌曲")
     )
-    assert "search_song_sources" in response.tools_used
+    assert "web_search" in response.tools_used
+    assert "可核实线索" in response.answer
     assert response.sources[0].name == "测试来源"
+
+
+def test_listening_chat_routes_public_impact_research(monkeypatch):
+    monkeypatch.setattr("app.listening_agent.research_song_public_impact_workflow", lambda title, artist, question: {
+        "available": True,
+        "facts": [
+            "测试资料：发行于 2003 年。",
+            "测试资料：获得多个公开讨论中的传播线索。",
+        ],
+        "sources": [{"name": "测试百科", "url": "https://example.com/impact", "license": "Test"}],
+        "search_queries": [],
+        "answer_guidance": [],
+        "errors": [],
+    })
+    response = ListeningAgent(get_store()).chat(
+        ListeningChatRequest(question="布拉格广场当年有多火", song_title="布拉格广场", artist="蔡依林")
+    )
+    assert response.tools_used == ["research_song_public_impact"]
+    assert "## 《布拉格广场》当年到底有多火" in response.answer
+    assert "可核实线索" in response.answer
+    assert response.sources[0].name == "测试百科"
 
 
 def test_listening_write_tools_require_explicit_current_intent():
@@ -217,6 +241,8 @@ def test_listening_chat_extracts_real_agent_loop(monkeypatch):
     assert "get_current_song_context" in captured["tools"]
     assert "save_listening_memory" in captured["tools"]
     assert "search_song_sources" in captured["tools"]
+    assert "web_search" in captured["tools"]
+    assert "research_song_public_impact" in captured["tools"]
     assert "save_lyric_specimen" not in captured["tools"]
     assert "save_current_feeling" not in captured["tools"]
     assert "analyze_lyric_excerpt" not in captured["tools"]
@@ -224,3 +250,19 @@ def test_listening_chat_extracts_real_agent_loop(monkeypatch):
     assert "只围绕此刻正在播放的这一首歌" in captured["system_prompt"]
     assert "细腻" in captured["system_prompt"]
     assert captured["payload"]["messages"][0]["role"] == "user"
+
+
+def test_listening_chat_falls_back_when_agent_loop_reaches_recursion_limit(monkeypatch):
+    agent = ListeningAgent(get_store())
+
+    def raise_recursion(*args):
+        raise GraphRecursionError("loop")
+
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+    monkeypatch.setattr(agent, "_is_current_song", lambda *args: False)
+    monkeypatch.setattr(agent, "_langchain_chat", raise_recursion)
+    monkeypatch.setattr(agent, "_fallback_chat", lambda *args, **kwargs: "fallback")
+
+    response = agent.chat(ListeningChatRequest(question="鎴戞兂鍚繖棣栨瓕", song_title="澶╁ぉ榛戯紝"))
+
+    assert response == "fallback"

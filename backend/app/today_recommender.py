@@ -103,8 +103,9 @@ class TodayRecommender:
         personal = .48
         personal += .06 * len(set(item.tags) & {"r&b", "ballad", "chinese-style", "poetic", "cinematic"})
         personal += .06 * len(set(item.moods) & {"late-night", "nostalgic", "bittersweet", "warm", "reflective"})
+        like_strength = min(.36, int(state.get("like_counts", {}).get(item.id, 0)) * .06)
         if item.id in state["liked"] or item.id in state["saved"]:
-            personal += .22
+            personal += .22 + like_strength
         context_tokens = set(weather.get("music_moods", []))
         weather_score = min(1.0, .28 + .22 * len(context_tokens & set([*item.tags, *item.moods])))
         news_text = " ".join(article.get("title", "") for article in news)
@@ -132,10 +133,11 @@ class TodayRecommender:
 
     def _familiar_score(self, item: Recording, state: dict, recent: set[str], seed: str | None) -> float:
         score = .25
+        like_strength = min(.4, int(state.get("like_counts", {}).get(item.id, 0)) * .08)
         if item.id.startswith("user-"):
             score += .65
         if item.id in state["liked"] or item.id in state["saved"]:
-            score += .55
+            score += .55 + like_strength
         score += min(.3, int(state["play_counts"].get(item.id, 0)) * .06)
         if item.id in recent:
             score -= .22

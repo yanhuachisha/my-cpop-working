@@ -11,9 +11,19 @@
 
 ## 界面预览
 
-| 首页每日发现 | 音乐助理 Agent |
+以下截图来自本地实际运行界面，覆盖首页、听歌房、音乐助理、收藏和新世界几个核心入口。
+
+| 首页每日发现 | 听歌房 / 音乐陪伴 |
 | --- | --- |
-| ![首页每日发现](docs/screenshots/home.png) | ![音乐助理 Agent](docs/screenshots/music-agent.png) |
+| ![首页每日发现](docs/screenshots/home.png) | ![听歌房音乐陪伴](docs/screenshots/listening-room.png) |
+
+| 音乐助理 Agent | 我的收藏 |
+| --- | --- |
+| ![音乐助理 Agent](docs/screenshots/music-agent.png) | ![我的收藏](docs/screenshots/library.png) |
+
+| 新世界 |
+| --- |
+| ![新世界](docs/screenshots/new-world.png) |
 
 ## 为什么值得看
 
@@ -180,6 +190,35 @@ KUGOU_BRIDGE_URL=http://127.0.0.1:9191
 
 Docker Compose 默认端口为 Web `3000`、API `8000`。本地开发脚本默认 API 端口是 `8001`。
 
+## Agent Benchmark
+
+项目包含数据集驱动的 Agent Evaluation：
+
+- Dataset: `backend/app/evals/agent_benchmark.jsonl`
+- Runner: `scripts/run_agent_eval.py`
+- Report: `docs/agent-benchmark-report.md`
+- API: `GET /api/agent/evaluate?suite=smoke&algorithm=auto`
+
+离线 smoke benchmark：
+
+```powershell
+python scripts/run_agent_eval.py --suite smoke --algorithm auto
+```
+
+离线 full benchmark：
+
+```powershell
+python scripts/run_agent_eval.py --suite full --algorithm auto
+```
+
+配置 `DEEPSEEK_API_KEY` 后跑真实 LLM benchmark：
+
+```powershell
+python scripts/run_agent_eval.py --suite full --algorithm auto --live
+```
+
+当前 full offline baseline：20 cases，pass rate 100%。指标覆盖 tool recall、tool precision、argument accuracy、grounding、safety、trajectory quality、iteration budget 和 latency。
+
 ## 关键 API
 
 | API | 用途 |
@@ -189,7 +228,7 @@ Docker Compose 默认端口为 Web `3000`、API `8000`。本地开发脚本默�
 | `POST /api/agent/query` | Agent 自然语言问答 |
 | `POST /api/agent/run` | Agent 执行入口 |
 | `GET /api/agent/status` | Agent 状态、模型和工具信息 |
-| `GET /api/agent/evaluate` | 固定题集评估工具选择、关键字命中、循环步数和延迟 |
+| `GET /api/agent/evaluate?suite=smoke&algorithm=auto` | 数据集驱动 Agent Evaluation，评估工具选择、参数准确率、grounding、安全、轨迹和延迟 |
 | `GET /api/recommendations/hybrid` | 混合推荐 |
 | `GET /api/listening/today-stats` | 今日听歌统计 |
 | `GET /api/agent/weekly-report` | 基于真实听歌历史生成周报 |

@@ -4,6 +4,8 @@ from datetime import UTC, datetime
 from app import listener_memory
 from app.data_store import get_store
 from app.langchain_agent import AgentRunRequest, MusicAgent
+from app.listening_agent import ListeningAgent, ListeningPromptUpdate
+from app.listening_preferences import CORE_LISTENING_COMPANION_PROMPT
 
 
 def _write_preference_state(path):
@@ -18,6 +20,7 @@ def _write_preference_state(path):
                 {"recording_id": "tao-ordinary-friend", "action": "skip", "at": now, "listened_seconds": 35},
             ],
             "liked": ["jay-chou-qilixiang-song"],
+            "like_counts": {"jay-chou-qilixiang-song": 3},
             "saved": ["jay-chou-dongfengpo"],
             "skipped": ["tao-ordinary-friend"],
             "play_counts": {
@@ -58,8 +61,10 @@ def test_preference_profile_combines_behavior_content_and_reflection(monkeypatch
     assert profile["favorite_eras"][0]["name"] == "2000\u5e74\u4ee3"
     assert profile["behavior"]["replay_actions"] == 1
     assert profile["behavior"]["skip_actions"] == 1
+    assert profile["behavior"]["like_actions"] == 3
     assert profile["behavior"]["music_note_count"] == 1
     assert profile["behavior"]["lyric_fragment_count"] == 1
+    assert profile["top_tracks"][0]["likes"] == 3
     assert profile["listening_periods"]
 
 
@@ -76,3 +81,44 @@ def test_music_agent_answers_preference_question_from_local_memory(monkeypatch, 
     assert response.tools_used == ["query_listener_memory"]
     assert "\u5468\u6770\u4f26" in response.answer
     assert "\u5e38\u542c\u6b4c\u624b" in response.answer
+
+
+def test_listening_companion_prompt_is_persisted_and_keeps_core_constraints(monkeypatch, tmp_path):
+    state_path = tmp_path / "listener_state.json"
+    monkeypatch.setattr(listener_memory, "STATE_PATH", state_path)
+
+    settings = ListeningAgent.update_prompt_settings(
+        ListeningPromptUpdate(custom_prompt="更关注编曲，回答短一些。")
+    )
+
+    assert settings.custom_prompt == "更关注编曲，回答短一些。"
+    assert settings.core_prompt == CORE_LISTENING_COMPANION_PROMPT
+    assert "更关注编曲" in settings.effective_prompt
+    assert "必须通过标准 Agent Loop 工作" in settings.effective_prompt
+    assert listener_memory.get_listening_companion_prompt() == "更关注编曲，回答短一些。"
+
+
+def test_empty_listening_companion_prompt_restores_core(monkeypatch, tmp_path):
+    state_path = tmp_path / "listener_state.json"
+    monkeypatch.setattr(listener_memory, "STATE_PATH", state_path)
+
+    settings = ListeningAgent.update_prompt_settings(ListeningPromptUpdate(custom_prompt=""))
+
+    assert settings.custom_prompt == ""
+    assert settings.effective_prompt.startswith(settings.core_prompt)
+    assert "运行约束" in settings.effective_prompt
+
+
+def test_listening_companion_core_prompt_is_editable_and_persisted(monkeypatch, tmp_path):
+    state_path = tmp_path / "listener_state.json"
+    monkeypatch.setattr(listener_memory, "STATE_PATH", state_path)
+
+    settings = ListeningAgent.update_prompt_settings(ListeningPromptUpdate(
+        core_prompt="你是一个更克制的音乐陪伴者，优先回应当前歌曲的声音细节。",
+        custom_prompt="少提问。",
+    ))
+
+    assert settings.core_prompt.startswith("你是一个更克制的音乐陪伴者")
+    assert "少提问" in settings.effective_prompt
+    assert "运行约束" in settings.effective_prompt
+    assert listener_memory.get_listening_companion_core_prompt() == settings.core_prompt

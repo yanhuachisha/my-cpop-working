@@ -20,7 +20,12 @@ from app.langchain_agent import (
 )
 from app.agent_evaluation import evaluate_agent
 from app.hybrid_recommender import HybridRecommender
-from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningStoryRequest
+from app.listening_agent import (
+    ListeningAgent,
+    ListeningChatRequest,
+    ListeningPromptUpdate,
+    ListeningStoryRequest,
+)
 from app.listening_history import initialize_listening_history
 from app.library_import import (
     LibraryImportRequest,
@@ -208,8 +213,17 @@ def agent_audio_file(job_id: str, filename: str):
 
 
 @app.get("/api/agent/evaluate")
-def real_agent_evaluate():
-    return evaluate_agent(MusicAgent(get_store()))
+def real_agent_evaluate(
+    suite: str = Query(default="smoke", max_length=40),
+    algorithm: str = Query(default="auto", pattern="^(auto|react|plan_execute|reflection)$"),
+    max_cases: int | None = Query(default=None, ge=1, le=200),
+):
+    return evaluate_agent(
+        MusicAgent(get_store()),
+        suite=suite,
+        algorithm=algorithm,
+        max_cases=max_cases,
+    )
 
 
 @app.get("/api/recommendations/hybrid")
@@ -235,6 +249,16 @@ def recommendation_algorithms():
 @app.get("/api/listening/context")
 def listening_context():
     return ListeningAgent(get_store()).context()
+
+
+@app.get("/api/listening/settings")
+def listening_settings():
+    return ListeningAgent.prompt_settings()
+
+
+@app.put("/api/listening/settings")
+def update_listening_settings(request: ListeningPromptUpdate):
+    return ListeningAgent.update_prompt_settings(request)
 
 
 @app.post("/api/listening/story")

@@ -1,6 +1,12 @@
 from fastapi.testclient import TestClient
 
-from app.kugou import KugouSearchRequest, _is_kugou_process_path, _parse_window_title, search_kugou
+from app.kugou import (
+    KugouSearchRequest,
+    _is_kugou_process_path,
+    _parse_window_title,
+    get_now_playing,
+    search_kugou,
+)
 from app.playback_tracker import KugouPlaybackTracker
 from app.main import app
 
@@ -20,6 +26,27 @@ def test_kugou_process_filter_rejects_browser_titles():
     assert _is_kugou_process_path(r"C:\Program Files\KuGou\KuGou.exe") is True
     assert _is_kugou_process_path(r"C:\Program Files\Google\Chrome\chrome.exe") is False
     assert _is_kugou_process_path(r"C:\Program Files\nodejs\node.exe") is False
+
+
+def test_now_playing_uses_audio_session_for_pause(monkeypatch):
+    monkeypatch.setattr("app.kugou._find_kugou_window_title", lambda: "周杰伦 - 七里香 - 酷狗音乐")
+    monkeypatch.setattr("app.kugou._kugou_audio_active", lambda: False)
+
+    payload = get_now_playing()
+
+    assert payload["available"] is True
+    assert payload["title"] == "七里香"
+    assert payload["is_playing"] is False
+    assert payload["source"] == "windows-kugou-process-title+audio-session"
+
+
+def test_now_playing_keeps_playing_when_audio_session_active(monkeypatch):
+    monkeypatch.setattr("app.kugou._find_kugou_window_title", lambda: "周杰伦 - 七里香 - 酷狗音乐")
+    monkeypatch.setattr("app.kugou._kugou_audio_active", lambda: True)
+
+    payload = get_now_playing()
+
+    assert payload["is_playing"] is True
 
 
 def test_kugou_search_api(monkeypatch):

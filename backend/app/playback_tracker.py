@@ -53,7 +53,6 @@ class KugouPlaybackTracker:
         with self._lock:
             self._current = dict(snapshot)
             if not is_playing:
-                self._record_listening_delta(observed_at)
                 self._record_departure("pause", observed_at)
                 self._track_key = None
                 self._track_title = None

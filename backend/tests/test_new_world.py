@@ -33,6 +33,44 @@ def test_feed_parser_reads_rss_items():
     assert items[0]["score"] > 20
 
 
+def test_wikipedia_hot_link_points_to_real_article():
+    class FakeResponse:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {
+                "items": [
+                    {
+                        "articles": [
+                            {"article": "Wikipedia:首页", "views": 100000, "rank": 1},
+                            {"article": "Special:Search", "views": 90000, "rank": 2},
+                            {"article": "周杰伦", "views": 12345, "rank": 3},
+                        ]
+                    }
+                ]
+            }
+
+    class FakeClient:
+        def __init__(self):
+            self.urls = []
+
+        def get(self, url):
+            self.urls.append(url)
+            return FakeResponse()
+
+    client = FakeClient()
+    item = new_world._wikipedia_hot_link(date(2026, 8, 19), client)
+
+    assert client.urls == [
+        "https://wikimedia.org/api/rest_v1/metrics/pageviews/top/zh.wikipedia.org/all-access/2026/08/18"
+    ]
+    assert item["source"] == "Wikipedia"
+    assert item["title"] == "维基百科热读：周杰伦"
+    assert item["url"] == "https://zh.wikipedia.org/wiki/%E5%91%A8%E6%9D%B0%E4%BC%A6"
+    assert "浏览" in item["summary"]
+
+
 def test_daily_new_world_uses_daily_cache(monkeypatch, tmp_path):
     cache_path = tmp_path / "new_world.json"
     monkeypatch.setattr(new_world, "CACHE_PATH", cache_path)

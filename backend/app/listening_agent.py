@@ -11,6 +11,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import ToolCallLimitMiddleware
 from langchain.tools import tool
 from langchain_openai import ChatOpenAI
+from langgraph.errors import GraphRecursionError
 from openai import OpenAIError
 from pydantic import BaseModel, Field
 
@@ -18,13 +19,24 @@ from app.data_store import DataStore
 from app.kugou import get_now_playing
 from app.listener_memory import (
     listening_conversation,
+    load_state,
     save_listening_conversation_turn,
 )
 from app.listening_companion_workflows import (
     find_similar_recordings_workflow,
     get_current_song_context_workflow,
+    research_song_public_impact_workflow,
     save_listening_memory_workflow,
     search_song_sources_workflow,
+    web_search_workflow,
+)
+from app.listening_preferences import (
+    CORE_LISTENING_COMPANION_PROMPT,
+    build_listening_companion_prompt,
+    get_listening_companion_core_prompt,
+    get_listening_companion_prompt,
+    save_listening_companion_core_prompt,
+    save_listening_companion_prompt,
 )
 from app.models import SourceRef
 from app.recommender import DailyRecommender
@@ -58,6 +70,7 @@ class ListeningChatRequest(BaseModel):
     artist: str | None = None
     lyric_excerpt: str | None = Field(default=None, max_length=500)
     recent_messages: list[ListeningChatTurn] = Field(default_factory=list, max_length=8)
+    client_message_id: str | None = Field(default=None, max_length=80)
 
 
 class ListeningStoryRequest(BaseModel):
@@ -78,9 +91,24 @@ class ListeningChatResponse(BaseModel):
     latency_ms: int = 0
 
 
+class ListeningPromptUpdate(BaseModel):
+    core_prompt: str | None = Field(default=None, max_length=6000)
+    custom_prompt: str = Field(default="", max_length=2000)
+
+
+class ListeningPromptSettings(BaseModel):
+    default_core_prompt: str
+    core_prompt: str
+    custom_prompt: str
+    effective_prompt: str
+    editable_scope: str
+
+
 class TrackState(BaseModel):
     status: Literal["live", "idle"]
     available: bool
+    recording_id: str | None = None
+    like_count: int = 0
     title: str | None = None
     artist: str | None = None
     album: str | None = None
@@ -163,6 +191,25 @@ class ListeningAgent:
         self.store = store
         self.recommender = DailyRecommender(store)
 
+    @staticmethod
+    def prompt_settings() -> ListeningPromptSettings:
+        core_prompt = get_listening_companion_core_prompt() or CORE_LISTENING_COMPANION_PROMPT
+        custom_prompt = get_listening_companion_prompt()
+        return ListeningPromptSettings(
+            default_core_prompt=CORE_LISTENING_COMPANION_PROMPT,
+            core_prompt=core_prompt,
+            custom_prompt=custom_prompt,
+            effective_prompt=build_listening_companion_prompt(custom_prompt, core_prompt),
+            editable_scope="基础提示词和陪伴偏好都可修改；运行约束仍由系统保留，避免 Agent Loop 和工具边界失效。",
+        )
+
+    @staticmethod
+    def update_prompt_settings(request: ListeningPromptUpdate) -> ListeningPromptSettings:
+        if request.core_prompt is not None:
+            save_listening_companion_core_prompt(request.core_prompt)
+        save_listening_companion_prompt(request.custom_prompt)
+        return ListeningAgent.prompt_settings()
+
     def context(self) -> ListeningContextResponse:
         now_playing = get_now_playing()
         live_title = now_playing.get("title")
@@ -171,12 +218,16 @@ class ListeningAgent:
         status: Literal["live", "idle"] = "live" if live_title else "idle"
         guide = self._guide_for(title)
         recording = self._recording_for(title, guide, now_playing.get("artist"))
+        state = load_state()
         artist = self.store.get_artist(recording.artist_id) if recording else None
         release = self.store.get_release(recording.release_id) if recording else None
+        current_recording_id = recording.id if recording else (str(guide["recording_id"]) if guide else None)
 
         current = TrackState(
             status=status,
             available=bool(live_title),
+            recording_id=current_recording_id,
+            like_count=int(state.get("like_counts", {}).get(current_recording_id, 0)) if current_recording_id else 0,
             title=(guide and self._guide_title(guide)) or title,
             artist=(guide and str(guide["artist"])) or (artist.name if artist else now_playing.get("artist")),
             album=(guide and str(guide["album"])) or (release.title if release else None),
@@ -251,8 +302,11 @@ class ListeningAgent:
     def chat(self, request: ListeningChatRequest) -> ListeningChatResponse:
         persist_conversation = self._is_current_song(request.song_title, request.artist)
         if not os.getenv("DEEPSEEK_API_KEY"):
-            return self._fallback_chat(request, persist_conversation)
-        return self._langchain_chat(request, persist_conversation)
+            return self._fallback_chat(request, persist_conversation, use_ai=False)
+        try:
+            return self._langchain_chat(request, persist_conversation)
+        except (GraphRecursionError, OpenAIError, httpx.HTTPError, ValueError, TypeError, KeyError):
+            return self._fallback_chat(request, persist_conversation, use_ai=False)
 
     def _langchain_chat(self, request: ListeningChatRequest, persist_conversation: bool) -> ListeningChatResponse:
         started = time.perf_counter()
@@ -295,42 +349,53 @@ class ListeningAgent:
             research_sources.extend(SourceRef.model_validate(source) for source in result["sources"])
             return result
 
+        @tool
+        def web_search(query: str) -> dict:
+            """搜索网页并读取前几条网页正文；用于歌曲故事、创作背景、采访、乐评和其他现有资料不足的问题。"""
+            result = web_search_workflow(
+                query,
+                song_title=request.song_title,
+                artist=request.artist,
+            )
+            research_sources.extend(SourceRef.model_validate(source) for source in result["sources"])
+            return result
+
+        @tool
+        def research_song_public_impact() -> dict:
+            """联网研究当前歌曲当年的热度、传播、奖项、销量和公众影响力线索。"""
+            result = research_song_public_impact_workflow(
+                request.song_title,
+                request.artist,
+                request.question,
+            )
+            research_sources.extend(SourceRef.model_validate(source) for source in result["sources"])
+            return result
+
         tools_list = [
             get_current_song_context,
             save_listening_memory,
             find_similar_recordings,
             search_song_sources,
+            web_search,
+            research_song_public_impact,
         ]
         model = ChatOpenAI(
             model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
             api_key=os.environ["DEEPSEEK_API_KEY"],
             base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
             temperature=0.35,
-            timeout=30,
+            timeout=10,
             max_retries=0,
-            max_tokens=520,
+            max_tokens=900,
         )
         agent = create_agent(
             model,
             tools_list,
-            system_prompt=(
-                "你是听歌房里的音乐陪伴者，只围绕此刻正在播放的这一首歌，陪用户细腻地听、感受和品味。"
-                "优先回应用户听见的画面、情绪、声音细节和私人联想，可以提出最多一个温和的问题帮助用户继续听下去。"
-                "不要像全能音乐助理一样做宽泛的数据报告、账户总结或理性长分析；事实与感受要分开，不能替用户断言情绪。"
-                "必须通过标准 Agent Loop 工作："
-                "先理解用户意图，需要保存、相似推荐、读取当前歌曲或检索事实来源时调用对应工具，"
-                "读取工具 observation 后再回答；必要时可以继续调用下一个工具。"
-                "歌词短句的意象、情绪和表达理解属于你的语义能力，应直接结合用户原文分析，不要调用工具；"
-                "检索歌曲故事时调用 search_song_sources，并且只能依据返回的事实和来源组织回答。"
-                "保存歌词或音乐笔记属于写操作，只能在当前这条用户消息明确要求收藏、保存、记下或记录时调用；"
-                "不能因为历史消息里出现了感受就自动保存。通常只调用 1 到 2 个必要工具。"
-                "普通情绪交流可以直接回应，但涉及事实不得猜测。不要暴露工具名、内部步骤或思考过程，"
-                "不要补全歌词，回答自然、细腻、克制、有陪伴感，通常控制在 220 字以内。"
-            ),
+            system_prompt=build_listening_companion_prompt(),
             middleware=[
-                ToolCallLimitMiddleware(run_limit=4, exit_behavior="continue"),
+                ToolCallLimitMiddleware(run_limit=1, exit_behavior="end"),
                 *[
-                    ToolCallLimitMiddleware(tool_name=item.name, run_limit=1, exit_behavior="continue")
+                    ToolCallLimitMiddleware(tool_name=item.name, run_limit=1, exit_behavior="end")
                     for item in tools_list
                 ],
             ],
@@ -347,7 +412,7 @@ class ListeningAgent:
         }
         result = agent.invoke(
             {"messages": [*history, {"role": "user", "content": json.dumps(current_context, ensure_ascii=False)}]},
-            config={"recursion_limit": 24},
+            config={"recursion_limit": 6},
         )
         trace, tools_used = [], []
         for message in result["messages"]:
@@ -362,7 +427,13 @@ class ListeningAgent:
                 })
         answer = str(result["messages"][-1].content)
         if persist_conversation and request.song_title:
-            save_listening_conversation_turn(request.song_title, request.artist, request.question.strip(), answer)
+            save_listening_conversation_turn(
+                request.song_title,
+                request.artist,
+                request.question.strip(),
+                answer,
+                request.client_message_id,
+            )
         return ListeningChatResponse(
             answer=answer,
             tools_used=list(dict.fromkeys(tools_used)),
@@ -374,7 +445,12 @@ class ListeningAgent:
             latency_ms=int((time.perf_counter() - started) * 1000),
         )
 
-    def _fallback_chat(self, request: ListeningChatRequest, persist_conversation: bool) -> ListeningChatResponse:
+    def _fallback_chat(
+        self,
+        request: ListeningChatRequest,
+        persist_conversation: bool,
+        use_ai: bool = True,
+    ) -> ListeningChatResponse:
         started = time.perf_counter()
         question = request.question.strip()
         guide = self._guide_for(request.song_title)
@@ -414,27 +490,46 @@ class ListeningAgent:
                 artist=request.artist,
             ))
             answer = f"{analysis.summary} 可以重点从“{'、'.join(analysis.imagery[:2])}”和“{'、'.join(analysis.emotion[:2])}”两个方向继续听。"
-        elif self._matches(question, "真实的创作故事", "真实创作故事", "查一下", "资料来源", "联网查", "真实背景"):
-            result = search_song_sources_workflow(request.song_title, request.artist)
+        elif self._is_public_impact_query(question):
+            result = research_song_public_impact_workflow(
+                request.song_title,
+                request.artist,
+                question,
+            )
             facts = [str(item) for item in result["facts"]]
             sources.extend(SourceRef.model_validate(source) for source in result["sources"])
-            tools_used.append("search_song_sources")
-            answer = "\n\n".join(facts[:3]) if facts else "暂时没有检索到足够可靠的公开资料。"
+            tools_used.append("research_song_public_impact")
+            answer = self._public_impact_fallback_answer(request, facts)
+        elif self._requires_web_search(question) or (self._needs_web_search(question) and not guide):
+            query = " ".join(part for part in (request.artist, request.song_title, question) if part)
+            result = web_search_workflow(query, request.song_title, request.artist)
+            facts = [str(item) for item in result["facts"]]
+            sources.extend(SourceRef.model_validate(source) for source in result["sources"])
+            tools_used.append("web_search")
+            answer = self._web_search_fallback_answer(request, facts, bool(result.get("documents")))
         elif any(word in question for word in ("推荐", "相似", "下一首")):
             tools_used.append("find_similar_recordings")
             answer = self._similar_answer(request.song_title)
         elif any(word in question for word in ("故事", "背景", "简介", "介绍", "资料", "特别", "为什么")):
             answer = str(guide["narrative"]) if guide else self._generic_chat_story(request)
-        else:
+        elif use_ai:
             ai_answer = self._ai_companion_answer(request, guide)
             if ai_answer:
                 tools_used.append("deepseek_companion_response")
                 answer = ai_answer
             else:
                 answer = self._default_answer(request, guide)
+        else:
+            answer = self._default_answer(request, guide)
 
         if persist_conversation and request.song_title:
-            save_listening_conversation_turn(request.song_title, request.artist, question, answer)
+            save_listening_conversation_turn(
+                request.song_title,
+                request.artist,
+                question,
+                answer,
+                request.client_message_id,
+            )
 
         return ListeningChatResponse(
             answer=answer,
@@ -482,6 +577,113 @@ class ListeningAgent:
     def _has_explicit_save_intent(question: str) -> bool:
         return any(token in question for token in ("收藏", "保存", "记下", "记录", "记一笔", "写进笔记"))
 
+    @staticmethod
+    def _is_public_impact_query(question: str) -> bool:
+        return any(
+            token in question
+            for token in (
+                "多火",
+                "火吗",
+                "火不火",
+                "当年",
+                "热度",
+                "销量",
+                "榜单",
+                "奖项",
+                "拿奖",
+                "传唱",
+                "影响力",
+                "为什么火",
+                "红到",
+                "爆火",
+                "流行",
+            )
+        )
+
+    @staticmethod
+    def _needs_web_search(question: str) -> bool:
+        return any(
+            token in question
+            for token in (
+                "故事",
+                "创作",
+                "背景",
+                "背后",
+                "真实",
+                "资料",
+                "来源",
+                "采访",
+                "乐评",
+                "发行",
+                "写的是什么",
+                "讲的是什么",
+                "查一下",
+                "联网查",
+            )
+        )
+
+    @staticmethod
+    def _requires_web_search(question: str) -> bool:
+        return any(
+            token in question
+            for token in (
+                "查一下",
+                "联网查",
+                "真实",
+                "资料",
+                "来源",
+                "采访",
+                "乐评",
+                "写的是什么",
+                "讲的是什么",
+            )
+        )
+
+    def _web_search_fallback_answer(
+        self,
+        request: ListeningChatRequest,
+        facts: list[str],
+        read_pages: bool,
+    ) -> str:
+        title = request.song_title or "这首歌"
+        if facts:
+            evidence = "\n".join(f"{index + 1}. {fact}" for index, fact in enumerate(facts[:4]))
+            note = "我读了搜索结果和可访问网页正文后，先把能落地的线索摆出来。"
+        else:
+            evidence = "1. 暂时没有检索到足够可靠的公开网页资料。"
+            note = "这次网页搜索没有拿到足够可靠的信息，我不硬编创作故事。"
+        boundary = "已读取网页正文。" if read_pages else "目前主要依据搜索摘要，证据强度有限。"
+        return (
+            f"## 《{title}》可以先这样理解\n\n"
+            f"{note}{boundary}\n\n"
+            "### 可核实线索\n"
+            f"{evidence}\n\n"
+            "### 听这一遍\n"
+            "如果资料没有直接说明作者本意，我会把事实和听感分开：事实留给来源，情绪留给这首歌本身。"
+        )
+
+    def _public_impact_fallback_answer(
+        self,
+        request: ListeningChatRequest,
+        facts: list[str],
+    ) -> str:
+        title = request.song_title or "这首歌"
+        artist = request.artist
+        heading = f"《{title}》当年到底有多火"
+        intro = f"我先查公开资料。关于{artist + '的' if artist else ''}《{title}》，可靠资料里如果没有明确销量、榜单或奖项数字，我不会硬编。"
+        if facts:
+            evidence = "\n".join(f"{index + 1}. {fact}" for index, fact in enumerate(facts[:4]))
+        else:
+            evidence = "1. 暂时没有检索到足够可靠的公开资料。"
+        return (
+            f"## {heading}\n\n"
+            f"{intro}\n\n"
+            "### 可核实线索\n"
+            f"{evidence}\n\n"
+            "### 我的判断\n"
+            "如果资料缺少硬数字，只能把它放回当时的传播环境里看：专辑、歌手组合、旋律记忆点、KTV/校园/电台和网络二次传播，都会共同决定一首歌是不是真的留下来。"
+        )
+
     def _ai_companion_answer(self, request: ListeningChatRequest, guide: dict[str, object] | None) -> str | None:
         context = {
             "song": request.song_title,
@@ -494,7 +696,7 @@ class ListeningAgent:
             } if guide else None,
         }
         return self._invoke_ai(
-            "你是听歌房里的中文音乐陪伴者，只围绕此刻正在播放的这一首歌。回应应细腻、克制、有听感，关注声音、画面、情绪和用户自己的联想；不要做宽泛的数据报告，不替用户断言感受。不要假装知道未提供的事实，不自称 Agent，不展示思考过程。若用户给出歌词短句，可以讨论其画面、情绪和写法，但不要补全歌词。回答控制在 220 字以内。",
+            build_listening_companion_prompt(),
             context,
         )
 
@@ -508,7 +710,7 @@ class ListeningAgent:
                 api_key=api_key,
                 base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
                 temperature=0.35,
-                timeout=18,
+                timeout=8,
                 max_retries=0,
                 max_tokens=420,
             )

@@ -7,11 +7,12 @@ from datetime import UTC, date, datetime, timedelta
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from threading import Lock
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 from xml.etree import ElementTree
 from zoneinfo import ZoneInfo
 
 import httpx
+import requests
 
 CACHE_PATH = Path(__file__).resolve().parents[2] / "data" / "new_world_cache.json"
 USER_AGENT = "C-Pop-Atlas/0.1 local-learning-dashboard"
@@ -162,10 +163,22 @@ def _github_projects(client: httpx.Client, today: date) -> list[dict]:
         headers=headers,
     )
     response.raise_for_status()
+
+    def project_description(item: dict) -> str:
+        description = str(item.get("description") or "").strip()
+        if description:
+            return description
+        language = item.get("language") or "开源"
+        topics = [str(topic) for topic in item.get("topics", [])[:3] if topic]
+        stars = int(item.get("stargazers_count") or 0)
+        if topics:
+            return f"一个近期快速升温的 {language} 项目，关键词：{'、'.join(topics)}。"
+        return f"一个近期新增并获得 {stars:,} stars 的 {language} 项目，值得点进仓库看 README 和代码结构。"
+
     candidates = [
         {
             "name": item["full_name"],
-            "description": item.get("description") or "No description yet.",
+            "description": project_description(item),
             "url": item["html_url"],
             "stars": item.get("stargazers_count", 0),
             "language": item.get("language"),
@@ -334,11 +347,73 @@ def _rotating(items: list[tuple], count: int, today: date) -> list[tuple]:
     return [items[(start + index) % len(items)] for index in range(count)]
 
 
-def _hot_links(today: date) -> list[dict]:
-    return [
-        {"source": source, "title": title, "summary": summary, "url": url}
-        for source, title, summary, url in _rotating(HOT_SOURCES, len(HOT_SOURCES), today)
-    ]
+def _wikipedia_article_url(article: str) -> str:
+    slug = quote(article.replace(" ", "_"), safe="()'!~*-._")
+    return f"https://zh.wikipedia.org/wiki/{slug}"
+
+
+def _pick_wikipedia_article(articles: list[dict]) -> dict | None:
+    for article in articles:
+        name = str(article.get("article") or "").strip()
+        if not name or name.startswith(("Special:", "Wikipedia:")):
+            continue
+        views = int(article.get("views") or 0)
+        return {
+            "source": "Wikipedia",
+            "title": f"维基百科热读：{name}",
+            "summary": f"最近一天浏览量最高的词条，约 {views:,} 次浏览。",
+            "url": _wikipedia_article_url(name),
+        }
+    return None
+
+
+def _wikipedia_hot_link(today: date, client: httpx.Client | None = None) -> dict:
+    target_day = today - timedelta(days=1)
+    api_url = (
+        "https://wikimedia.org/api/rest_v1/metrics/pageviews/top/"
+        f"zh.wikipedia.org/all-access/{target_day.year}/{target_day.month:02}/{target_day.day:02}"
+    )
+
+    def fetch(active_client: httpx.Client) -> dict | None:
+        response = requests.get(
+            api_url,
+            timeout=12.0,
+            headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
+        )
+        response.raise_for_status()
+        payload = response.json()
+        items = payload.get("items") or []
+        if not items:
+            return None
+        articles = items[0].get("articles") or []
+        return _pick_wikipedia_article(articles)
+
+    try:
+        if client is not None:
+            if item := fetch(client):
+                return item
+        else:
+            with httpx.Client(timeout=12.0, follow_redirects=True, headers={"User-Agent": USER_AGENT}) as temp_client:
+                if item := fetch(temp_client):
+                    return item
+    except (httpx.HTTPError, ValueError, KeyError, TypeError):
+        pass
+
+    source, title, summary, url = HOT_SOURCES[0]
+    return {"source": source, "title": title, "summary": summary, "url": url}
+
+
+def _hot_links(today: date, client: httpx.Client | None = None) -> list[dict]:
+    links = []
+    for source, title, summary, url in _rotating(HOT_SOURCES, len(HOT_SOURCES), today):
+        if source == "Wikipedia":
+            if client is None:
+                links.append({"source": source, "title": title, "summary": summary, "url": url})
+            else:
+                links.append(_wikipedia_hot_link(today, client))
+        else:
+            links.append({"source": source, "title": title, "summary": summary, "url": url})
+    return links
 
 
 def _learning(today: date) -> list[dict]:
@@ -361,20 +436,20 @@ def daily_new_world(force: bool = False) -> dict:
             except httpx.HTTPError:
                 github = []
             news = _ai_news(client)
-        payload = {
-            "date": today.isoformat(),
-            "generated_at": datetime.now(UTC).isoformat(),
-            "github": github,
-            "ai_news": news,
-            "hot_links": _hot_links(today),
-            "learning": _learning(today),
-            "sources": [
-                {"name": "GitHub REST API", "url": "https://docs.github.com/en/rest/search/search"},
-                {"name": "OpenAI News", "url": "https://openai.com/news/"},
-                {"name": "Google Blog", "url": "https://blog.google/technology/ai/"},
-                {"name": "Hugging Face Blog", "url": "https://huggingface.co/blog"},
-            ],
-        }
+            payload = {
+                "date": today.isoformat(),
+                "generated_at": datetime.now(UTC).isoformat(),
+                "github": github,
+                "ai_news": news,
+                "hot_links": _hot_links(today, client),
+                "learning": _learning(today),
+                "sources": [
+                    {"name": "GitHub REST API", "url": "https://docs.github.com/en/rest/search/search"},
+                    {"name": "OpenAI News", "url": "https://openai.com/news/"},
+                    {"name": "Google Blog", "url": "https://blog.google/technology/ai/"},
+                    {"name": "Hugging Face Blog", "url": "https://huggingface.co/blog"},
+                ],
+            }
         payload = _localize_chinese(payload)
         _write_cache(payload)
         return payload
