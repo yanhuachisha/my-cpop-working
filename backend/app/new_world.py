@@ -12,7 +12,6 @@ from xml.etree import ElementTree
 from zoneinfo import ZoneInfo
 
 import httpx
-import requests
 
 CACHE_PATH = Path(__file__).resolve().parents[2] / "data" / "new_world_cache.json"
 USER_AGENT = "C-Pop-Atlas/0.1 local-learning-dashboard"
@@ -375,10 +374,8 @@ def _wikipedia_hot_link(today: date, client: httpx.Client | None = None) -> dict
     )
 
     def fetch(active_client: httpx.Client) -> dict | None:
-        response = requests.get(
+        response = active_client.get(
             api_url,
-            timeout=12.0,
-            headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
         )
         response.raise_for_status()
         payload = response.json()
