@@ -12,6 +12,7 @@ $Dist = Join-Path $BuildRoot "dist"
 $Work = Join-Path $BuildRoot "work"
 $Spec = Join-Path $BuildRoot "spec"
 $Target = Join-Path $Root "My-C-Pop-Working.exe"
+$DesktopTarget = Join-Path ([Environment]::GetFolderPath("Desktop")) "My-C-Pop-Working.exe"
 
 if (-not (Test-Path -LiteralPath $Python)) {
     throw "Python not found: $Python"
@@ -49,4 +50,10 @@ New-Item -ItemType Directory -Force -Path $BuildRoot | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "Launcher build failed." }
 
 Copy-Item -LiteralPath (Join-Path $Dist "My-C-Pop-Working.exe") -Destination $Target -Force
-Write-Host "Built: $Target"
+if ([Environment]::GetFolderPath("Desktop")) {
+    Copy-Item -LiteralPath $Target -Destination $DesktopTarget -Force
+    Write-Host "Built: $Target"
+    Write-Host "Desktop copy: $DesktopTarget"
+} else {
+    Write-Host "Built: $Target"
+}

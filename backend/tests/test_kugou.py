@@ -104,7 +104,7 @@ def test_playback_tracker_counts_each_continuous_play_once(monkeypatch):
     assert tracker.observe(playing, now=101) is False
     assert tracker.observe(playing, now=131) is True
     assert [request.action for request in recorded] == ["play", "pause", "play"]
-    assert recorded[1].listened_seconds == 100
+    assert recorded[1].listened_seconds == 31
 
 
 def test_kugou_bridge_search_normalizes_metadata(monkeypatch):

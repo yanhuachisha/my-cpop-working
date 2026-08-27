@@ -147,6 +147,13 @@ def _kugou_audio_active() -> bool | None:
         from pycaw.pycaw import AudioUtilities, IAudioMeterInformation
     except (ImportError, OSError):
         return None
+    ole32 = ctypes.windll.ole32
+    com_initialized = False
+    try:
+        ole32.CoInitialize(None)
+        com_initialized = True
+    except OSError:
+        pass
     found_session = False
     try:
         for session in AudioUtilities.GetAllSessions():
@@ -160,16 +167,17 @@ def _kugou_audio_active() -> bool | None:
             if not _is_kugou_process_path(process_path):
                 continue
             found_session = True
-            if getattr(session, "State", 0) == 1:
-                return True
             try:
                 meter = session._ctl.QueryInterface(IAudioMeterInformation)
                 if float(meter.GetPeakValue()) > _AUDIO_ACTIVE_THRESHOLD:
                     return True
             except (OSError, RuntimeError, AttributeError, ValueError):
                 continue
-    except (OSError, RuntimeError, AttributeError):
+    except (OSError, RuntimeError, AttributeError, getattr(ctypes, "COMError", OSError)):
         return None
+    finally:
+        if com_initialized:
+            ole32.CoUninitialize()
     return False if found_session else None
 
 

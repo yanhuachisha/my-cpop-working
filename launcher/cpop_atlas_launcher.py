@@ -174,10 +174,20 @@ def start_backend() -> None:
     ])
     if not python:
         raise RuntimeError("未找到 Python，请设置环境变量 CPOP_PYTHON。")
+    env = os.environ.copy()
+    # Desktop startup uses the production Agent runtime; unavailable Redis/ES/model
+    # dependencies degrade to deterministic local behavior instead of blocking launch.
+    env.setdefault("AGENT_PLATFORM_ENABLED", "true")
+    env.setdefault("KUGOU_DESKTOP_INTEGRATION", "true")
+    env.setdefault("MODEL_SERVICE_URL", "http://127.0.0.1:8010")
+    env.setdefault("ELASTICSEARCH_URL", "http://127.0.0.1:9200")
+    env.setdefault("MUSIC_CORE_URL", "http://127.0.0.1:8080")
+    env.setdefault("REDIS_URL", "redis://127.0.0.1:6379/0")
     start_hidden(
         [python, "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"],
         ROOT / "backend",
         "backend",
+        env,
     )
 
 

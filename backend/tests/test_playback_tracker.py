@@ -57,6 +57,7 @@ def test_tracker_first_observation_does_not_add_time(monkeypatch):
 
 def test_tracker_pause_snapshot_does_not_add_listening_time(monkeypatch):
     increments = []
+    feedback = []
     monkeypatch.setattr(playback_tracker_module, "ensure_library_recording", lambda *_: "song-a")
     monkeypatch.setattr(
         playback_tracker_module,
@@ -66,7 +67,7 @@ def test_tracker_pause_snapshot_does_not_add_listening_time(monkeypatch):
     monkeypatch.setattr(
         playback_tracker_module,
         "record_feedback",
-        lambda request: {"total_play_count": 1},
+        lambda request: feedback.append(request) or {"total_play_count": 1},
     )
     tracker = KugouPlaybackTracker(threshold_seconds=30, poll_seconds=5)
 
@@ -75,3 +76,7 @@ def test_tracker_pause_snapshot_does_not_add_listening_time(monkeypatch):
     tracker.observe({"title": "晴天", "artist": "周杰伦", "is_playing": False}, now=100)
 
     assert [item["listened_seconds"] for item in increments] == [5]
+    assert len(feedback) == 1
+    assert feedback[0].action == "pause"
+    assert feedback[0].listened_seconds == 5
+

@@ -69,6 +69,55 @@ def test_listening_chat_answers_cached_story_without_fake_tool_trace():
     assert response.mode == "fallback:rules"
 
 
+def test_listening_chat_asks_for_excerpt_when_lyric_analysis_has_no_excerpt():
+    response = ListeningAgent(get_store()).chat(ListeningChatRequest(
+        question="分析一下这首歌的主歌歌词",
+        song_title="示例歌曲",
+    ))
+
+    assert "把主歌中你最在意的几句贴给我" in response.answer
+    assert "我会先读取当前歌曲" not in response.answer
+
+
+def test_listening_chat_fallback_responds_to_feeling_without_system_copy():
+    response = ListeningAgent(get_store()).chat(ListeningChatRequest(
+        question="这个歌太夸了",
+        song_title="素颜",
+        artist="许嵩, 何曼婷",
+    ))
+
+    assert "我会先读取当前歌曲" not in response.answer
+    assert "最“夸”的地方" in response.answer
+    assert response.sources == []
+
+
+def test_listening_chat_rejects_placeholder_model_answer(monkeypatch):
+    agent = ListeningAgent(get_store())
+    monkeypatch.setattr(
+        agent,
+        "_invoke_ai",
+        lambda *_: "我这边好像只收到一串占位符，没有看到具体的歌曲信息呢。",
+    )
+
+    answer = agent._ai_companion_answer(
+        ListeningChatRequest(question="这个歌太夸了", song_title="素颜", artist="许嵩"),
+        None,
+    )
+
+    assert answer is None
+
+
+def test_listening_chat_analyzes_excerpt_from_lyric_analysis_query():
+    response = ListeningAgent(get_store()).chat(ListeningChatRequest(
+        question="分析一下这首歌的主歌歌词",
+        song_title="示例歌曲",
+        lyric_excerpt="窗外的雨慢慢落下，我还在想念从前",
+    ))
+
+    assert "示例歌曲" in response.answer
+    assert "自然景物" in response.answer
+
+
 def test_listening_chat_saves_lyric_specimen(monkeypatch):
     saved = {}
     monkeypatch.setattr(

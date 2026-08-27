@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: cdc-worker
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:cpop}
+    password: ${RABBITMQ_PASSWORD:cpop}
+    publisher-confirm-type: correlated
+server:
+  port: 8081
+cdc:
+  mysql:
+    host: ${MYSQL_HOST:localhost}
+    port: ${MYSQL_PORT:3306}
+    user: ${MYSQL_CDC_USER:debezium}
+    password: ${MYSQL_CDC_PASSWORD:debezium}
+  data-directory: ${CDC_DATA_DIRECTORY:./data/cdc}
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus

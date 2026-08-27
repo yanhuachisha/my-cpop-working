@@ -13,6 +13,11 @@ from dotenv import load_dotenv
 from langgraph.checkpoint.memory import InMemorySaver
 from pydantic import BaseModel, Field
 
+from app.agent.runtime import ProductionAgentRuntime
+from app.agent.state import AgentState
+from app.agent.tool_catalog import build_tool_registry
+from app.agent.tools import ToolExecutionContext, ToolExecutor
+
 from app.data_store import DataStore
 from app.listener_memory import (
     agent_session,
@@ -24,7 +29,6 @@ from app.music_agent_workflows import (
     query_listening_history_workflow,
     recommend_music_workflow,
     search_local_music_workflow,
-    search_music_workflow,
 )
 
 
@@ -71,7 +75,9 @@ class AgentRunRequest(BaseModel):
     query: str = Field(min_length=1, max_length=1000)
     session_id: str | None = Field(default=None, max_length=80)
     user_id: str = "demo"
-    max_steps: int = Field(default=8, ge=2, le=20)
+    max_steps: int = Field(default=8, ge=2, le=12)
+    timeout_ms: int = Field(default=30_000, ge=1_000, le=60_000)
+    tenant_id: str = Field(default="default", min_length=1, max_length=80)
     algorithm: Literal["auto", "react", "plan_execute", "reflection"] = "auto"
     recent_messages: list[dict[str, str]] = Field(default_factory=list, max_length=12)
 
@@ -90,6 +96,15 @@ class AgentRunResponse(BaseModel):
     trace: list[dict[str, Any]]
     iterations: int
     latency_ms: int
+    run_id: str | None = None
+    trace_id: str | None = None
+    intent: str | None = None
+    step: int = 0
+    max_steps: int = 8
+    context_usage: dict[str, Any] = Field(default_factory=dict)
+    citations: list[dict[str, Any]] = Field(default_factory=list)
+    degraded: bool = False
+    degraded_dependencies: list[str] = Field(default_factory=list)
 
 
 def agent_status() -> dict[str, Any]:
@@ -130,7 +145,60 @@ class MusicAgent:
     def __init__(self, store: DataStore) -> None:
         self.store = store
 
-    def run(self, request: AgentRunRequest) -> AgentRunResponse:
+    def run(
+        self,
+        request: AgentRunRequest,
+        *,
+        permissions: set[str] | None = None,
+        confirmed_risks: set[str] | None = None,
+    ) -> AgentRunResponse:
+        if not ProductionAgentRuntime.enabled():
+            return self._run_legacy(request)
+        runtime = ProductionAgentRuntime()
+        session_id = request.session_id or create_agent_session()["id"]
+        prepared = runtime.prepare(
+            query=request.query,
+            user_id=request.user_id,
+            session_id=session_id,
+            tenant_id=request.tenant_id,
+            max_steps=request.max_steps,
+            timeout_ms=request.timeout_ms,
+        )
+        platform_request = request.model_copy(update={"session_id": session_id})
+        result = self._run_legacy(
+            platform_request,
+            prepared.trusted_context,
+            prepared.state,
+            permissions=permissions,
+            confirmed_risks=confirmed_risks,
+        )
+        runtime.finalize(prepared, result.answer)
+        state = prepared.state
+        return result.model_copy(update={
+            "run_id": state.run_id,
+            "trace_id": state.trace_id,
+            "intent": state.intent,
+            "step": state.step,
+            "max_steps": state.max_steps,
+            "context_usage": {
+                **state.token_usage.model_dump(),
+                "input_total": state.token_usage.input_total,
+                "available_input": state.token_usage.available_input,
+            },
+            "citations": state.citations,
+            "degraded": bool(state.degraded_dependencies),
+            "degraded_dependencies": state.degraded_dependencies,
+        })
+
+    def _run_legacy(
+        self,
+        request: AgentRunRequest,
+        trusted_context: str = "",
+        execution_state: AgentState | None = None,
+        *,
+        permissions: set[str] | None = None,
+        confirmed_risks: set[str] | None = None,
+    ) -> AgentRunResponse:
         started = time.perf_counter()
         session_id = request.session_id or create_agent_session()["id"]
         persisted_session = agent_session(session_id)
@@ -143,12 +211,43 @@ class MusicAgent:
         from langchain.tools import tool
         from langchain_openai import ChatOpenAI
 
+        if execution_state is None:
+            started_at = datetime.now().astimezone()
+            from datetime import timedelta
+
+            execution_state = AgentState(
+                user_id=request.user_id,
+                session_id=session_id,
+                tenant_id=request.tenant_id,
+                max_steps=request.max_steps,
+                started_at=started_at,
+                deadline=started_at + timedelta(milliseconds=request.timeout_ms),
+            )
+        registry = build_tool_registry(self.store)
+        executor = ToolExecutor(registry)
+        tool_context = ToolExecutionContext(
+            user_id=request.user_id,
+            tenant_id=request.tenant_id,
+            permissions=permissions or {"music.search", "recommendation.read", "memory.read", "history.read"},
+            confirmed_risks=confirmed_risks or set(),
+            idempotency_store={},
+            trace_id=execution_state.trace_id,
+        )
+
+        def execute_registered(name: str, arguments: dict[str, Any]) -> dict:
+            if not execution_state.begin_step():
+                return {"available": False, "tool": name, "error": "Agent step, token, or deadline budget exhausted."}
+            observation = executor.execute(execution_state, name, arguments, tool_context)
+            if observation.ok:
+                return observation.content
+            return {"available": False, "tool": name, "error": observation.error}
+
         @tool
         def search_music(query: str, limit: int = 8) -> dict:
             """联网查询公开音乐目录；每轮只调用一次，使用用户给出的核心歌曲或人物关键词。"""
             return _execute_tool(
                 "search_music",
-                lambda: search_music_workflow(self.store, query, limit),
+                lambda: execute_registered("search_music", {"query": query, "limit": limit}),
             )
 
         @tool
@@ -159,7 +258,7 @@ class MusicAgent:
             """运行混合推荐；专注/工作/写代码传 focus，放松传 relax，怀旧传 nostalgia，歌词/细品传 lyrics，普通推荐传 auto。"""
             return _execute_tool(
                 "recommend_music",
-                lambda: recommend_music_workflow(self.store, limit, mode),
+                lambda: execute_registered("recommend_music", {"limit": limit, "mode": mode}),
             )
 
         @tool
@@ -170,7 +269,7 @@ class MusicAgent:
             """查询近期行为情绪、长期音乐偏好，或两者组合的用户音乐记忆。"""
             return _execute_tool(
                 "query_listener_memory",
-                lambda: query_listener_memory_workflow(scope, days),
+                lambda: execute_registered("query_listener_memory", {"scope": scope, "days": days}),
             )
 
         @tool
@@ -189,14 +288,40 @@ class MusicAgent:
             """查询真实听歌历史；overview 可一次返回趋势、歌曲歌手排行和上周期对比。"""
             return _execute_tool(
                 "query_listening_history",
-                lambda: query_listening_history_workflow(
-                    period=period,
-                    start_date=start_date,
-                    end_date=end_date,
-                    group_by=group_by,
-                    view=view,
-                    top_n=top_n,
+                lambda: execute_registered("query_listening_history", {
+                    "period": period, "start_date": start_date, "end_date": end_date,
+                    "group_by": group_by, "view": view, "top_n": top_n,
+                }),
+            )
+
+        @tool
+        def add_favorite(track_id: str) -> dict:
+            """将歌曲加入收藏。中风险写操作，只有权限和显式确认均通过时才会执行。"""
+            return _execute_tool(
+                "add_favorite",
+                lambda: execute_registered("add_favorite", {"track_id": track_id}),
+            )
+
+        @tool
+        def update_preference(preference_key: str, value: str) -> dict:
+            """更新稳定偏好。中风险写操作，只有权限和显式确认均通过时才会执行。"""
+            return _execute_tool(
+                "update_preference",
+                lambda: execute_registered(
+                    "update_preference",
+                    {"preference_key": preference_key, "value": value},
                 ),
+            )
+
+        @tool
+        def submit_feedback(message: str, rating: int | None = None) -> dict:
+            """提交用户反馈。低风险写操作，但仍必须具备 feedback.write 权限。"""
+            arguments: dict[str, Any] = {"message": message}
+            if rating is not None:
+                arguments["rating"] = rating
+            return _execute_tool(
+                "submit_feedback",
+                lambda: execute_registered("submit_feedback", arguments),
             )
 
         model_name = os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash")
@@ -205,7 +330,7 @@ class MusicAgent:
             api_key=api_key,
             base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
             temperature=0,
-            timeout=30,
+            timeout=max(1.0, min(30.0, execution_state.remaining_seconds)),
             max_retries=0,
             max_tokens=400,
         )
@@ -214,6 +339,9 @@ class MusicAgent:
             recommend_music,
             query_listener_memory,
             query_listening_history,
+            add_favorite,
+            update_preference,
+            submit_feedback,
         ]
         trace, tools = [], []
         algorithm = request.algorithm
@@ -257,7 +385,7 @@ class MusicAgent:
                 "不要提供完整歌词；不要展示内部思考过程；表达专业、清晰、克制。"
             ),
             middleware=[
-                ToolCallLimitMiddleware(run_limit=3, exit_behavior="continue"),
+                ToolCallLimitMiddleware(run_limit=execution_state.max_tool_calls, exit_behavior="continue"),
                 *[
                     ToolCallLimitMiddleware(
                         tool_name=item.name,
@@ -270,6 +398,8 @@ class MusicAgent:
             checkpointer=_AGENT_CHECKPOINTER,
         )
         execution_query = request.query
+        if trusted_context:
+            execution_query += f"\n\n以下是服务端完成权限过滤和 Token Budget 后提供的可信上下文：\n{trusted_context}"
         if algorithm == "plan_execute":
             plan_message = model.invoke([{"role": "system", "content": "把音乐研究任务拆成最多 4 个可执行步骤，只输出短计划。"}, {"role": "user", "content": request.query}])
             plan = str(plan_message.content)

@@ -1,5 +1,7 @@
 param(
-  [switch]$WithDb
+  [ValidateSet("lite", "full")]
+  [string]$Profile = "lite",
+  [switch]$Observability
 )
 
 $ErrorActionPreference = "Stop"
@@ -14,8 +16,8 @@ $env:PATH = "$dockerBinDir;$env:PATH"
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
-if ($WithDb) {
-  & $dockerExe compose --profile db up --build
-} else {
-  & $dockerExe compose up --build
+$profiles = @("--profile", $Profile)
+if ($Observability) {
+  $profiles += @("--profile", "observability")
 }
+& $dockerExe compose @profiles up --build

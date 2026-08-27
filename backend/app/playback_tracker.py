@@ -36,6 +36,7 @@ class KugouPlaybackTracker:
         self._recording_id: str | None = None
         self._track_started_at: float | None = None
         self._last_observed_at: float | None = None
+        self._active_listened_seconds = 0.0
         self._counted = False
         self._current: dict[str, object] = {}
         self._last_recorded: dict[str, object] | None = None
@@ -60,6 +61,7 @@ class KugouPlaybackTracker:
                 self._recording_id = None
                 self._track_started_at = None
                 self._last_observed_at = None
+                self._active_listened_seconds = 0.0
                 self._counted = False
                 return False
 
@@ -73,6 +75,7 @@ class KugouPlaybackTracker:
                 self._recording_id = ensure_library_recording(title, artist)
                 self._track_started_at = observed_at
                 self._last_observed_at = observed_at
+                self._active_listened_seconds = 0.0
                 self._counted = False
                 return False
 
@@ -89,7 +92,7 @@ class KugouPlaybackTracker:
                 recording_id=recording_id,
                 action="play",
                 channel="kugou-auto",
-                listened_seconds=elapsed,
+                listened_seconds=self._active_listened_seconds,
             ))
             self._counted = True
             self._last_recorded = {
@@ -120,12 +123,13 @@ class KugouPlaybackTracker:
             artist=self._track_artist,
             listened_seconds=increment,
         )
+        self._active_listened_seconds += increment
 
     def _record_departure(self, action: str, observed_at: float) -> None:
         if not self._track_key or self._track_started_at is None or not self._track_title:
             return
-        elapsed = max(0.0, observed_at - self._track_started_at)
-        if elapsed < min(5.0, self.threshold_seconds):
+        active_seconds = self._active_listened_seconds
+        if active_seconds < min(5.0, self.threshold_seconds):
             return
         recording_id = self._recording_id or ensure_library_recording(
             self._track_title, self._track_artist
@@ -134,7 +138,7 @@ class KugouPlaybackTracker:
             recording_id=recording_id,
             action=action,
             channel="kugou-auto",
-            listened_seconds=elapsed,
+            listened_seconds=active_seconds,
         ))
 
     def poll_once(self) -> bool:

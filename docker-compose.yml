@@ -1,39 +1,270 @@
+name: cpop-agent-platform
+
+x-app-profiles: &app-profiles [lite, full]
+x-app-runtime: &app-runtime
+  restart: unless-stopped
+  stop_grace_period: 30s
+  deploy:
+    resources:
+      limits:
+        cpus: "1.0"
+        memory: 1G
+x-infra-runtime: &infra-runtime
+  restart: unless-stopped
+  stop_grace_period: 30s
+  deploy:
+    resources:
+      limits:
+        cpus: "2.0"
+        memory: 2G
+x-common-environment: &common-environment
+  MYSQL_URL: jdbc:mysql://mysql:3306/cpop_atlas?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+  MYSQL_USER: cpop
+  MYSQL_PASSWORD: cpop
+  REDIS_URL: redis://redis:6379/0
+  ELASTICSEARCH_URL: http://elasticsearch:9200
+  RABBITMQ_HOST: rabbitmq
+  RABBITMQ_USER: cpop
+  RABBITMQ_PASSWORD: cpop
+
 services:
-  db:
-    image: pgvector/pgvector:pg16
-    profiles:
-      - db
+  mysql:
+    <<: *infra-runtime
+    image: mysql:8.4
+    profiles: *app-profiles
+    command:
+      - --server-id=1
+      - --log-bin=mysql-bin
+      - --binlog-format=ROW
+      - --binlog-row-image=FULL
+      - --gtid-mode=ON
+      - --enforce-gtid-consistency=ON
     environment:
-      POSTGRES_USER: cpop
-      POSTGRES_PASSWORD: cpop
-      POSTGRES_DB: cpop_atlas
-    ports:
-      - "5432:5432"
+      MYSQL_DATABASE: cpop_atlas
+      MYSQL_USER: cpop
+      MYSQL_PASSWORD: cpop
+      MYSQL_ROOT_PASSWORD: root
+    ports: ["${MYSQL_PORT_FORWARD:-3306}:3306"]
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./migrations:/docker-entrypoint-initdb.d:ro
+      - mysql-data:/var/lib/mysql
+      - ./infra/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: [CMD-SHELL, "mysqladmin ping -h localhost -uroot -proot --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    <<: *infra-runtime
+    image: redis:7.4-alpine
+    profiles: *app-profiles
+    command: [redis-server, --appendonly, "yes", --appendfsync, everysec, --maxmemory-policy, allkeys-lru]
+    ports: ["${REDIS_PORT_FORWARD:-6379}:6379"]
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  elasticsearch:
+    <<: *infra-runtime
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.4
+    profiles: *app-profiles
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    ports: ["${ELASTICSEARCH_PORT_FORWARD:-9200}:9200"]
+    volumes: [elasticsearch-data:/usr/share/elasticsearch/data]
+    healthcheck:
+      test: [CMD-SHELL, "curl -fs http://localhost:9200/_cluster/health?wait_for_status=yellow || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  rabbitmq:
+    <<: *infra-runtime
+    image: rabbitmq:4.0-management-alpine
+    profiles: *app-profiles
+    environment:
+      RABBITMQ_DEFAULT_USER: cpop
+      RABBITMQ_DEFAULT_PASS: cpop
+    ports: ["${RABBITMQ_PORT_FORWARD:-5672}:5672", "${RABBITMQ_MANAGEMENT_PORT_FORWARD:-15672}:15672"]
+    volumes: [rabbitmq-data:/var/lib/rabbitmq]
+    healthcheck:
+      test: [CMD, rabbitmq-diagnostics, -q, ping]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  music-core:
+    <<: *app-runtime
+    build:
+      context: .
+      dockerfile: services/music-core/Dockerfile
+    profiles: *app-profiles
+    environment:
+      <<: *common-environment
+    ports: ["${MUSIC_CORE_PORT_FORWARD:-8080}:8080"]
+    depends_on:
+      mysql: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "curl -fs http://localhost:8080/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  model-service:
+    build: ./model-service
+    profiles: [full]
+    restart: unless-stopped
+    stop_grace_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 8G
+    environment:
+      MODEL_PRELOAD: "true"
+      QWEN_MODEL: Qwen/Qwen3-0.6B
+      EMBEDDING_MODEL: BAAI/bge-m3
+      HF_HOME: /models/cache
+    ports: ["${MODEL_SERVICE_PORT_FORWARD:-8010}:8010"]
+    volumes: [model-cache:/models/cache]
+    healthcheck:
+      test: [CMD-SHELL, "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8010/ready')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 30
+      start_period: 180s
 
   api:
-    build:
-      context: ./backend
+    <<: *app-runtime
+    build: ./backend
+    profiles: *app-profiles
     environment:
-      DATABASE_URL: postgresql://cpop:cpop@db:5432/cpop_atlas
+      <<: *common-environment
+      AGENT_PLATFORM_ENABLED: "true"
+      KUGOU_DESKTOP_INTEGRATION: "false"
+      MODEL_SERVICE_URL: http://model-service:8010
+      MUSIC_CORE_URL: http://music-core:8080
       CPOP_DATA_DIR: /app/data
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./data:/app/data:ro
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-v4-flash}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+    ports: ["${API_PORT_FORWARD:-8000}:8000"]
+    volumes: [./data:/app/data]
+    depends_on:
+      mysql: {condition: service_healthy}
+      redis: {condition: service_healthy}
+      elasticsearch: {condition: service_healthy}
+      music-core: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/ready')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  rag-worker:
+    <<: *app-runtime
+    build: ./backend
+    profiles: [full]
+    command: [python, /app/init_search_indices.py]
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    depends_on:
+      elasticsearch: {condition: service_healthy}
+    restart: "no"
+
+  cdc-worker:
+    <<: *app-runtime
+    build:
+      context: .
+      dockerfile: services/cdc-worker/Dockerfile
+    profiles: [full]
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_CDC_USER: debezium
+      MYSQL_CDC_PASSWORD: debezium
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: cpop
+      RABBITMQ_PASSWORD: cpop
+      CDC_DATA_DIRECTORY: /var/lib/cdc
+    volumes: [cdc-data:/var/lib/cdc]
+    depends_on:
+      mysql: {condition: service_healthy}
+      rabbitmq: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "curl -fs http://localhost:8081/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  memory-projector:
+    <<: *app-runtime
+    build:
+      context: .
+      dockerfile: services/memory-projector/Dockerfile
+    profiles: [full]
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USER: cpop
+      RABBITMQ_PASSWORD: cpop
+      MODEL_SERVICE_URL: http://model-service:8010
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    depends_on:
+      rabbitmq: {condition: service_healthy}
+      elasticsearch: {condition: service_healthy}
+      model-service: {condition: service_healthy}
+      rag-worker: {condition: service_completed_successfully}
+      cdc-worker: {condition: service_healthy}
+    healthcheck:
+      test: [CMD-SHELL, "curl -fs http://localhost:8082/actuator/health/readiness || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
 
   web:
-    build:
-      context: ./frontend
+    <<: *app-runtime
+    build: ./frontend
+    profiles: *app-profiles
     environment:
       API_BASE_URL: http://api:8000
-      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
-    ports:
-      - "3000:3000"
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:${API_PORT_FORWARD:-8000}
+    ports: ["${WEB_PORT_FORWARD:-3000}:3000"]
     depends_on:
-      - api
+      api: {condition: service_healthy}
+
+  prometheus:
+    <<: *infra-runtime
+    image: prom/prometheus:v3.2.1
+    profiles: [observability]
+    command: [--config.file=/etc/prometheus/prometheus.yml]
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports: ["${PROMETHEUS_PORT_FORWARD:-9090}:9090"]
+
+  grafana:
+    <<: *infra-runtime
+    image: grafana/grafana:11.5.2
+    profiles: [observability]
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports: ["${GRAFANA_PORT_FORWARD:-3002}:3000"]
 
 volumes:
-  pgdata:
+  mysql-data:
+  redis-data:
+  elasticsearch-data:
+  rabbitmq-data:
+  model-cache:
+  cdc-data:
+  prometheus-data:
+  grafana-data:

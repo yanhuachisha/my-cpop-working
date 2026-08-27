@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: music-core
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: [music-core:8080]
+  - job_name: cdc-worker
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: [cdc-worker:8080]
+  - job_name: memory-projector
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: [memory-projector:8080]

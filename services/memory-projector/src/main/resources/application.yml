@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: memory-projector
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:cpop}
+    password: ${RABBITMQ_PASSWORD:cpop}
+server:
+  port: 8082
+model-service:
+  url: ${MODEL_SERVICE_URL:http://localhost:8010}
+elasticsearch:
+  url: ${ELASTICSEARCH_URL:http://localhost:9200}
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus

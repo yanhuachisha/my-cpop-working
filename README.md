@@ -1,142 +1,276 @@
 # My C-Pop Working
 
+一个面向中文音乐场景的 AI 音乐工作台，也是一个可用于面试演示的 Agent 全链路项目。
+
+项目把音乐推荐、听歌记录、酷狗桌面播放状态、RAG 知识库和多轮 Agent 对话整合到同一个系统中。核心目标不是做一个简单的聊天页面，而是展示一套可解释、可观测、可恢复的生产化 Agent 架构。
+
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
 ![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)
-![LangChain](https://img.shields.io/badge/LangChain-Agent-1c3c3c)
+![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.11+-3776ab?logo=python&logoColor=white)
-![CI](https://img.shields.io/badge/CI-pytest%20%2B%20ruff%20%2B%20next%20build-2ea44f)
+![CI](https://img.shields.io/badge/CI-pytest%20%7C%20ruff%20%7C%20Maven%20%7C%20Next.js-2ea44a)
 
-一个面向电脑工作场景的华语音乐工作台。它不是简单的歌单页面，而是把当前播放、听歌历史、个人偏好、天气新闻、开放音乐数据和大模型 Agent 串起来，做成一个可以陪你听歌、解释歌曲、记录习惯、生成推荐的本地音乐系统。
+## 1. 先跑起来
 
-## 界面预览
+### 1.1 最低要求
 
-以下截图来自本地实际运行界面，覆盖首页、听歌房、音乐助理、收藏和新世界几个核心入口。
+Docker 是推荐入口。使用者不需要单独安装 Java、Maven、Python 或 Node.js。
 
-| 首页每日发现 | 听歌房 / 音乐陪伴 |
-| --- | --- |
-| ![首页每日发现](docs/screenshots/home.png) | ![听歌房音乐陪伴](docs/screenshots/listening-room.png) |
+- Windows/macOS：Docker Desktop（Windows 建议启用 WSL2）
+- Linux：Docker Engine 24+ 和 Docker Compose Plugin
+- Git
+- Lite 模式建议 4 GB 内存
+- Full 模式建议 8 GB 起步、16 GB 更舒适，至少 15 GB 可用磁盘
 
-| 音乐助理 Agent | 我的收藏 |
-| --- | --- |
-| ![音乐助理 Agent](docs/screenshots/music-agent.png) | ![我的收藏](docs/screenshots/library.png) |
+### 1.2 克隆并配置
 
-| 新世界 |
-| --- |
-| ![新世界](docs/screenshots/new-world.png) |
-
-## 为什么值得看
-
-- **真实 Agent 编排**：DeepSeek 通过 OpenAI-compatible API 接入 LangChain `create_agent`，结合 LangGraph memory，完成模型判断、工具调用、observation 回填和多步决策。
-- **推荐算法不是随机歌单**：`HybridRecommender` 使用多通道召回、BPR pairwise learning-to-rank、Thompson Sampling 探索和 MMR 多样性重排。
-- **桌面播放状态接入**：Windows 下监听酷狗窗口标题和播放状态，后台轮询并按阈值增量记录听歌时长，不破解私有数据库。
-- **本地记忆系统**：长期偏好存在轻量 JSON 状态中，真实听歌时长进入 SQLite，支持按天、周、月、年、自定义范围聚合。
-- **工程化完整**：Next.js 16 + React 19 + TypeScript 前端，FastAPI + Pydantic 后端，Docker Compose、CI、自动数据同步 workflow 和 18 个后端测试文件。
-
-## 体验入口
-
-| 模块 | 能力 |
-| --- | --- |
-| 首页 | 今日推荐、熟悉答案、探索内容和个性化音乐入口 |
-| 听歌房 | 读取当前酷狗播放，展示歌曲故事、短句分析、相似推荐和 Agent 对话 |
-| 音乐助理 | 用自然语言搜索、推荐、解释歌曲，并返回工具调用 trace |
-| 我的收藏 | 从文本、CSV、剪贴板导入歌单，只保存歌曲元数据 |
-| 新世界 | 聚合 GitHub、AI 新闻、技术社区热点和学习向知识内容 |
-| 听歌统计 | 查询今日、昨日、本周、本月、全年和自定义范围的听歌时长 |
-
-## 系统架构
-
-```mermaid
-flowchart LR
-  UI[Next.js 16 + React 19<br/>Desktop Web UI] --> API[FastAPI API Layer<br/>Pydantic Schemas]
-  API --> Agent[LangChain create_agent<br/>DeepSeek Chat Model]
-  Agent --> Tools[Music Agent Tools<br/>Deterministic Workflows]
-  Tools --> Rec[Hybrid Recommender<br/>BPR + Thompson + MMR]
-  Tools --> Memory[Listener Memory<br/>JSON + SQLite]
-  API --> Kugou[Kugou Desktop Tracker<br/>Window Title + Polling]
-  API --> Catalog[Open Music Catalog]
-  Catalog --> MB[MusicBrainz]
-  Catalog --> WD[Wikidata]
-  Catalog --> LB[ListenBrainz]
-  Catalog --> IT[iTunes Search API]
-  API --> Preview[Deezer Public Preview URL]
-  API -. optional .-> PG[(PostgreSQL + pgvector)]
+```bash
+git clone https://github.com/<owner>/<repository>.git
+cd <repository>
 ```
 
-## 技术架构
+Linux/macOS：
 
-### Frontend
-
-- **Next.js 16 / React 19 / TypeScript**：以桌面端为主要使用场景，围绕音乐工作台、听歌房和助理对话组织信息密度。
-- **TanStack Query**：统一前端请求、缓存和刷新节奏。
-- **lucide-react**：提供一致的图标语言，适合工具型界面。
-- **页面结构**：首页、搜索、歌曲页、听歌房、音乐助理、收藏、新世界。
-
-### Backend
-
-- **FastAPI + Pydantic**：模块化 API 层，覆盖推荐、Agent、收藏、开放曲库、酷狗桥接、听歌统计等能力。
-- **异步 HTTP 聚合**：使用 `httpx` 访问 MusicBrainz、iTunes Search、Deezer preview 等公开数据源。
-- **可测试降级**：没有大模型 Key 时仍可运行确定性 workflow 和测试，避免核心功能被外部服务完全锁死。
-
-### Agent Layer
-
-当前有 3 个由大模型驱动的 Agent：
-
-| Agent | 职责 |
-| --- | --- |
-| `MusicAgent orchestrator` | 音乐问答、推荐、搜索和工具编排 |
-| `ListeningCompanionAgent` | 听歌房右侧陪伴、收藏、笔记、相似推荐、歌词短句分析 |
-| `SongPortraitAgent` | 歌曲资料检索、来源整理和情绪化歌曲画像 |
-
-Agent 循环遵循：
-
-```text
-用户问题 -> 模型判断是否需要工具 -> 调用工具 -> observation 回填 -> 继续决策或生成最终回答
+```bash
+cp .env.example .env
 ```
 
-服务端会返回 `trace`、`tools_used`、`iterations`、`latency_ms` 等调试信息，便于判断 Agent 是否真的调用了工具，而不是只在文案里假装智能。
-
-### Recommendation Layer
-
-推荐链路由确定性 workflow 承担，Agent 只负责理解意图和选择工具：
-
-1. **Multi-channel recall**：从 itemCF、用户画像、内容相似、上下文、热度和新鲜度召回候选。
-2. **BPR ranking**：用隐式反馈做 pairwise 排序，让喜欢、收藏、跳过、曝光等信号进入排序。
-3. **Thompson Sampling**：在稳定偏好之外保留探索，避免推荐池变成固定几首歌。
-4. **MMR diversity**：控制相似歌曲扎堆，让结果兼顾相关性和多样性。
-5. **Explainability**：返回文字理由和结构化 `score_breakdown`，便于前端展示推荐原因。
-
-### Data & Memory
-
-- **开放曲库**：合并项目 seed、MusicBrainz、Wikidata、ListenBrainz、iTunes Search API 和用户导入歌单。
-- **用户状态**：`listener_state.json` 保存长期偏好、收藏、跳过、想听和歌词短句样本。
-- **听歌历史**：SQLite `data/listening_history.db` 记录 daily track listening 和 daily summary，支持 legacy JSON 自动迁移。
-- **向量扩展**：`migrations/001_init.sql` 提供 PostgreSQL + pgvector schema，`recordings.embedding` 使用 `vector(384)`。
-
-### Desktop Integration
-
-- 默认读取 Windows 酷狗当前播放信息。
-- `KugouPlaybackTracker` 后台轮询，播放满 30 秒后增量记录，避免同一首歌被重复累计。
-- 可选连接 `Yu9191/KuGou` 本地服务用于搜索和补全元数据。
-- 项目不破解、不读取、不修改酷狗私有加密数据库。
-
-## 快速开始
-
-推荐 Windows 一键启动：
+Windows PowerShell：
 
 ```powershell
-.\scripts\dev-up.ps1
+Copy-Item .env.example .env
+notepad .env
 ```
+
+至少配置一个自己的 DeepSeek Key：
+
+```env
+DEEPSEEK_API_KEY=your_api_key
+```
+
+没有 Key 时项目仍可启动，Agent 会使用确定性降级逻辑，但最终回答能力会受限。
+
+### 1.3 Lite 模式：日常体验
+
+Lite 会启动 MySQL、Redis、Elasticsearch、RabbitMQ、Java Music Core、FastAPI 和 Next.js 前端，不启动本地模型服务，适合第一次体验和低配置机器：
+
+```bash
+docker compose --profile lite up --build
+```
+
+访问：<http://localhost:3000>
+
+### 1.4 Full 模式：面试演示
+
+Full 会在 Lite 基础上启动 Qwen3-0.6B、BGE-M3、RAG 初始化、CDC Worker 和长期记忆 Projector：
+
+```bash
+docker compose --profile full up --build
+```
+
+需要监控面板时：
+
+```bash
+docker compose --profile full --profile observability up --build
+```
+
+首次启动会从 Hugging Face 下载：
+
+- `Qwen/Qwen3-0.6B`：意图识别、摘要、记忆抽取
+- `BAAI/bge-m3`：RAG 和长期记忆向量化，1024 维
+
+模型缓存保存在 Docker volume `model-cache` 中，后续启动不会重复下载。CPU 可以运行，但模型预热较慢；检测到 CUDA 时模型服务会自动使用加速环境。
 
 默认地址：
 
-| 服务 | 地址 |
-| --- | --- |
-| Web | http://localhost:3000 |
-| API | http://localhost:8001 |
-| API Docs | http://localhost:8001/docs |
+| 服务 | 地址 | 用途 |
+| --- | --- | --- |
+| Web | <http://localhost:3000> | 用户界面 |
+| API | <http://localhost:8000> | 后端接口 |
+| API 文档 | <http://localhost:8000/docs> | Swagger/OpenAPI |
+| RabbitMQ | <http://localhost:15672> | 用户 `cpop`，密码 `cpop` |
+| Grafana | <http://localhost:3002> | observability profile |
 
-手动启动后端：
+停止服务：
+
+```bash
+docker compose --profile full --profile observability down
+```
+
+只有确定要删除数据库、Redis、ES、RabbitMQ 和模型缓存时，才使用 `down -v`。
+
+## 2. Windows 桌面模式（酷狗联动）
+
+桌面模式是 Windows 本地适配器，适合你自己的电脑使用：
+
+1. 双击桌面上的 `My-C-Pop-Working.exe`。
+2. 启动本地 Web（3000）和 API（8001）。
+3. 检测酷狗窗口标题和播放状态，按阈值记录听歌时长。
+
+桌面模式不会破解、读取或修改酷狗私有数据库，只读取公开的窗口状态。Docker 容器固定使用 `KUGOU_DESKTOP_INTEGRATION=false`，不会访问宿主机窗口系统。
+
+仓库默认忽略 `*.exe`，所以 `git clone` 不会自动得到启动器。需要构建时，在 Windows 执行：
+
+```powershell
+.\scripts\build-launcher.ps1
+```
+
+该脚本会生成 `My-C-Pop-Working.exe` 并复制到当前用户桌面。向其他 Windows 用户分发时，建议将 EXE 放在 GitHub Releases，并同时提供完整项目目录；服务器和团队环境请使用 Docker，不要分发桌面 EXE。
+
+## 3. Agent 全链路
+
+请求从 API 进入后的主要流程：
+
+```text
+用户请求
+  -> Qwen3-0.6B 意图识别
+  -> Redis 读取短期会话、Summary 和 Token Budget
+  -> BGE-M3 生成 Query 向量
+  -> Elasticsearch BM25 + KNN-ANN
+  -> ACL hard filter 后执行 RRF 融合
+  -> 召回 RAG 知识与长期记忆
+  -> Token Budget 组装上下文并预留输出空间
+  -> DeepSeek 生成回答或调用工具
+  -> Redis 追加本轮消息
+  -> 按条件执行 Memory Extraction
+  -> MySQL 事务落库，经 CDC 投影到 ES
+```
+
+### 3.1 Agent 状态和执行边界
+
+每次运行都有独立 `run_id` 和 `trace_id`。状态至少包含：
+
+```text
+run_id, trace_id, user_id, session_id, intent, entities,
+step, max_steps, tool_calls, observations, token_usage,
+started_at, deadline, retrieved_chunks, memory_candidates,
+context_summary, citations, degraded_dependencies
+```
+
+- `max_steps` 默认 8，请求可配置 2～12，服务端硬上限 12。
+- 默认 deadline 30 秒，硬上限 60 秒；每次模型和工具调用前都会检查剩余时间。
+- 工具总调用数默认最多 6 次，同一工具默认最多 2 次。
+- 达到步数、时间或 Token Budget 上限后进入 `finalize`，不再执行工具。
+- 每次工具调用记录 `call_id`、参数摘要、状态、耗时和结构化 observation，便于面试时展示轨迹。
+
+### 3.2 Summary 与 Recent History 去重
+
+Redis 使用 Stream 保存原始消息，并设置最终保护长度：
+
+```text
+agent:session:{user}:{session}:messages   MAXLEN ~ 256
+agent:session:{user}:{session}:budget
+agent:session:{user}:{session}:summary
+```
+
+Summary 带有 `covered_from_id`、`covered_through_id`、`summary_version` 和来源消息 ID。摘要只覆盖较旧消息，最近 4 轮原始对话永远保留在 Recent History；加载 Recent History 时从 `covered_through_id +` 开始读取，因此同一条消息不会同时出现在 Summary 和 Recent History 中。
+
+Stream 达到约 192 条消息时提前压缩，`XADD MAXLEN ~ 256` 作为最后保护。完整会话审计由 MySQL 保存，不依赖 Redis 永久保留。
+
+默认 Token Budget 为 32K，优先保留安全提示、当前 Query 和最近 4 轮；超限时依次删除低分召回、压缩旧历史、缩短摘要。
+
+### 3.3 Tool Calling
+
+工具由三个组件管理，Agent 不直接调用业务函数：
+
+- `ToolRegistry`：启动时注册并冻结工具，检查名称冲突和 schema。
+- `ToolSchema`：描述名称、输入 JSON Schema、读写类型、风险等级、超时、幂等性和所需权限。
+- `ToolExecutor`：负责鉴权、参数校验、风险确认、超时、幂等、熔断、执行和审计。
+
+READ 工具包括 `search_music`、`get_history`、`query_catalog`、`retrieve_memory`；WRITE 工具包括 `add_favorite`、`update_preference`、`submit_feedback`、`save_memory`。
+
+WRITE 工具固定经过：
+
+```text
+权限验证 -> JSON Schema 校验 -> 风险策略 -> 幂等键
+-> Java API -> MySQL 事务 -> 审计 observation
+```
+
+权限在 BM25 和 KNN 召回阶段使用 hard filter，未授权文档不会进入候选集、RRF、重排、trace 或 citation，绝不把权限当作重排特征。
+
+### 3.4 长期记忆和 CDC
+
+记忆抽取满足以下条件之一时触发：每 6 轮、新业务实体或稳定偏好出现、Token 使用达到 75%、空闲 30 分钟，或用户明确要求“记住”。
+
+```text
+Memory Candidate
+  -> Schema / Privacy / Conflict Validation
+  -> MySQL 事务：memory + memory_version + source_relation + outbox
+  -> COMMIT
+  -> Debezium Embedded
+  -> RabbitMQ
+  -> BGE-M3 Memory Projector
+  -> ES agent_memory_current
+```
+
+MySQL 是唯一权威数据源，ES 只是可重建的检索投影。Projector 通过 `aggregate_id` 路由、消费者幂等和 `aggregate_version` 检查处理重复或乱序事件，避免旧事件覆盖新状态。
+
+## 4. 项目结构
+
+```text
+backend/                 FastAPI、Agent、工具、RAG、测试
+frontend/                Next.js 16 + React 19 Web UI
+services/music-core/     Java 17 Spring Boot 权威业务服务
+services/cdc-worker/     Debezium Embedded CDC
+services/memory-projector/长期记忆消息消费和 ES 投影
+model-service/           Qwen3-0.6B + BGE-M3 模型服务
+data/rag/                示例 RAG 文档和 ingest 文件
+infra/mysql/init/        MySQL 初始化表结构
+docker-compose.yml       lite/full/observability 部署编排
+launcher/                Windows 酷狗桌面启动器
+scripts/                 启动、索引、数据同步和评测脚本
+```
+
+## 5. 环境变量
+
+完整模板见 `.env.example`。常用配置：
+
+```env
+DEEPSEEK_API_KEY=
+DEEPSEEK_MODEL=deepseek-v4-flash
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+
+# Docker 对外端口，容器内部端口不变
+WEB_PORT_FORWARD=3000
+API_PORT_FORWARD=8000
+MYSQL_PORT_FORWARD=3306
+REDIS_PORT_FORWARD=6379
+ELASTICSEARCH_PORT_FORWARD=9200
+RABBITMQ_PORT_FORWARD=5672
+```
+
+如果宿主机端口被占用，可在 `.env` 中改成例如 `API_PORT_FORWARD=18000`，然后访问 `http://localhost:18000`。
+
+不要把 `.env`、API Key、真实用户数据或模型缓存提交到 GitHub。生产环境还应修改 MySQL、Redis 和 RabbitMQ 的默认密码，并将 Key 交给 GitHub Actions Secrets 或部署平台的 Secret 管理器。
+
+## 6. API 入口
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/health` | 服务健康检查 |
+| POST | `/api/agent/query` | Agent 自然语言问答 |
+| POST | `/api/agent/run` | Agent 执行入口 |
+| GET | `/api/agent/status` | Agent、模型和工具状态 |
+| GET | `/api/agent/evaluate?suite=smoke&algorithm=auto` | Agent 评测 |
+| GET | `/api/recommendations/hybrid` | 混合推荐 |
+| GET | `/api/listening/today-stats` | 今日听歌统计 |
+| GET | `/api/agent/weekly-report` | 周报生成 |
+| GET | `/api/kugou/bridge/status` | 酷狗桥接状态 |
+| GET | `/api/catalog/stats` | 曲库统计 |
+| POST | `/api/library/import` | 导入歌单元数据 |
+
+启动 API 后可通过 <http://localhost:8000/docs> 查看完整 OpenAPI 文档。
+
+## 7. 本地开发（不使用 Docker）
+
+本地 Java 服务使用 JDK 17。Windows 可显式指定：
+
+```powershell
+$env:JAVA_HOME = "C:\Users\super\Desktop\jdk-17.0.12"
+```
+
+后端：
 
 ```powershell
 cd backend
@@ -144,165 +278,71 @@ pip install -e ".[dev]"
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
 ```
 
-手动启动前端：
+前端：
 
 ```powershell
 cd frontend
 npm install
-$env:NEXT_PUBLIC_API_BASE_URL="http://localhost:8001"
+$env:NEXT_PUBLIC_API_BASE_URL = "http://localhost:8001"
 npm run dev -- --hostname 0.0.0.0 --port 3000
 ```
 
-## 环境变量
-
-复制 `.env.example` 为 `.env`，按需填写：
-
-```env
-DEEPSEEK_API_KEY=your_api_key_here
-DEEPSEEK_MODEL=deepseek-v4-flash
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8001
-KUGOU_BRIDGE_URL=http://127.0.0.1:9191
-```
-
-没有 `DEEPSEEK_API_KEY` 时，LLM Agent 能力会受限，但曲库、统计、推荐 workflow 和大部分本地能力仍可开发调试。
-
-## Docker
-
-启动 Web + API：
+Java 服务：
 
 ```powershell
-.\scripts\docker-up.ps1
+cd services/music-core
+..\..\mvnw.cmd test
 ```
 
-检查 Docker/Compose 配置：
+## 8. 测试和验收
+
+Python 测试：
 
 ```powershell
-.\scripts\docker-check.ps1
+cd backend
+pytest -q
+ruff check .
 ```
 
-需要 PostgreSQL + pgvector：
+Java 测试：
 
 ```powershell
-.\scripts\docker-up.ps1 -WithDb
+cd services/music-core
+..\..\mvnw.cmd test
+cd ..\cdc-worker
+..\..\mvnw.cmd test
+cd ..\memory-projector
+..\..\mvnw.cmd test
 ```
 
-Docker Compose 默认端口为 Web `3000`、API `8000`。本地开发脚本默认 API 端口是 `8001`。
-
-## Agent Benchmark
-
-项目包含数据集驱动的 Agent Evaluation：
-
-- Dataset: `backend/app/evals/agent_benchmark.jsonl`
-- Runner: `scripts/run_agent_eval.py`
-- Report: `docs/agent-benchmark-report.md`
-- API: `GET /api/agent/evaluate?suite=smoke&algorithm=auto`
-
-离线 smoke benchmark：
+Agent 离线评测：
 
 ```powershell
 python scripts/run_agent_eval.py --suite smoke --algorithm auto
-```
-
-离线 full benchmark：
-
-```powershell
 python scripts/run_agent_eval.py --suite full --algorithm auto
 ```
 
-配置 `DEEPSEEK_API_KEY` 后跑真实 LLM benchmark：
+配置真实 LLM Key 后可运行在线评测：
 
 ```powershell
 python scripts/run_agent_eval.py --suite full --algorithm auto --live
 ```
 
-当前 full offline baseline：20 cases，pass rate 100%。指标覆盖 tool recall、tool precision、argument accuracy、grounding、safety、trajectory quality、iteration budget 和 latency。
+CI 会在 push 和 pull request 中执行 Python 测试、ruff、Java 17 Maven 构建、前端构建和 Compose 配置检查。
 
-## 关键 API
+## 9. 数据来源和合规边界
 
-| API | 用途 |
-| --- | --- |
-| `GET /health` | 服务健康检查 |
-| `GET /api/today?mode=auto` | 今日推荐和首页聚合 |
-| `POST /api/agent/query` | Agent 自然语言问答 |
-| `POST /api/agent/run` | Agent 执行入口 |
-| `GET /api/agent/status` | Agent 状态、模型和工具信息 |
-| `GET /api/agent/evaluate?suite=smoke&algorithm=auto` | 数据集驱动 Agent Evaluation，评估工具选择、参数准确率、grounding、安全、轨迹和延迟 |
-| `GET /api/recommendations/hybrid` | 混合推荐 |
-| `GET /api/listening/today-stats` | 今日听歌统计 |
-| `GET /api/agent/weekly-report` | 基于真实听歌历史生成周报 |
-| `GET /api/kugou/bridge/status` | 酷狗桥接状态 |
-| `GET /api/kugou/bridge/search?q=周杰伦` | 酷狗桥接搜索 |
-| `POST /api/library/import` | 导入收藏歌单 |
-| `GET /api/catalog/stats` | 曲库统计 |
-| `GET /api/new-world` | 新世界聚合内容 |
+项目优先使用 MusicBrainz、Wikidata、ListenBrainz、iTunes Search、Deezer 公共接口和仓库内的示例 RAG 文档。项目不保存完整歌词、不保存音频文件、不代理音频、不读取个人 Apple Music 私有数据，也不破解酷狗私有数据库。
 
-## 数据来源与边界
+## 10. 面试演示建议
 
-项目优先使用开放数据和公开 API：
+推荐先用 Lite 模式确认页面和 API 正常，再切换 Full 模式演示：
 
-- **MusicBrainz**：音乐主数据，核心数据 CC0。
-- **Wikidata**：艺人元数据和外部 ID，CC0。
-- **ListenBrainz**：开放听歌趋势和 public stats。
-- **Apple iTunes Search API**：公开返回的曲目、艺人和专辑目录元数据。
-- **Deezer public preview API**：只用于公开 30 秒试听 URL。
-- **用户导入歌单**：来自 TXT、CSV 或剪贴板文本，只保存歌曲元数据。
+1. 查看 Agent `run_id`、`step`、`max_steps`、工具调用和 token 使用量。
+2. 展示 BM25 + KNN + ACL hard filter + RRF 的检索链路。
+3. 连续对话，说明 Summary watermark 如何避免 Summary 与 Recent History 重复。
+4. 调用写工具，展示权限、参数校验、风险确认、幂等键和 MySQL 事务。
+5. 触发记忆抽取，展示 MySQL outbox、RabbitMQ 消息和 ES 长期记忆投影。
+6. 在 Grafana 中查看延迟、错误、降级依赖和 Agent 轨迹。
 
-项目不保存完整歌词，不保存音频文件，不代理音频，不读取个人 Apple Music 数据，也不破解酷狗私有数据库。
-
-## 测试与质量
-
-后端测试：
-
-```powershell
-cd backend
-pytest -q
-```
-
-后端 lint：
-
-```powershell
-cd backend
-ruff check .
-```
-
-前端构建：
-
-```powershell
-cd frontend
-npm run build
-```
-
-CI 会在 push 和 pull request 中执行：
-
-- Python 3.12 安装后端并运行 `pytest backend/tests -q`
-- `ruff check backend scripts`
-- Node 22 安装前端依赖并运行 `npm run build`
-
-## 仓库结构
-
-```text
-.
-├── backend/                 # FastAPI 服务、Agent、推荐算法、数据同步和测试
-│   ├── app/
-│   │   ├── langchain_agent.py
-│   │   ├── music_agent_workflows.py
-│   │   ├── hybrid_recommender.py
-│   │   └── listening_history.py
-│   └── tests/
-├── frontend/                # Next.js 16 + React 19 桌面端 Web UI
-├── data/                    # seed 数据、用户状态、听歌历史和开放数据 snapshot
-├── migrations/              # PostgreSQL + pgvector schema
-├── scripts/                 # Windows 启动、Docker、酷狗桥接和数据同步脚本
-├── .github/workflows/       # CI 与每日开放数据同步
-└── docker-compose.yml
-```
-
-## Roadmap
-
-- 更稳定的桌面端听歌房布局和大屏信息密度。
-- 更多学习向内容源，让“新世界”偏向可学习材料而不是论文索引。
-- Agent 评估集扩展到更多真实听歌场景。
-- 推荐解释可视化，展示各路召回和重排对最终结果的影响。
-- pgvector 检索与本地曲库画像进一步打通。
+更多架构细节见 [`docs/AGENT_PLATFORM_V3.md`](docs/AGENT_PLATFORM_V3.md)，部署注意事项见 [`DEPLOYMENT.md`](DEPLOYMENT.md)。

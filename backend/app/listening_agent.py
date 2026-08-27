@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import re
 import time
@@ -305,7 +304,9 @@ class ListeningAgent:
             return self._fallback_chat(request, persist_conversation, use_ai=False)
         try:
             return self._langchain_chat(request, persist_conversation)
-        except (GraphRecursionError, OpenAIError, httpx.HTTPError, ValueError, TypeError, KeyError):
+        except GraphRecursionError:
+            return self._fallback_chat(request, persist_conversation, use_ai=True)
+        except (OpenAIError, httpx.HTTPError, ValueError, TypeError, KeyError):
             return self._fallback_chat(request, persist_conversation, use_ai=False)
 
     def _langchain_chat(self, request: ListeningChatRequest, persist_conversation: bool) -> ListeningChatResponse:
@@ -379,24 +380,25 @@ class ListeningAgent:
             web_search,
             research_song_public_impact,
         ]
+        active_tools = tools_list if self._should_use_companion_tool(request.question) else []
         model = ChatOpenAI(
             model=os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash"),
             api_key=os.environ["DEEPSEEK_API_KEY"],
             base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
             temperature=0.35,
-            timeout=10,
+            timeout=5,
             max_retries=0,
             max_tokens=900,
         )
         agent = create_agent(
             model,
-            tools_list,
+            active_tools,
             system_prompt=build_listening_companion_prompt(),
             middleware=[
                 ToolCallLimitMiddleware(run_limit=1, exit_behavior="end"),
                 *[
                     ToolCallLimitMiddleware(tool_name=item.name, run_limit=1, exit_behavior="end")
-                    for item in tools_list
+                    for item in active_tools
                 ],
             ],
         )
@@ -411,7 +413,7 @@ class ListeningAgent:
             "question": request.question,
         }
         result = agent.invoke(
-            {"messages": [*history, {"role": "user", "content": json.dumps(current_context, ensure_ascii=False)}]},
+            {"messages": [*history, {"role": "user", "content": self._companion_context_text(current_context)}]},
             config={"recursion_limit": 6},
         )
         trace, tools_used = [], []
@@ -426,6 +428,8 @@ class ListeningAgent:
                     "content": str(message.content)[:1000],
                 })
         answer = str(result["messages"][-1].content)
+        if self._is_placeholder_answer(answer):
+            raise ValueError("model returned placeholder companion response")
         if persist_conversation and request.song_title:
             save_listening_conversation_turn(
                 request.song_title,
@@ -438,7 +442,7 @@ class ListeningAgent:
             answer=answer,
             tools_used=list(dict.fromkeys(tools_used)),
             suggestions=["帮我收藏这句话", "记下刚才的感受", "推荐类似的歌", "查一下这首歌真实的创作故事"],
-            sources=research_sources or [*OPEN_DATA_SOURCES[:2], SEED_SOURCE],
+            sources=research_sources,
             mode="langchain:react",
             trace=trace,
             iterations=len([item for item in trace if item["type"] == "tool_call"]),
@@ -483,7 +487,7 @@ class ListeningAgent:
                 answer = f"已经把这段感受记进音乐笔记：“{content[:90]}”"
             else:
                 answer = "你想记下哪种感受？可以直接说“记下刚才的感受：此刻想到的话”，我会连同当前歌曲和时间一起保存。"
-        elif request.lyric_excerpt and any(word in question for word in ("歌词", "这句", "意象", "隐喻")):
+        elif request.lyric_excerpt and self._is_lyric_analysis_query(question):
             analysis = self.analyze_lyrics(LyricAnalysisRequest(
                 excerpt=request.lyric_excerpt,
                 song_title=request.song_title,
@@ -535,7 +539,7 @@ class ListeningAgent:
             answer=answer,
             tools_used=tools_used,
             suggestions=["帮我收藏这句话", "记下刚才的感受", "推荐类似的歌", "查一下这首歌真实的创作故事"],
-            sources=sources or [*OPEN_DATA_SOURCES[:2], SEED_SOURCE],
+            sources=sources,
             mode="fallback:rules",
             trace=[{"type": "tool_call", "tool": tool_name, "args": {}} for tool_name in tools_used],
             iterations=len(tools_used),
@@ -695,10 +699,15 @@ class ListeningAgent:
                 "listening_points": guide.get("listening_points"),
             } if guide else None,
         }
-        return self._invoke_ai(
+        answer = self._invoke_ai(
             build_listening_companion_prompt(),
             context,
         )
+        if not answer:
+            return None
+        if self._is_placeholder_answer(answer):
+            return None
+        return answer
 
     def _invoke_ai(self, system_prompt: str, payload: dict[str, object]) -> str | None:
         api_key = os.getenv("DEEPSEEK_API_KEY")
@@ -710,13 +719,13 @@ class ListeningAgent:
                 api_key=api_key,
                 base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
                 temperature=0.35,
-                timeout=8,
+                timeout=5,
                 max_retries=0,
                 max_tokens=420,
             )
             response = model.invoke([
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": json.dumps(payload, ensure_ascii=False)},
+                {"role": "user", "content": self._companion_context_text(payload)},
             ])
             content = response.content
             return content.strip() if isinstance(content, str) and content.strip() else None
@@ -807,10 +816,47 @@ class ListeningAgent:
         return str(introduction["narrative"])
 
     def _default_answer(self, request: ListeningChatRequest, guide: dict[str, object] | None) -> str:
-        if guide:
-            points = list(guide["listening_points"])
-            return f"听《{self._guide_title(guide)}》时，我建议先关注：{points[0]}；然后再注意{points[1]}。"
-        return "我会先读取当前歌曲，再结合已核实的目录资料、歌词短句和听歌记录回答。你可以问歌曲简介、歌词意象、编曲听感或下一首推荐。"
+        if self._is_lyric_analysis_query(request.question):
+            excerpt = self._explicit_content(request.question) or (request.lyric_excerpt or "").strip()
+            if excerpt:
+                analysis = self.analyze_lyrics(LyricAnalysisRequest(
+                    excerpt=excerpt,
+                    song_title=request.song_title,
+                    artist=request.artist,
+                ))
+                return f"{analysis.summary} 可以重点从“{'、'.join(analysis.imagery[:2])}”和“{'、'.join(analysis.emotion[:2])}”两个方向继续听。"
+            return "可以，把主歌中你最在意的几句贴给我。我会从画面、情绪转折和说话者的位置分析，不补全整段歌词。"
+        return self._companion_fallback_answer(request, guide)
+
+    def _companion_fallback_answer(
+        self,
+        request: ListeningChatRequest,
+        guide: dict[str, object] | None,
+    ) -> str:
+        song = f"《{request.song_title}》" if request.song_title else "这首歌"
+        question = request.question.strip()
+        points = list(guide["listening_points"]) if guide else []
+        focus = points[0] if points else "人声的落点，以及主歌到副歌时情绪怎么被推高"
+
+        if any(token in question for token in ("好听", "上头", "抓耳", "绝", "神", "夸", "牛", "喜欢", "惊艳")):
+            return (
+                f"我懂，你说“{question}”，像是这首歌把情绪一下推满了，已经不是适合当背景音的程度。"
+                f"这一遍可以先听{focus}，别急着解释它为什么好听。你觉得最“夸”的地方，是旋律、人声，还是某一句歌词？"
+            )
+        if any(token in question for token in ("难过", "心酸", "想哭", "孤独", "压抑", "破防", "遗憾", "痛")):
+            return (
+                f"我听见了。{song}好像把你现在的情绪托住了一点，不用急着把它说清楚。"
+                f"先留意{focus}，等这一遍结束，你可以只告诉我最停留在心里的一个画面。"
+            )
+        if len(question) <= 24:
+            return (
+                f"嗯，我在听。你刚才这句话让我更想陪你把{song}再听一会儿。"
+                f"这一遍先从{focus}进去；你愿意的话，告诉我是哪一个瞬间让你这样觉得。"
+            )
+        return (
+            f"我先接住你对{song}的感觉，不急着把它讲成一份分析。"
+            f"这一遍可以从{focus}开始听，等你愿意时，再告诉我这首歌让你想起了什么。"
+        )
 
     def _analysis_summary(self, excerpt: str, imagery: list[str], emotion: list[str], song_title: str | None) -> str:
         subject = f"《{song_title}》里的这段文字" if song_title else "这段歌词"
@@ -827,3 +873,77 @@ class ListeningAgent:
 
     def _normalize(self, value: str | None) -> str:
         return re.sub(r"[^\w\u4e00-\u9fff]", "", (value or "").lower())
+
+    @staticmethod
+    def _is_placeholder_answer(answer: str) -> bool:
+        return any(
+            phrase in answer
+            for phrase in (
+                "我会先读取当前歌曲",
+                "没有看到具体的歌曲信息",
+                "收到一串占位符",
+                "几个占位符",
+                "歌名、歌手和问题都",
+                "这些信息好像还是空",
+                "歌名和歌手都是空",
+                "歌名和歌手都是问号",
+                "歌名和歌手有点模糊",
+                "都是问号",
+                "歌名、歌手、问题",
+                "告诉我现在放的是哪一首歌",
+                "你是在听哪一首歌",
+                "告诉我歌名",
+                "请告诉我歌曲名称",
+            )
+        )
+
+    @staticmethod
+    def _companion_context_text(context: dict[str, object]) -> str:
+        lines = [
+            f"当前正在播放的歌曲：{context.get('song') or '未识别'}",
+            f"歌手：{context.get('artist') or '未识别'}",
+            f"用户刚才说：{context.get('question') or '未提供'}",
+        ]
+        lyric_excerpt = str(context.get("lyric_excerpt") or "").strip()
+        if lyric_excerpt:
+            lines.append(f"用户主动提供的歌词短句：{lyric_excerpt}")
+        return "\n".join(lines)
+
+    @staticmethod
+    def _should_use_companion_tool(question: str) -> bool:
+        return any(
+            token in question
+            for token in (
+                "收藏",
+                "保存",
+                "记下",
+                "记录",
+                "推荐",
+                "相似",
+                "下一首",
+                "故事",
+                "创作",
+                "背景",
+                "资料",
+                "来源",
+                "采访",
+                "乐评",
+                "查一下",
+                "联网查",
+                "多火",
+                "热度",
+                "销量",
+                "榜单",
+                "奖项",
+                "影响力",
+                "传唱度",
+                "当前歌曲",
+            )
+        )
+
+    @staticmethod
+    def _is_lyric_analysis_query(question: str) -> bool:
+        return any(
+            token in question
+            for token in ("分析歌词", "分析一下歌词", "分析这首歌的歌词", "主歌歌词", "副歌歌词", "歌词意象", "歌词隐喻", "这句歌词")
+        )

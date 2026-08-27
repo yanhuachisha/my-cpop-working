@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+import os
 
 from fastapi import FastAPI, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
 from app.agent_tools import CPopAgent
+from app.agent.rag import RagIngestRequest, RagSearchRequest, RagService, SearchIndexManager
+from app.agent.providers.model_service import ModelServiceClient
 from app.data_store import get_store
 from app.diagnostics import build_recommendation_diagnostics
 from app.kugou import KugouSearchRequest, get_now_playing, open_kugou, search_kugou
@@ -76,11 +79,14 @@ from app.today_recommender import TodayRecommender
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     initialize_listening_history()
-    playback_tracker.start()
+    desktop_integration = os.getenv("KUGOU_DESKTOP_INTEGRATION", "true").casefold() in {"1", "true", "yes"}
+    if desktop_integration:
+        playback_tracker.start()
     try:
         yield
     finally:
-        playback_tracker.stop()
+        if desktop_integration:
+            playback_tracker.stop()
 
 
 app = FastAPI(
@@ -102,6 +108,37 @@ app.add_middleware(
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "cpop-atlas-api"}
+
+
+@app.get("/ready")
+def readiness():
+    return {"status": "ready", "service": "cpop-atlas-api"}
+
+
+@app.get("/api/ops/dependencies")
+def dependency_status():
+    status: dict[str, object] = {"model_service": ModelServiceClient().health()}
+    try:
+        manager = SearchIndexManager.from_env()
+        status["elasticsearch"] = {"available": bool(manager.client.ping())}
+    except Exception:
+        status["elasticsearch"] = {"available": False}
+    return status
+
+
+@app.post("/api/admin/rag/ingest")
+def rag_ingest(request: RagIngestRequest):
+    return RagService().ingest(request)
+
+
+@app.post("/api/rag/search")
+def rag_search(request: RagSearchRequest):
+    return RagService().search(request)
+
+
+@app.post("/api/admin/search/reindex")
+def search_reindex():
+    return SearchIndexManager.from_env().initialize()
 
 
 @app.get("/api/kugou/now-playing")
@@ -140,8 +177,20 @@ def real_agent_status():
 
 
 @app.post("/api/agent/run")
-def real_agent_run(request: AgentRunRequest):
-    return MusicAgent(get_store()).run(request)
+def real_agent_run(request: AgentRunRequest, http_request: Request):
+    user_id = http_request.headers.get("X-User-Id", request.user_id)
+    tenant_id = http_request.headers.get("X-Tenant-Id", request.tenant_id)
+    default_permissions = {"music.search", "recommendation.read", "memory.read", "history.read"}
+    raw_permissions = http_request.headers.get("X-Permissions", "")
+    permissions = {item.strip() for item in raw_permissions.split(",") if item.strip()} or default_permissions
+    raw_confirmed = http_request.headers.get("X-Confirmed-Tools", "")
+    confirmed = {item.strip() for item in raw_confirmed.split(",") if item.strip()}
+    scoped_request = request.model_copy(update={"user_id": user_id, "tenant_id": tenant_id})
+    return MusicAgent(get_store()).run(
+        scoped_request,
+        permissions=permissions,
+        confirmed_risks=confirmed,
+    )
 
 
 @app.get("/api/agent/sessions")

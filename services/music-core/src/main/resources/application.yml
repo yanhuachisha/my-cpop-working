@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/cpop_atlas?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC}
+    username: ${MYSQL_USER:cpop}
+    password: ${MYSQL_PASSWORD:cpop}
+  flyway:
+    enabled: true
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,readiness,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
