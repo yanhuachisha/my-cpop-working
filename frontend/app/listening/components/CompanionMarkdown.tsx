@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { matchMarkdownHeading, normalizeMarkdownText } from "../../../lib/markdown";
 
 function renderInlineText(text: string): ReactNode[] {
   return text.split(/(\*\*.+?\*\*|`[^`]+`)/g).filter(Boolean).map((token, index) => {
@@ -9,7 +10,7 @@ function renderInlineText(text: string): ReactNode[] {
 }
 
 export function CompanionMarkdown({ content }: { content: string }) {
-  const lines = content.replaceAll("\\n", "\n").split("\n");
+  const lines = normalizeMarkdownText(content).split("\n");
   const nodes: ReactNode[] = [];
   let listItems: ReactNode[] = [];
   const flushList = () => {
@@ -30,11 +31,11 @@ export function CompanionMarkdown({ content }: { content: string }) {
       return;
     }
     flushList();
-    if (trimmed.startsWith("### ")) {
-      nodes.push(<h4 key={`h4-${index}`}>{renderInlineText(trimmed.slice(4))}</h4>);
-    } else if (trimmed.startsWith("## ")) {
-      nodes.push(<h3 key={`h3-${index}`}>{renderInlineText(trimmed.slice(3))}</h3>);
-    } else if (trimmed.startsWith("- ")) {
+    const heading = matchMarkdownHeading(trimmed);
+    if (heading) {
+      const Heading = heading.level === 1 ? "h2" : heading.level <= 3 ? "h3" : "h4";
+      nodes.push(<Heading key={`heading-${index}`}>{renderInlineText(heading.title)}</Heading>);
+    } else if (/^-\s+/.test(trimmed)) {
       nodes.push(<p className="companion-markdown-point" key={`p-${index}`}>{renderInlineText(trimmed.slice(2))}</p>);
     } else {
       nodes.push(<p key={`p-${index}`}>{renderInlineText(trimmed)}</p>);

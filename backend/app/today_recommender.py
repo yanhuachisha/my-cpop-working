@@ -11,11 +11,13 @@ from app.daily_context import get_anniversaries, get_computer_context, get_music
 from app.data_store import DataStore
 from app.hybrid_recommender import HybridRecommender
 from app.listener_memory import (
+    get_daily_recommendation,
     listener_summary,
     load_state,
     recent_exposed_recording_ids,
     recent_recording_ids,
     record_recommendation_exposure,
+    reserve_daily_recommendation,
 )
 from app.models import Artist, Recording, SourceRef
 from app.sources import ITUNES_CATALOG_SOURCE, OPEN_DATA_SOURCES, SEED_SOURCE
@@ -58,24 +60,34 @@ class TodayRecommender:
         state = load_state()
         recent = recent_recording_ids(30) | recent_exposed_recording_ids(14)
         candidates = [item for item in self.store.recordings.values() if item.is_cpop and self.store.get_artist(item.artist_id)]
-        recommendation = HybridRecommender(self.store).recommend(
-            limit=1,
-            mode=mode,
-            seed=session_seed or "daily",
-            context={"weather": weather, "news": news},
-            exclude_ids=recent,
-        )
-        ranked_item = recommendation["items"][0]
-        main = self.store.get_recording(ranked_item["recording"]["id"])
+        daily_id = get_daily_recommendation(user_id, mode)
+        ranked_item = None
+        if daily_id:
+            main = self.store.get_recording(daily_id)
+        else:
+            # The public seed remains for API compatibility; daily picks ignore it by design.
+            recommendation = HybridRecommender(self.store).recommend(
+                limit=1,
+                mode=mode,
+                seed="daily",
+                context={"weather": weather, "news": news},
+                exclude_ids=recent,
+            )
+            ranked_item = recommendation["items"][0]
+            reserved_id = reserve_daily_recommendation(user_id, ranked_item["recording"]["id"], mode)
+            main = self.store.get_recording(reserved_id)
+            if main is None:
+                main = self.store.get_recording(ranked_item["recording"]["id"])
         assert main is not None
         pick = self._present("main", main, weather, news, state, recent)
-        pick.score = ranked_item["score"]
-        pick.signals = {
-            "内容相似": round(ranked_item["breakdown"]["content_similarity"] * 100),
-            "BPR排序": round(ranked_item["breakdown"]["bpr_pairwise"] * 100),
-            "场景匹配": round(ranked_item["breakdown"]["context"] * 100),
-            "探索价值": round(ranked_item["breakdown"]["thompson"] * 100),
-        }
+        if ranked_item:
+            pick.score = ranked_item["score"]
+            pick.signals = {
+                "内容相似": round(ranked_item["breakdown"]["content_similarity"] * 100),
+                "BPR排序": round(ranked_item["breakdown"]["bpr_pairwise"] * 100),
+                "场景匹配": round(ranked_item["breakdown"]["context"] * 100),
+                "探索价值": round(ranked_item["breakdown"]["thompson"] * 100),
+            }
         picks = [pick]
         record_recommendation_exposure([pick.recording.id for pick in picks], mode)
         return TodayExperience(

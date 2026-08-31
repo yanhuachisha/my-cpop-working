@@ -1,6 +1,7 @@
 import pytest
 from langgraph.errors import GraphRecursionError
 
+from app import listener_memory
 from app.data_store import get_store
 from app.listening_agent import ListeningAgent, ListeningChatRequest, ListeningChatTurn, ListeningStoryRequest, LyricAnalysisRequest
 
@@ -242,6 +243,29 @@ def test_conversation_is_not_saved_after_song_changes(monkeypatch):
     ))
 
     assert saved == []
+
+
+def test_every_successful_companion_reply_creates_a_music_note(monkeypatch, tmp_path):
+    monkeypatch.setattr(listener_memory, "STATE_PATH", tmp_path / "listener_state.json")
+
+    request = ListeningChatRequest(
+        question="这首歌让我想起夏天。",
+        song_title="晴天",
+        artist="周杰伦",
+        client_message_id="turn-note-2",
+    )
+    agent = ListeningAgent(get_store())
+    agent.chat(request)
+    agent.chat(request)
+
+    notes = listener_memory.music_notes()
+    assert len(notes) == 1
+    assert notes[0]["prompt"] == "这首歌让我想起夏天。"
+    assert notes[0]["song_title"] == "晴天"
+    assert notes[0]["artist"] == "周杰伦"
+    assert notes[0]["turn_id"] == "turn-note-2"
+    assert notes[0]["content"]
+    assert notes[0]["saved_at"]
 
 
 def test_listening_chat_extracts_real_agent_loop(monkeypatch):

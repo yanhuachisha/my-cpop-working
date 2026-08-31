@@ -8,7 +8,6 @@ import {
   ExternalLink,
   Music2,
   Newspaper,
-  RefreshCw,
   Sparkles,
   SunMedium,
   Waves,
@@ -18,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingSpinner } from "../components/Loading";
 import { Recording, Artist, fetchApiClient } from "../lib/api";
+import { cleanMarkdownText } from "../lib/markdown";
 
 type TodayPick = {
   role: "main" | "familiar" | "explore";
@@ -52,8 +52,7 @@ type TodayExperience = {
   catalog_size: number;
 };
 
-const TODAY_CACHE_KEY = "my-cpop-working:today-experience:v1";
-const TODAY_CACHE_REFRESH_MS = 20 * 60 * 1000;
+const TODAY_CACHE_KEY = "my-cpop-working:today-experience:v2";
 
 type TodayCache = { cachedAt: number; value: TodayExperience };
 
@@ -85,25 +84,21 @@ export function DailyPickContent() {
   const [error, setError] = useState<string | null>(null);
   const [openingId, setOpeningId] = useState<string | null>(null);
 
-  const loadToday = async (explore = false, quiet = false) => {
-    if (!quiet) {
-      setLoading(true);
-      setError(null);
-    }
+  const loadToday = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const seed = explore ? `&seed=${Math.random().toString(36).slice(2)}` : "";
-      const nextExperience = await fetchApiClient<TodayExperience>(`/api/today?user_id=demo&mode=auto${seed}`, {
+      const nextExperience = await fetchApiClient<TodayExperience>('/api/today?user_id=demo&mode=auto', {
         retries: 2,
         timeoutMs: 30000,
       });
       setExperience(nextExperience);
       writeTodayCache(nextExperience);
     } catch (requestError) {
-      if (quiet) return;
       const aborted = requestError instanceof DOMException && requestError.name === "AbortError";
       setError(aborted ? "首页数据准备时间较长，请稍后重试" : "今日声景暂时没有连接成功");
     } finally {
-      if (!quiet) setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -118,7 +113,6 @@ export function DailyPickContent() {
     }
     setExperience(cached.value);
     setLoading(false);
-    if (Date.now() - cached.cachedAt > TODAY_CACHE_REFRESH_MS) void loadToday(false, true);
   }, []);
 
   const listenNow = async (pick: TodayPick) => {
@@ -179,8 +173,9 @@ export function DailyPickContent() {
             <span>今天只认真推荐一首</span>
             <h1>{mainPick.recording.title}</h1>
             <h2>{mainPick.artist.name}</h2>
-            <p>{mainPick.headline}</p>
-            <div className="sonic-actions"><button className={openingId === mainPick.recording.id ? "is-playing" : ""} disabled={openingId === mainPick.recording.id} onClick={() => listenNow(mainPick)} type="button"><Music2 size={18} />{openingId === mainPick.recording.id ? "正在打开酷狗" : "现在就听"}</button><Link href="/agent"><Sparkles size={17} />聊聊这首歌</Link><button className="daily-swap-button" onClick={() => loadToday(true)} title="换一首" type="button"><RefreshCw size={17} />换一首</button></div>
+            <p>{cleanMarkdownText(mainPick.headline)}</p>
+            <p className="daily-song-reason"><strong>推荐理由</strong>{cleanMarkdownText(mainPick.explanation)}</p>
+            <div className="sonic-actions"><button className={openingId === mainPick.recording.id ? "is-playing" : ""} disabled={openingId === mainPick.recording.id} onClick={() => listenNow(mainPick)} type="button"><Music2 size={18} />{openingId === mainPick.recording.id ? "正在打开酷狗" : "现在就听"}</button><Link href="/agent"><Sparkles size={17} />聊聊这首歌</Link></div>
           </div>
         </div>
         <aside className="daily-news-panel">

@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fetchApiClient } from "../../../lib/api";
-import { ArchiveEntry, ArchiveMode, ListeningProfile, LyricFragment, MusicNote } from "../types";
+import { ListeningProfile, MusicNote, MusicNoteGroup } from "../types";
 
 export function useArchiveReader() {
-  const [lyrics, setLyrics] = useState<LyricFragment[]>([]);
   const [musicNotes, setMusicNotes] = useState<MusicNote[]>([]);
   const [profile, setProfile] = useState<ListeningProfile | null>(null);
-  const [activeArchive, setActiveArchive] = useState<ArchiveMode>(null);
+  const [activeArchive, setActiveArchive] = useState<"notes" | null>(null);
   const [readerIndex, setReaderIndex] = useState(0);
   const [turningToIndex, setTurningToIndex] = useState<number | null>(null);
   const [turnDirection, setTurnDirection] = useState<"next" | "prev" | null>(null);
@@ -14,12 +13,10 @@ export function useArchiveReader() {
   const turnTimerRef = useRef<number | null>(null);
 
   const load = useCallback(async () => {
-    const [nextLyrics, nextMusicNotes, nextProfile] = await Promise.all([
-      fetchApiClient<LyricFragment[]>("/api/listener/lyrics"),
+    const [nextMusicNotes, nextProfile] = await Promise.all([
       fetchApiClient<MusicNote[]>("/api/listener/notes"),
       fetchApiClient<ListeningProfile>("/api/listener/profile"),
     ]);
-    setLyrics(nextLyrics);
     setMusicNotes(nextMusicNotes);
     setProfile(nextProfile);
   }, []);
@@ -35,12 +32,39 @@ export function useArchiveReader() {
     if (turnTimerRef.current) window.clearTimeout(turnTimerRef.current);
   }, []);
 
-  const lyricPreview = useMemo(() => lyrics.slice(0, 3), [lyrics]);
-  const notePreview = useMemo(() => musicNotes.slice(0, 3), [musicNotes]);
-  const activeEntries: ArchiveEntry[] = activeArchive === "lyrics" ? lyrics : activeArchive === "notes" ? musicNotes : [];
+  const noteGroups = useMemo<MusicNoteGroup[]>(() => {
+    const groups = new Map<string, MusicNoteGroup>();
+    for (const note of musicNotes) {
+      const songTitle = note.song_title?.trim() || null;
+      const artist = note.artist?.trim() || null;
+      const key = `${(songTitle || "").toLocaleLowerCase()}::${(artist || "").toLocaleLowerCase()}`;
+      const existing = groups.get(key);
+      if (existing) {
+        existing.notes.push(note);
+        if (new Date(note.saved_at).getTime() > new Date(existing.saved_at).getTime()) existing.saved_at = note.saved_at;
+        continue;
+      }
+      groups.set(key, {
+        id: `song-note-${key || "unknown"}`,
+        song_title: songTitle,
+        artist,
+        album: note.album || null,
+        notes: [note],
+        saved_at: note.saved_at,
+      });
+    }
+    return [...groups.values()].sort((left, right) => new Date(right.saved_at).getTime() - new Date(left.saved_at).getTime());
+  }, [musicNotes]);
+  const notePreview = useMemo(() => noteGroups.slice(0, 3), [noteGroups]);
+  const activeEntries = activeArchive === "notes" ? noteGroups : [];
 
-  const openArchive = (mode: Exclude<ArchiveMode, null>) => {
-    setActiveArchive(mode);
+  useEffect(() => {
+    if (!activeEntries.length) return;
+    setReaderIndex((current) => Math.min(current, activeEntries.length - 1));
+  }, [activeEntries.length]);
+
+  const openArchive = () => {
+    setActiveArchive("notes");
     setIsOpening(true);
     setReaderIndex(0);
     setTurningToIndex(null);
@@ -67,19 +91,29 @@ export function useArchiveReader() {
     }, 540);
   };
 
+  const jumpToPage = (pageIndex: number) => {
+    if (!activeEntries.length) return;
+    if (turnTimerRef.current) window.clearTimeout(turnTimerRef.current);
+    const nextIndex = Math.max(0, Math.min(Math.trunc(pageIndex), activeEntries.length - 1));
+    setReaderIndex(nextIndex);
+    setTurningToIndex(null);
+    setTurnDirection(null);
+    turnTimerRef.current = null;
+  };
+
   return {
     activeArchive,
     activeEntries,
     closeArchive,
     isOpening,
-    lyricPreview,
-    lyrics,
     musicNotes,
+    noteGroups,
     notePreview,
     openArchive,
     profile,
     readerIndex,
     turnDirection,
+    jumpToPage,
     turningToIndex,
     turnPage,
   };

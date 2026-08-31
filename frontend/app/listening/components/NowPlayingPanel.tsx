@@ -7,6 +7,7 @@ type Props = {
   displayArtist: string;
   displayTitle: string;
   likeCount: number;
+  liking: boolean;
   loading: boolean;
   opening: boolean;
   todayStats: TodayListeningStats | null;
@@ -21,6 +22,7 @@ export function NowPlayingPanel({
   displayArtist,
   displayTitle,
   likeCount,
+  liking,
   loading,
   opening,
   todayStats,
@@ -70,7 +72,7 @@ export function NowPlayingPanel({
           <button
             aria-label={canLike ? `喜欢当前歌曲，已点 ${likeCount} 次` : "等待识别当前歌曲"}
             className={`room-heart-button${likeCount > 0 ? " active" : ""}`}
-            disabled={!canLike}
+            disabled={!canLike || liking}
             onClick={handleHeartClick}
             onDragStart={(event) => event.preventDefault()}
             onPointerCancel={() => { heartGesture.current = null; }}

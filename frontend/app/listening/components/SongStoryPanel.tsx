@@ -1,4 +1,5 @@
 import { Disc3, ExternalLink, LoaderCircle } from "lucide-react";
+import { cleanMarkdownText } from "../../../lib/markdown";
 import { SongStory } from "../types";
 
 type Props = {
@@ -14,13 +15,13 @@ export function SongStoryPanel({ hasCurrentTrack, loading, story }: Props) {
         {story ? (
           <>
             <div className="story-intro-label"><span>情绪画像</span><small>EMOTIONAL PORTRAIT</small></div>
-            <h2>{story.subtitle}</h2>
-            <p className="story-narrative">{story.narrative}</p>
-            {story.facts.length ? <div className="story-facts">{story.facts.map((fact) => <span key={fact}>{fact}</span>)}</div> : null}
+            <h2>{cleanMarkdownText(story.subtitle)}</h2>
+            <p className="story-narrative">{cleanMarkdownText(story.narrative)}</p>
+            {story.facts.length ? <div className="story-facts">{story.facts.map((fact) => <span key={fact}>{cleanMarkdownText(fact)}</span>)}</div> : null}
             {story.source_urls.length ? <div className="story-sources">{story.source_urls.map((url) => <a href={url} key={url} rel="noreferrer" target="_blank"><ExternalLink size={13} />查看资料来源</a>)}</div> : null}
             <div className="listening-points">
               <h3>这一遍，可以这样听</h3>
-              {story.listening_points.map((point, index) => <div key={point}><span>0{index + 1}</span><p>{point}</p></div>)}
+              {story.listening_points.map((point, index) => <div key={point}><span>0{index + 1}</span><p>{cleanMarkdownText(point)}</p></div>)}
             </div>
           </>
         ) : hasCurrentTrack && loading ? (

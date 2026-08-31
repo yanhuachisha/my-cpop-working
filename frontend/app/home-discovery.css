@@ -135,6 +135,18 @@
   max-width: 620px;
 }
 
+.daily-song-card .daily-song-reason {
+  color: rgba(255, 255, 255, .68);
+  font-size: clamp(12px, .9vw, 15px);
+  margin-top: 12px;
+}
+
+.daily-song-reason strong {
+  color: #ffb46b;
+  font-weight: 750;
+  margin-right: 8px;
+}
+
 .daily-song-card .sonic-actions {
   align-items: center;
   display: flex;
@@ -148,12 +160,6 @@
   font-size: clamp(12px, .86vw, 15px);
   min-height: 54px;
   padding: 0 22px;
-}
-
-.daily-song-card .daily-swap-button {
-  background: rgba(143, 123, 255, .18);
-  border: 1px solid rgba(143, 123, 255, .4);
-  color: #c8bfff;
 }
 
 .daily-news-panel {

@@ -39,7 +39,7 @@ export default function ListeningRoomPage() {
   const [showDetailedTimes, setShowDetailedTimes] = useState(false);
   const [todayStats, setTodayStats] = useState<TodayListeningStats | null>(null);
   const [showTodayRanking, setShowTodayRanking] = useState(false);
-  const [likeBurst, setLikeBurst] = useState(0);
+  const [liking, setLiking] = useState(false);
   const [showCompanionSettings, setShowCompanionSettings] = useState(false);
   const [promptSettings, setPromptSettings] = useState<ListeningPromptSettings | null>(null);
   const [corePromptDraft, setCorePromptDraft] = useState("");
@@ -81,7 +81,6 @@ export default function ListeningRoomPage() {
         lockedStory.current = null;
         storyLoadingKey.current = null;
         setStoryLoading(false);
-        setLikeBurst(0);
       }
       detectedTrackKey.current = trackKey;
       if (nextContext.story && !lockedStory.current) lockedStory.current = { trackKey, story: nextContext.story };
@@ -167,16 +166,19 @@ export default function ListeningRoomPage() {
   };
 
   const likeCurrentSong = async () => {
-    if (!current?.recording_id) return;
-    setLikeBurst((value) => value + 1);
+    if (!current?.recording_id || liking) return;
+    setLiking(true);
     try {
       await fetchApiClient("/api/listener/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ recording_id: current.recording_id, action: "like", channel: "listening" }),
       });
+      await loadContext();
     } catch {
-      setLikeBurst((value) => Math.max(0, value - 1));
+      // The server count remains authoritative when the request fails.
+    } finally {
+      setLiking(false);
     }
   };
 
@@ -248,7 +250,7 @@ export default function ListeningRoomPage() {
     }
   };
 
-  const currentLikeCount = (current?.like_count || 0) + likeBurst;
+  const currentLikeCount = current?.like_count || 0;
 
   return (
     <main className="listening-room-page">
@@ -263,6 +265,7 @@ export default function ListeningRoomPage() {
             displayArtist={displayArtist}
             displayTitle={displayTitle}
             likeCount={currentLikeCount}
+            liking={liking}
             loading={loading}
             opening={opening}
             todayStats={todayStats}

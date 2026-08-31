@@ -5,7 +5,7 @@ import os
 import time
 import hashlib
 from collections import Counter, defaultdict
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from threading import Lock, get_ident
 from typing import Literal
@@ -34,6 +34,7 @@ def _empty() -> dict:
         "events": [], "liked": [], "like_counts": {}, "saved": [], "skipped": [], "play_counts": {},
         "favorite_timestamps": {}, "lyric_fragments": [], "music_notes": [],
         "listening_conversations": {}, "agent_sessions": {}, "daily_listening": {},
+        "daily_recommendations": {},
         "listening_companion_prompt": "",
         "listening_companion_core_prompt": "",
     }
@@ -48,11 +49,13 @@ class LyricFragmentRequest(BaseModel):
 
 
 class MusicNoteRequest(BaseModel):
-    content: str = Field(min_length=1, max_length=2000)
-    prompt: str | None = Field(default=None, max_length=300)
+    content: str = Field(min_length=1, max_length=5000)
+    prompt: str | None = Field(default=None, max_length=500)
     song_title: str | None = Field(default=None, max_length=200)
     artist: str | None = Field(default=None, max_length=120)
     album: str | None = Field(default=None, max_length=200)
+    source: str | None = Field(default=None, max_length=80)
+    turn_id: str | None = Field(default=None, max_length=120)
 
 
 def _write_state(state: dict) -> None:
@@ -96,6 +99,19 @@ def lyric_fragments() -> list[dict]:
 def save_music_note(request: MusicNoteRequest) -> dict:
     with _lock:
         state = load_state()
+        notes = list(state.get("music_notes", []))
+        if request.turn_id:
+            existing = next(
+                (
+                    note
+                    for note in notes
+                    if note.get("source") == request.source
+                    and note.get("turn_id") == request.turn_id
+                ),
+                None,
+            )
+            if existing:
+                return existing
         note = {
             "id": f"note-{int(datetime.now(UTC).timestamp() * 1000)}",
             "content": request.content.strip(),
@@ -105,13 +121,35 @@ def save_music_note(request: MusicNoteRequest) -> dict:
             "album": request.album,
             "saved_at": datetime.now(UTC).isoformat(),
         }
-        state["music_notes"] = [note, *state.get("music_notes", [])][:500]
+        if request.source:
+            note["source"] = request.source
+        if request.turn_id:
+            note["turn_id"] = request.turn_id
+        state["music_notes"] = [note, *notes][:500]
         _write_state(state)
     return note
 
 
 def music_notes() -> list[dict]:
     return load_state().get("music_notes", [])
+
+
+def save_companion_turn_note(
+    question: str,
+    answer: str,
+    song_title: str | None = None,
+    artist: str | None = None,
+    turn_id: str | None = None,
+) -> dict:
+    """Save one complete listening-companion exchange as a music-note page."""
+    return save_music_note(MusicNoteRequest(
+        content=answer.strip(),
+        prompt=question.strip(),
+        song_title=song_title,
+        artist=artist,
+        source="listening_companion",
+        turn_id=turn_id.strip() if turn_id else None,
+    ))
 
 
 def get_listening_companion_prompt() -> str:
@@ -401,6 +439,57 @@ def record_recommendation_exposure(recording_ids: list[str], mode: str = "auto")
             })
         state["events"] = events[-500:]
         _write_state(state)
+
+
+def get_daily_recommendation(user_id: str, mode: str = "auto", on_date: date | None = None) -> str | None:
+    """Return the recording reserved for this listener and calendar day.
+
+    A reservation is considered active only after the corresponding exposure
+    event was written today. This keeps a partially completed concurrent build
+    from preventing a later request from selecting a valid recommendation.
+    """
+    day = (on_date or datetime.now().astimezone().date()).isoformat()
+    key = f"{user_id.strip() or 'demo'}:{mode.strip() or 'auto'}:{day}"
+    state = load_state()
+    recording_id = state.get("daily_recommendations", {}).get(key)
+    if not recording_id:
+        return None
+    exposed_today = any(
+        event.get("action") == "exposure"
+        and event.get("recording_id") == recording_id
+        and event.get("mode", "auto") == mode
+        and event.get("shown_on") == day
+        for event in state.get("events", [])
+    )
+    return str(recording_id) if exposed_today else None
+
+
+def reserve_daily_recommendation(
+    user_id: str,
+    recording_id: str,
+    mode: str = "auto",
+    on_date: date | None = None,
+) -> str:
+    """Atomically reserve one recording and return the canonical reservation."""
+    day = (on_date or datetime.now().astimezone().date()).isoformat()
+    key = f"{user_id.strip() or 'demo'}:{mode.strip() or 'auto'}:{day}"
+    with _lock:
+        state = load_state()
+        recommendations = state.setdefault("daily_recommendations", {})
+        existing = recommendations.get(key)
+        active = existing and any(
+            event.get("action") == "exposure"
+            and event.get("recording_id") == existing
+            and event.get("mode", "auto") == mode
+            and event.get("shown_on") == day
+            for event in state.get("events", [])
+        )
+        if not active:
+            recommendations[key] = recording_id
+            existing = recording_id
+        canonical = str(existing)
+        _write_state(state)
+    return canonical
 
 
 def recent_recording_ids(days: int = 30) -> set[str]:

@@ -30,6 +30,12 @@ if ($PillowAvailable.Trim() -ne "yes") {
     if ($LASTEXITCODE -ne 0) { throw "Failed to install Pillow." }
 }
 
+$PyWebViewAvailable = & $Python -c "import importlib.util; print('yes' if importlib.util.find_spec('webview') else 'no')"
+if ($PyWebViewAvailable.Trim() -ne "yes") {
+    & $Python -m pip install pywebview
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install pywebview." }
+}
+
 & $Python $IconGenerator
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $Icon)) {
     throw "Launcher icon generation failed."
@@ -46,6 +52,10 @@ New-Item -ItemType Directory -Force -Path $BuildRoot | Out-Null
     --distpath $Dist `
     --workpath $Work `
     --specpath $Spec `
+    --collect-data webview `
+    --hidden-import webview.platforms.edgechromium `
+    --hidden-import webview.platforms.win32 `
+    --hidden-import webview.platforms.winforms `
     $Source
 if ($LASTEXITCODE -ne 0) { throw "Launcher build failed." }
 

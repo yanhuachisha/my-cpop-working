@@ -32,6 +32,22 @@ def test_today_recommendations_are_distinct(monkeypatch, tmp_path):
     assert any(source.name == "Apple iTunes Search API" for source in experience.sources)
 
 
+def test_today_recommendation_is_stable_for_the_whole_day(monkeypatch, tmp_path):
+    from app import listener_memory, today_recommender
+
+    monkeypatch.setattr(listener_memory, "STATE_PATH", tmp_path / "listener_state.json")
+    monkeypatch.setattr(today_recommender, "get_weather", lambda: {
+        "available": True, "city": "Shanghai", "condition": "晴",
+        "kind": "clear", "music_moods": ["warm"], "temperature": 29, "is_day": True,
+    })
+    monkeypatch.setattr(today_recommender, "get_music_news", lambda: [])
+
+    recommender = TodayRecommender(get_store())
+    first = recommender.build(session_seed="morning").picks[0].recording.id
+    second = recommender.build(session_seed="evening").picks[0].recording.id
+    assert first == second
+
+
 def test_recommendation_exposure_is_stable_today_and_avoids_previous_days(monkeypatch, tmp_path):
     from app import listener_memory
 

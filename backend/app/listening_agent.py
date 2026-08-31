@@ -19,6 +19,7 @@ from app.kugou import get_now_playing
 from app.listener_memory import (
     listening_conversation,
     load_state,
+    save_companion_turn_note,
     save_listening_conversation_turn,
 )
 from app.listening_companion_workflows import (
@@ -430,14 +431,7 @@ class ListeningAgent:
         answer = str(result["messages"][-1].content)
         if self._is_placeholder_answer(answer):
             raise ValueError("model returned placeholder companion response")
-        if persist_conversation and request.song_title:
-            save_listening_conversation_turn(
-                request.song_title,
-                request.artist,
-                request.question.strip(),
-                answer,
-                request.client_message_id,
-            )
+        self._persist_companion_turn(request, answer, persist_conversation)
         return ListeningChatResponse(
             answer=answer,
             tools_used=list(dict.fromkeys(tools_used)),
@@ -526,14 +520,7 @@ class ListeningAgent:
         else:
             answer = self._default_answer(request, guide)
 
-        if persist_conversation and request.song_title:
-            save_listening_conversation_turn(
-                request.song_title,
-                request.artist,
-                question,
-                answer,
-                request.client_message_id,
-            )
+        self._persist_companion_turn(request, answer, persist_conversation)
 
         return ListeningChatResponse(
             answer=answer,
@@ -552,6 +539,28 @@ class ListeningAgent:
             "artist": artist,
             "messages": listening_conversation(song_title, artist),
         }
+
+    def _persist_companion_turn(
+        self,
+        request: ListeningChatRequest,
+        answer: str,
+        persist_conversation: bool,
+    ) -> None:
+        if persist_conversation and request.song_title:
+            save_listening_conversation_turn(
+                request.song_title,
+                request.artist,
+                request.question.strip(),
+                answer,
+                request.client_message_id,
+            )
+        save_companion_turn_note(
+            question=request.question,
+            answer=answer,
+            song_title=request.song_title,
+            artist=request.artist,
+            turn_id=request.client_message_id,
+        )
 
     def _is_current_song(self, song_title: str | None, artist: str | None) -> bool:
         if not song_title:

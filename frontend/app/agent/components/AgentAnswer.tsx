@@ -1,16 +1,15 @@
 import { ReactNode } from "react";
+import { matchMarkdownHeading, normalizeMarkdownText } from "../../../lib/markdown";
 
 function normalizeAnswer(content: string) {
-  let normalized = content.trim();
+  let normalized = normalizeMarkdownText(content);
   if (!normalized) return "";
-  if (!normalized.includes("\n") && normalized.includes("\\n")) normalized = normalized.replaceAll("\\n", "\n");
-  if (normalized.startsWith("```") && normalized.endsWith("```")) normalized = normalized.replace(/^```(?:markdown|md|text|json)?\s*/i, "").replace(/\s*```$/, "");
   if ((normalized.startsWith("{") && normalized.endsWith("}")) || (normalized.startsWith('"') && normalized.endsWith('"'))) {
     try {
       const parsed = JSON.parse(normalized) as string | Record<string, unknown>;
-      if (typeof parsed === "string") return parsed.trim();
+      if (typeof parsed === "string") return normalizeMarkdownText(parsed);
       const answer = parsed.answer || parsed.content || parsed.output || parsed.final_answer || parsed.message;
-      if (typeof answer === "string") return answer.trim();
+      if (typeof answer === "string") return normalizeMarkdownText(answer);
     } catch {
     }
   }
@@ -38,10 +37,10 @@ export function AgentAnswer({ content }: { content: string }) {
       index += 1;
       continue;
     }
-    const heading = line.match(/^(#{1,3})\s+(.+)$/);
+    const heading = matchMarkdownHeading(line);
     if (heading) {
-      const Heading = heading[1].length === 1 ? "h2" : "h3";
-      blocks.push(<Heading key={`heading-${index}`}>{renderInline(heading[2])}</Heading>);
+      const Heading = heading.level === 1 ? "h2" : heading.level <= 3 ? "h3" : "h4";
+      blocks.push(<Heading key={`heading-${index}`}>{renderInline(heading.title)}</Heading>);
       index += 1;
       continue;
     }
@@ -88,7 +87,7 @@ export function AgentAnswer({ content }: { content: string }) {
     }
     const paragraph = [line];
     index += 1;
-    while (index < lines.length && lines[index].trim() && !/^(#{1,3})\s+|^\s*[-*]\s+|^\s*\d+[.)]\s+|^>/.test(lines[index])) {
+    while (index < lines.length && lines[index].trim() && !matchMarkdownHeading(lines[index]) && !/^\s*[-*]\s+|^\s*\d+[.)]\s+|^>/.test(lines[index])) {
       paragraph.push(lines[index].trim());
       index += 1;
     }

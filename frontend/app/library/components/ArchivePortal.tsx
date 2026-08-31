@@ -2,7 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { ReactNode } from "react";
 
 type Props = {
-  accent: "lyrics" | "notes";
+  accent: "notes";
   count: string;
   icon: ReactNode;
   onOpen: () => void;

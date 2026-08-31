@@ -9,13 +9,23 @@ import sys
 import time
 import urllib.error
 import urllib.request
-import webbrowser
 from pathlib import Path
 
 
 CREATE_NO_WINDOW = 0x08000000
-DETACHED_PROCESS = 0x00000008
 CREATE_NEW_PROCESS_GROUP = 0x00000200
+
+CHILD_PROCESSES: list[subprocess.Popen] = []
+
+
+def hidden_startupinfo() -> subprocess.STARTUPINFO | None:
+    """Hide console windows created by child processes on Windows."""
+    if os.name != "nt":
+        return None
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
+    return startupinfo
 
 
 def project_root() -> Path:
@@ -144,24 +154,29 @@ def executable(candidates: list[str]) -> str | None:
     return None
 
 
-def start_hidden(command: list[str], cwd: Path, log_name: str, env: dict[str, str] | None = None) -> None:
+def start_hidden(
+    command: list[str], cwd: Path, log_name: str, env: dict[str, str] | None = None
+) -> subprocess.Popen:
     LOG_DIR.mkdir(exist_ok=True)
     output = (LOG_DIR / f"{log_name}.out.log").open("a", encoding="utf-8")
     error = (LOG_DIR / f"{log_name}.err.log").open("a", encoding="utf-8")
     try:
-        subprocess.Popen(
+        process = subprocess.Popen(
             command,
             cwd=str(cwd),
             env=env,
             stdin=subprocess.DEVNULL,
             stdout=output,
             stderr=error,
-            creationflags=CREATE_NO_WINDOW | DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP,
+            startupinfo=hidden_startupinfo(),
+            creationflags=CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP,
             close_fds=True,
         )
     finally:
         output.close()
         error.close()
+    CHILD_PROCESSES.append(process)
+    return process
 
 
 def start_backend() -> None:
@@ -191,16 +206,19 @@ def start_backend() -> None:
     )
 
 
+# Keep the frontend process free of npm.cmd/cmd.exe so Windows cannot attach a
+# visible terminal window to the desktop launcher.
 def start_frontend() -> None:
     if port_open(3000):
         stop_stale_frontend()
-    npm = executable([os.getenv("CPOP_NPM", ""), "npm.cmd"])
-    if not npm:
-        raise RuntimeError("未找到 npm，请设置环境变量 CPOP_NPM。")
+    node = executable([os.getenv("CPOP_NODE", ""), "node.exe"])
+    next_cli = ROOT / "frontend" / "node_modules" / "next" / "dist" / "bin" / "next"
+    if not node or not next_cli.is_file():
+        raise RuntimeError("Node.js or Next.js dependencies were not found.")
     env = os.environ.copy()
     env["NEXT_PUBLIC_API_BASE_URL"] = "http://localhost:8001"
     start_hidden(
-        [npm, "run", "dev", "--", "--hostname", "0.0.0.0", "--port", "3000"],
+        [node, str(next_cli), "dev", "--hostname", "0.0.0.0", "--port", "3000"],
         ROOT / "frontend",
         "frontend",
         env,
@@ -241,7 +259,101 @@ def open_kugou() -> None:
     ]
     kugou = executable(candidates)
     if kugou:
-        subprocess.Popen([kugou], creationflags=CREATE_NO_WINDOW, close_fds=True)
+        subprocess.Popen(
+            [kugou],
+            creationflags=CREATE_NO_WINDOW,
+            startupinfo=hidden_startupinfo(),
+            close_fds=True,
+        )
+
+
+def browser_executable() -> str | None:
+    candidates = [
+        os.getenv("CPOP_BROWSER", ""),
+        r"%ProgramFiles%\Microsoft\Edge\Application\msedge.exe",
+        r"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe",
+        r"%LOCALAPPDATA%\Microsoft\Edge\Application\msedge.exe",
+        r"%ProgramFiles%\Google\Chrome\Application\chrome.exe",
+        r"%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe",
+        r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe",
+        r"%LOCALAPPDATA%\BraveSoftware\Brave-Browser\Application\brave.exe",
+    ]
+    return executable(candidates)
+
+
+def open_web_app() -> subprocess.Popen:
+    """Open a dedicated browser process whose lifetime can be monitored."""
+    browser = browser_executable()
+    if not browser:
+        raise RuntimeError("未找到 Edge 或 Chrome，请安装浏览器或设置 CPOP_BROWSER。")
+    profile = LOG_DIR / f"browser-profile-{os.getpid()}"
+    profile.mkdir(parents=True, exist_ok=True)
+    return subprocess.Popen(
+        [
+            browser,
+            "--app=http://localhost:3000",
+            f"--user-data-dir={profile}",
+            "--no-first-run",
+            "--no-default-browser-check",
+            "--disable-background-mode",
+        ],
+        creationflags=CREATE_NO_WINDOW,
+        startupinfo=hidden_startupinfo(),
+        close_fds=True,
+    )
+
+
+def stop_process_tree(process: subprocess.Popen) -> None:
+    if process.poll() is not None:
+        return
+    subprocess.run(
+        ["taskkill.exe", "/PID", str(process.pid), "/T", "/F"],
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        creationflags=CREATE_NO_WINDOW,
+        startupinfo=hidden_startupinfo(),
+    )
+
+
+def cleanup_services() -> None:
+    for process in reversed(CHILD_PROCESSES):
+        stop_process_tree(process)
+    CHILD_PROCESSES.clear()
+
+
+def wait_for_browser(browser: subprocess.Popen | None) -> None:
+    if browser is None:
+        return
+    while browser.poll() is None:
+        time.sleep(0.5)
+
+
+def run_desktop_app() -> None:
+    """Run the web UI inside a native desktop window until it is closed."""
+    try:
+        import webview
+    except ImportError:
+        # Keep old Python environments usable with the browser-app fallback.
+        browser = open_web_app()
+        wait_for_browser(browser)
+        return
+
+    try:
+        webview.create_window(
+            "My C-Pop Working",
+            "http://localhost:3000",
+            width=1440,
+            height=900,
+            min_size=(960, 640),
+            resizable=True,
+            text_select=True,
+        )
+        webview.start(gui="edgechromium", debug=False)
+    except Exception:
+        # WebView2 may be missing on older Windows installations.
+        browser = open_web_app()
+        wait_for_browser(browser)
 
 
 def wait_for_web(timeout_seconds: float = 45) -> bool:
@@ -271,11 +383,14 @@ def main() -> int:
         if not wait_for_web():
             raise RuntimeError("服务启动超时，请查看项目 .launcher 目录中的日志。")
         start_catalog_refresh()
-        webbrowser.open("http://localhost:3000", new=2)
+        run_desktop_app()
         return 0
     except (OSError, RuntimeError, subprocess.SubprocessError) as error:
         message("My C-Pop Working 启动失败", str(error), error=True)
         return 1
+
+    finally:
+        cleanup_services()
 
 
 if __name__ == "__main__":

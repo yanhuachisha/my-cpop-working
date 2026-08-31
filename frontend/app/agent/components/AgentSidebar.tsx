@@ -1,4 +1,5 @@
 import { Bot, MessageSquareText, Plus, Sparkles, Trash2 } from "lucide-react";
+import { cleanMarkdownText } from "../../../lib/markdown";
 import { AgentStatus, SessionSummary } from "../types";
 
 type Props = {
@@ -23,7 +24,7 @@ export function AgentSidebar({ activeSessionId, busy, formatSessionTime, onCreat
         {sessionsLoading ? <div className="agent-session-empty">正在读取记忆…</div> : null}
         {!sessionsLoading && !sessions.length ? <div className="agent-session-empty"><MessageSquareText size={20} /><span>还没有保存的对话</span></div> : null}
         {sessions.map((session) => <div className={`agent-session-item${activeSessionId === session.id ? " active" : ""}`} key={session.id}>
-          <button disabled={busy} onClick={() => void onOpenSession(session.id)} type="button"><strong>{session.title}</strong><span>{session.preview || "等待第一句话"}</span><small>{formatSessionTime(session.updated_at)} · {session.message_count} 条</small></button>
+          <button disabled={busy} onClick={() => void onOpenSession(session.id)} type="button"><strong>{cleanMarkdownText(session.title)}</strong><span>{cleanMarkdownText(session.preview || "等待第一句话")}</span><small>{formatSessionTime(session.updated_at)} · {session.message_count} 条</small></button>
           <button aria-label={`删除会话 ${session.title}`} className="agent-session-delete" disabled={busy} onClick={() => void onRemoveSession(session.id)} type="button"><Trash2 size={13} /></button>
         </div>)}
       </div>

@@ -39,6 +39,34 @@ def test_listening_conversation_dedupes_same_client_turn(monkeypatch, tmp_path):
     assert {message["turn_id"] for message in messages} == {"turn-1"}
 
 
+def test_companion_turn_note_keeps_question_answer_and_dedupes(monkeypatch, tmp_path):
+    monkeypatch.setattr(listener_memory, "STATE_PATH", tmp_path / "listener_state.json")
+
+    first = listener_memory.save_companion_turn_note(
+        "这首歌让我想起夏天。",
+        "我也听见了那种明亮又有点舍不得的感觉。",
+        "晴天",
+        "周杰伦",
+        "turn-note-1",
+    )
+    second = listener_memory.save_companion_turn_note(
+        "这首歌让我想起夏天。",
+        "我也听见了那种明亮又有点舍不得的感觉。",
+        "晴天",
+        "周杰伦",
+        "turn-note-1",
+    )
+
+    notes = listener_memory.music_notes()
+    assert len(notes) == 1
+    assert notes[0] == first == second
+    assert notes[0]["prompt"] == "这首歌让我想起夏天。"
+    assert notes[0]["content"] == "我也听见了那种明亮又有点舍不得的感觉。"
+    assert notes[0]["source"] == "listening_companion"
+    assert notes[0]["turn_id"] == "turn-note-1"
+    assert notes[0]["saved_at"]
+
+
 def test_daily_listening_is_persisted_and_ranked(monkeypatch, tmp_path):
     state_path = tmp_path / "listener_state.json"
     monkeypatch.setattr(listener_memory, "STATE_PATH", state_path)
