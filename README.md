@@ -13,6 +13,14 @@
 
 ## 1. 先跑起来
 
+### 功能概览
+
+- **首页每日推荐**：每天固定推荐一首歌，展示歌名、歌手和推荐理由；同一天刷新或重新打开不会换歌。
+- **听歌房**：查看酷狗当前播放状态、歌曲故事、歌词短句分析和上下文对话，并记录播放时长。
+- **收藏与音乐笔记**：导入酷狗歌单；收藏页按歌曲聚合音乐笔记，每首歌可以继续写独立的子笔记。
+- **Agent 工作台**：支持多轮对话、音乐检索、听歌历史、偏好反馈、长期记忆和工具调用轨迹。
+- **开放数据与试听**：整合 MusicBrainz、Wikidata、ListenBrainz、iTunes Search 和 Deezer 公共试听资源。
+
 ### 1.1 最低要求
 
 Docker 是推荐入口。使用者不需要单独安装 Java、Maven、Python 或 Node.js。
@@ -43,7 +51,7 @@ Copy-Item .env.example .env
 notepad .env
 ```
 
-至少配置一个自己的 DeepSeek Key：
+如需启用真实 LLM，请配置自己的 DeepSeek Key：
 
 ```env
 DEEPSEEK_API_KEY=your_api_key
@@ -100,15 +108,16 @@ docker compose --profile full --profile observability down
 
 只有确定要删除数据库、Redis、ES、RabbitMQ 和模型缓存时，才使用 `down -v`。
 
-## 2. Windows 桌面模式（酷狗联动）
+## 2. Windows 桌面应用（酷狗联动）
 
-桌面模式是 Windows 本地适配器，适合你自己的电脑使用：
+桌面启动器会把项目作为一个独立的 Windows 小应用运行，适合在自己的电脑上使用：
 
 1. 双击桌面上的 `My-C-Pop-Working.exe`。
-2. 启动本地 Web（3000）和 API（8001）。
-3. 检测酷狗窗口标题和播放状态，按阈值记录听歌时长。
+2. 启动本地 API（8001）和前端服务（3000），并打开酷狗（如果已安装）。
+3. 在独立桌面窗口中使用应用；窗口关闭后，启动器会自动停止本轮启动的 API、前端、桥接和目录刷新进程。
+4. 如果系统缺少 WebView2，启动器会回退到独立的 Edge/Chrome 应用窗口，关闭窗口同样会结束本轮服务。
 
-桌面模式不会破解、读取或修改酷狗私有数据库，只读取公开的窗口状态。Docker 容器固定使用 `KUGOU_DESKTOP_INTEGRATION=false`，不会访问宿主机窗口系统。
+桌面应用不会破解、读取或修改酷狗私有数据库，只读取公开的窗口标题和播放状态。Docker 容器固定使用 `KUGOU_DESKTOP_INTEGRATION=false`，不会访问宿主机窗口系统。
 
 仓库默认忽略 `*.exe`，所以 `git clone` 不会自动得到启动器。需要构建时，在 Windows 执行：
 
@@ -116,7 +125,13 @@ docker compose --profile full --profile observability down
 .\scripts\build-launcher.ps1
 ```
 
-该脚本会生成 `My-C-Pop-Working.exe` 并复制到当前用户桌面。向其他 Windows 用户分发时，建议将 EXE 放在 GitHub Releases，并同时提供完整项目目录；服务器和团队环境请使用 Docker，不要分发桌面 EXE。
+该脚本会检查并安装 PyInstaller、Pillow、pywebview，生成 `My-C-Pop-Working.exe` 并复制到当前用户桌面。默认使用 `C:\ide\anaconda\python.exe`，也可以传入其他解释器：
+
+```powershell
+.\scripts\build-launcher.ps1 -Python "C:\Python311\python.exe"
+```
+
+向其他 Windows 用户分发时，建议将 EXE 放在 GitHub Releases，并同时提供完整项目目录；服务器和团队环境请使用 Docker，不要分发桌面 EXE。
 
 ## 3. Agent 全链路
 
@@ -253,16 +268,27 @@ RABBITMQ_PORT_FORWARD=5672
 | POST | `/api/agent/run` | Agent 执行入口 |
 | GET | `/api/agent/status` | Agent、模型和工具状态 |
 | GET | `/api/agent/evaluate?suite=smoke&algorithm=auto` | Agent 评测 |
+| GET | `/api/today` | 每日固定一首推荐及推荐理由 |
 | GET | `/api/recommendations/hybrid` | 混合推荐 |
 | GET | `/api/listening/today-stats` | 今日听歌统计 |
 | GET | `/api/agent/weekly-report` | 周报生成 |
 | GET | `/api/kugou/bridge/status` | 酷狗桥接状态 |
 | GET | `/api/catalog/stats` | 曲库统计 |
+| GET | `/api/listener/favorites` | 收藏列表 |
+| GET | `/api/listener/notes` | 音乐笔记和歌曲子笔记 |
 | POST | `/api/library/import` | 导入歌单元数据 |
 
-启动 API 后可通过 <http://localhost:8000/docs> 查看完整 OpenAPI 文档。
+Docker 模式启动 API 后可通过 <http://localhost:8000/docs> 查看完整 OpenAPI 文档；本地开发模式对应 `http://localhost:8001/docs`。
 
 ## 7. 本地开发（不使用 Docker）
+
+Windows 可以直接使用一键脚本启动本地前后端：
+
+```powershell
+.\scripts\dev-up.ps1
+```
+
+默认打开 <http://localhost:3000>，API 使用 `http://localhost:8001`。需要分别调试服务时，再使用下面的命令。
 
 本地 Java 服务使用 JDK 17。Windows 可显式指定：
 

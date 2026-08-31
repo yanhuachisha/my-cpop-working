@@ -43,11 +43,12 @@ ELASTICSEARCH_PORT_FORWARD=19200
 RABBITMQ_PORT_FORWARD=15673
 ```
 
-## 5. 桌面酷狗模式
+## 5. Windows 桌面应用
 
-桌面模式是 Windows 本地适配器，不放进 Docker：
+桌面应用是 Windows 本地适配器，不放进 Docker：
 
-- 双击 `My-C-Pop-Working.exe` 启动本地 API/Web 并打开酷狗。
+- 双击 `My-C-Pop-Working.exe` 启动本地 API/Web，并在独立桌面窗口中打开应用；窗口关闭后，启动器会清理本轮启动的子进程。
+- 如果 WebView2 不可用，会自动回退到独立的 Edge/Chrome 应用窗口，生命周期规则不变。
 - 设置 `KUGOU_DESKTOP_INTEGRATION=true` 开启窗口检测和播放追踪。
 - Docker 中固定为 `false`，避免容器访问宿主机窗口系统。
 
