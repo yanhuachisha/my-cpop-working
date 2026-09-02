@@ -20,6 +20,6 @@
   </modules>
   <properties>
     <java.version>17</java.version>
-    <debezium.version>3.0.8.Final</debezium.version>
+    <debezium.version>3.6.1.Final</debezium.version>
   </properties>
 </project>
