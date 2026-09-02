@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: monthly
+  - package-ecosystem: pip
+    directory: /backend
+    schedule:
+      interval: monthly
+  - package-ecosystem: maven
+    directory: /services/music-core
+    schedule:
+      interval: monthly
+  - package-ecosystem: maven
+    directory: /services/cdc-worker
+    schedule:
+      interval: monthly
+  - package-ecosystem: maven
+    directory: /services/memory-projector
+    schedule:
+      interval: monthly
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly

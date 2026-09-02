@@ -474,3 +474,96 @@
     width: 100%;
   }
 }
+
+/* Keep the track identity readable while the decorative record stays centered. */
+.daily-song-identity {
+  max-width: min(100%, 34rem);
+  position: relative;
+  z-index: 3;
+}
+
+.daily-song-identity > small {
+  color: rgba(255, 255, 255, .42);
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  margin-top: 18px;
+}
+
+.daily-song-identity h1 {
+  display: block;
+  max-width: 100%;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+
+.daily-song-identity h2 {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.daily-song-identity h2 small {
+  color: rgba(255, 180, 107, .58);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.daily-vinyl {
+  display: none;
+}
+
+@media (min-width: 981px) {
+  .daily-song-card {
+    padding-right: clamp(210px, 24vw, 340px);
+  }
+
+  .daily-song-card::before,
+  .daily-song-card::after {
+    display: none;
+  }
+
+  .daily-vinyl {
+    aspect-ratio: 1;
+    background: repeating-radial-gradient(circle at center, #101116 0 5px, #1c1d23 6px 8px, #111217 9px 13px);
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 50%;
+    box-shadow: 0 45px 90px rgba(0, 0, 0, .48), 0 0 90px rgba(143, 123, 255, .16), inset 0 0 0 18px rgba(255, 255, 255, .015);
+    display: grid;
+    height: clamp(250px, 25vw, 390px);
+    place-items: center;
+    pointer-events: none;
+    position: absolute;
+    right: clamp(18px, 3vw, 52px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(250px, 25vw, 390px);
+    z-index: 1;
+  }
+
+  .daily-vinyl-label {
+    align-items: center;
+    aspect-ratio: 1;
+    background: conic-gradient(from 30deg, #8f7bff, #ffb46b, #8fe4d1, #8f7bff);
+    border: clamp(16px, 1.6vw, 24px) solid #111217;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    width: 37%;
+  }
+}
+
+@media (max-width: 680px) {
+  .daily-song-identity > small {
+    margin-top: 12px;
+  }
+
+  .daily-song-identity h1 {
+    font-size: 50px;
+  }
+}

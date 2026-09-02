@@ -171,11 +171,15 @@ export function DailyPickContent() {
           </div>
           <div className="daily-song-card">
             <span>今天只认真推荐一首</span>
-            <h1>{mainPick.recording.title}</h1>
-            <h2>{mainPick.artist.name}</h2>
+            <div className="daily-song-identity">
+              <small>歌曲</small>
+              <h1>{mainPick.recording.title || "未命名歌曲"}</h1>
+              <h2><small>歌手</small>{mainPick.artist.name || "未知歌手"}</h2>
+            </div>
             <p>{cleanMarkdownText(mainPick.headline)}</p>
             <p className="daily-song-reason"><strong>推荐理由</strong>{cleanMarkdownText(mainPick.explanation)}</p>
             <div className="sonic-actions"><button className={openingId === mainPick.recording.id ? "is-playing" : ""} disabled={openingId === mainPick.recording.id} onClick={() => listenNow(mainPick)} type="button"><Music2 size={18} />{openingId === mainPick.recording.id ? "正在打开酷狗" : "现在就听"}</button><Link href="/agent"><Sparkles size={17} />聊聊这首歌</Link></div>
+            <div className="daily-vinyl" aria-hidden="true"><div className="daily-vinyl-label"><Music2 size={27} /></div></div>
           </div>
         </div>
         <aside className="daily-news-panel">
