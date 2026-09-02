@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T01:10:27.068285+00:00",
+  "generated_at": "2026-09-02T05:41:09.968430+00:00",
   "source": "MusicBrainz",
   "artists": [],
   "releases": [],
@@ -32962,6 +32962,5881 @@
       "source_urls": [
         "https://musicbrainz.org/recording/890084cf-fb5c-4287-87de-81fa4d14bda1"
       ]
+    },
+    {
+      "id": "mb-63dced94-0faa-49d7-9ca6-b608f933c8a4",
+      "title": "愛常常喜樂",
+      "artist_id": "leehom-wang",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "63dced94-0faa-49d7-9ca6-b608f933c8a4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/63dced94-0faa-49d7-9ca6-b608f933c8a4"
+      ]
+    },
+    {
+      "id": "mb-b9397eae-a92c-4f25-a5ad-c7a8cfe8d233",
+      "title": "戒不了你",
+      "artist_id": "leehom-wang",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "b9397eae-a92c-4f25-a5ad-c7a8cfe8d233",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b9397eae-a92c-4f25-a5ad-c7a8cfe8d233"
+      ]
+    },
+    {
+      "id": "mb-1a2c255f-2ab4-48b8-9530-98c1afe7899a",
+      "title": "兩個人並不等於我們",
+      "artist_id": "leehom-wang",
+      "year": 2002,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "1a2c255f-2ab4-48b8-9530-98c1afe7899a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1a2c255f-2ab4-48b8-9530-98c1afe7899a"
+      ]
+    },
+    {
+      "id": "mb-8263feb6-0e9e-43f6-808d-4aa31e522f6d",
+      "title": "龍的傳人",
+      "artist_id": "leehom-wang",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "8263feb6-0e9e-43f6-808d-4aa31e522f6d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8263feb6-0e9e-43f6-808d-4aa31e522f6d"
+      ]
+    },
+    {
+      "id": "mb-f52a087d-c1a5-414a-9a58-8564175ccf63",
+      "title": "永遠のはじまり",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "f52a087d-c1a5-414a-9a58-8564175ccf63",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f52a087d-c1a5-414a-9a58-8564175ccf63"
+      ]
+    },
+    {
+      "id": "mb-8706c5c8-924c-40ca-84a6-88377471d50c",
+      "title": "十八般武藝",
+      "artist_id": "leehom-wang",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "8706c5c8-924c-40ca-84a6-88377471d50c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8706c5c8-924c-40ca-84a6-88377471d50c"
+      ]
+    },
+    {
+      "id": "mb-a4101c17-d4d7-45a3-b7f5-9b3dd21e60ed",
+      "title": "你可以告诉我 (你还爱谁)",
+      "artist_id": "leehom-wang",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "a4101c17-d4d7-45a3-b7f5-9b3dd21e60ed",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a4101c17-d4d7-45a3-b7f5-9b3dd21e60ed"
+      ]
+    },
+    {
+      "id": "mb-f74ef798-5fcf-4354-9b3a-0273a1fa833e",
+      "title": "信任",
+      "artist_id": "leehom-wang",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "f74ef798-5fcf-4354-9b3a-0273a1fa833e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f74ef798-5fcf-4354-9b3a-0273a1fa833e"
+      ]
+    },
+    {
+      "id": "mb-837beadb-e627-4013-84df-7e2aaa35aa63",
+      "title": "給我妳的手",
+      "artist_id": "leehom-wang",
+      "year": 1997,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "837beadb-e627-4013-84df-7e2aaa35aa63",
+      "source_urls": [
+        "https://musicbrainz.org/recording/837beadb-e627-4013-84df-7e2aaa35aa63"
+      ]
+    },
+    {
+      "id": "mb-4d77adf3-58e1-4b4f-89dd-c0f4a8e7b288",
+      "title": "競爭對手",
+      "artist_id": "leehom-wang",
+      "year": 2008,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "4d77adf3-58e1-4b4f-89dd-c0f4a8e7b288",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4d77adf3-58e1-4b4f-89dd-c0f4a8e7b288"
+      ]
+    },
+    {
+      "id": "mb-3f24683a-02ba-4e28-b5bd-e92cc9d6ff4a",
+      "title": "The One and Only",
+      "artist_id": "leehom-wang",
+      "year": 2005,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "3f24683a-02ba-4e28-b5bd-e92cc9d6ff4a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3f24683a-02ba-4e28-b5bd-e92cc9d6ff4a"
+      ]
+    },
+    {
+      "id": "mb-68398fe6-61e2-4f62-a757-3081c9efac39",
+      "title": "手のひらの涙",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "68398fe6-61e2-4f62-a757-3081c9efac39",
+      "source_urls": [
+        "https://musicbrainz.org/recording/68398fe6-61e2-4f62-a757-3081c9efac39"
+      ]
+    },
+    {
+      "id": "mb-750062fa-cb71-453a-9b7d-a0a814a4f559",
+      "title": "你的愛",
+      "artist_id": "leehom-wang",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "750062fa-cb71-453a-9b7d-a0a814a4f559",
+      "source_urls": [
+        "https://musicbrainz.org/recording/750062fa-cb71-453a-9b7d-a0a814a4f559"
+      ]
+    },
+    {
+      "id": "mb-6ae3bc81-5e5e-427e-bb80-e2005575d97d",
+      "title": "有了你就足夠",
+      "artist_id": "leehom-wang",
+      "year": 1996,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "6ae3bc81-5e5e-427e-bb80-e2005575d97d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6ae3bc81-5e5e-427e-bb80-e2005575d97d"
+      ]
+    },
+    {
+      "id": "mb-1c361e06-385b-43eb-9eb1-c433d7c48ef6",
+      "title": "天地龍鱗(大型紀錄片《紫禁城》主題歌)伴奏",
+      "artist_id": "leehom-wang",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "1c361e06-385b-43eb-9eb1-c433d7c48ef6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1c361e06-385b-43eb-9eb1-c433d7c48ef6"
+      ]
+    },
+    {
+      "id": "mb-2ea084f6-687e-4338-9ec4-862e1b0544e8",
+      "title": "我用生命愛你",
+      "artist_id": "leehom-wang",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "2ea084f6-687e-4338-9ec4-862e1b0544e8",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2ea084f6-687e-4338-9ec4-862e1b0544e8"
+      ]
+    },
+    {
+      "id": "mb-086658a7-e7e7-41f4-afcf-17ed44c569cb",
+      "title": "腳本",
+      "artist_id": "leehom-wang",
+      "year": 2008,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "086658a7-e7e7-41f4-afcf-17ed44c569cb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/086658a7-e7e7-41f4-afcf-17ed44c569cb"
+      ]
+    },
+    {
+      "id": "mb-7f62cbaa-29ec-4e96-8f68-5c1c4c907ee8",
+      "title": "好想你",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "7f62cbaa-29ec-4e96-8f68-5c1c4c907ee8",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7f62cbaa-29ec-4e96-8f68-5c1c4c907ee8"
+      ]
+    },
+    {
+      "id": "mb-dae7a58e-0a7b-42fb-a813-045dfcb7c0f3",
+      "title": "Lullabye",
+      "artist_id": "leehom-wang",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "dae7a58e-0a7b-42fb-a813-045dfcb7c0f3",
+      "source_urls": [
+        "https://musicbrainz.org/recording/dae7a58e-0a7b-42fb-a813-045dfcb7c0f3"
+      ]
+    },
+    {
+      "id": "mb-2d36be84-8839-440b-a384-4a7bcdc2dd83",
+      "title": "无问西东 (live)",
+      "artist_id": "leehom-wang",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "2d36be84-8839-440b-a384-4a7bcdc2dd83",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2d36be84-8839-440b-a384-4a7bcdc2dd83"
+      ]
+    },
+    {
+      "id": "mb-45809f98-4099-4d65-9129-3b4849da014a",
+      "title": "在每一秒裡都想見到你",
+      "artist_id": "leehom-wang",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "45809f98-4099-4d65-9129-3b4849da014a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/45809f98-4099-4d65-9129-3b4849da014a"
+      ]
+    },
+    {
+      "id": "mb-2ec0e847-ed3d-4b18-a227-12e64497004e",
+      "title": "愛一點",
+      "artist_id": "leehom-wang",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "2ec0e847-ed3d-4b18-a227-12e64497004e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2ec0e847-ed3d-4b18-a227-12e64497004e"
+      ]
+    },
+    {
+      "id": "mb-511463cd-6106-46fa-a0db-178b58523c04",
+      "title": "回憶",
+      "artist_id": "leehom-wang",
+      "year": 1996,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "chinese-style"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "511463cd-6106-46fa-a0db-178b58523c04",
+      "source_urls": [
+        "https://musicbrainz.org/recording/511463cd-6106-46fa-a0db-178b58523c04"
+      ]
+    },
+    {
+      "id": "mb-fb8c28ab-4584-4cc0-b362-6f23d37200d3",
+      "title": "時光機",
+      "artist_id": "mayday",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "fb8c28ab-4584-4cc0-b362-6f23d37200d3",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fb8c28ab-4584-4cc0-b362-6f23d37200d3"
+      ]
+    },
+    {
+      "id": "mb-2ef11824-7755-413a-856f-52f145f9c5bb",
+      "title": "雌雄同體",
+      "artist_id": "mayday",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "2ef11824-7755-413a-856f-52f145f9c5bb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2ef11824-7755-413a-856f-52f145f9c5bb"
+      ]
+    },
+    {
+      "id": "mb-1c323012-2d65-47ce-a4a6-8a311b690806",
+      "title": "借問眾神明",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "1c323012-2d65-47ce-a4a6-8a311b690806",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1c323012-2d65-47ce-a4a6-8a311b690806"
+      ]
+    },
+    {
+      "id": "mb-a8e5a26a-1a7d-4dc6-ab05-5b359937ae34",
+      "title": "好不好",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "a8e5a26a-1a7d-4dc6-ab05-5b359937ae34",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a8e5a26a-1a7d-4dc6-ab05-5b359937ae34"
+      ]
+    },
+    {
+      "id": "mb-31f5c47d-7166-45a7-9af7-48117817ee00",
+      "title": "候鳥",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "31f5c47d-7166-45a7-9af7-48117817ee00",
+      "source_urls": [
+        "https://musicbrainz.org/recording/31f5c47d-7166-45a7-9af7-48117817ee00"
+      ]
+    },
+    {
+      "id": "mb-6a6be148-79c3-4e70-ab44-c2f2bf4bc051",
+      "title": "相信",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "6a6be148-79c3-4e70-ab44-c2f2bf4bc051",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6a6be148-79c3-4e70-ab44-c2f2bf4bc051"
+      ]
+    },
+    {
+      "id": "mb-9b5af1d0-2e8a-466f-b8c8-0d9bf97818cb",
+      "title": "雨眠",
+      "artist_id": "mayday",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "9b5af1d0-2e8a-466f-b8c8-0d9bf97818cb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9b5af1d0-2e8a-466f-b8c8-0d9bf97818cb"
+      ]
+    },
+    {
+      "id": "mb-1198c4e3-d2b3-45b5-b8a7-8ca8cebe1481",
+      "title": "終結孤單",
+      "artist_id": "mayday",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "1198c4e3-d2b3-45b5-b8a7-8ca8cebe1481",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1198c4e3-d2b3-45b5-b8a7-8ca8cebe1481"
+      ]
+    },
+    {
+      "id": "mb-19afc3e1-639e-471d-b3da-40ee1f8d2aee",
+      "title": "為什麼",
+      "artist_id": "mayday",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "19afc3e1-639e-471d-b3da-40ee1f8d2aee",
+      "source_urls": [
+        "https://musicbrainz.org/recording/19afc3e1-639e-471d-b3da-40ee1f8d2aee"
+      ]
+    },
+    {
+      "id": "mb-38feaab3-3875-4b55-a4ab-09f8e1effc5f",
+      "title": "明白 (歌迷版) / Talking",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "38feaab3-3875-4b55-a4ab-09f8e1effc5f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/38feaab3-3875-4b55-a4ab-09f8e1effc5f"
+      ]
+    },
+    {
+      "id": "mb-054d659c-fd75-4c0a-b155-db4e9f6f50cb",
+      "title": "相信",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "054d659c-fd75-4c0a-b155-db4e9f6f50cb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/054d659c-fd75-4c0a-b155-db4e9f6f50cb"
+      ]
+    },
+    {
+      "id": "mb-4792c6b1-2633-4c07-95d1-999fd800be1e",
+      "title": "瘋狂世界",
+      "artist_id": "mayday",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "4792c6b1-2633-4c07-95d1-999fd800be1e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4792c6b1-2633-4c07-95d1-999fd800be1e"
+      ]
+    },
+    {
+      "id": "mb-a286ba4c-4e57-4751-8fee-60a89b1db881",
+      "title": "軋車",
+      "artist_id": "mayday",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "a286ba4c-4e57-4751-8fee-60a89b1db881",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a286ba4c-4e57-4751-8fee-60a89b1db881"
+      ]
+    },
+    {
+      "id": "mb-5027197b-5959-44c2-a525-6073f54044db",
+      "title": "軋新車",
+      "artist_id": "mayday",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "5027197b-5959-44c2-a525-6073f54044db",
+      "source_urls": [
+        "https://musicbrainz.org/recording/5027197b-5959-44c2-a525-6073f54044db"
+      ]
+    },
+    {
+      "id": "mb-046acf03-47e7-48df-a44f-79fc037247d7",
+      "title": "I'm in Love",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "046acf03-47e7-48df-a44f-79fc037247d7",
+      "source_urls": [
+        "https://musicbrainz.org/recording/046acf03-47e7-48df-a44f-79fc037247d7"
+      ]
+    },
+    {
+      "id": "mb-3631704c-2d12-4150-8d06-b9427357c6c2",
+      "title": "I Love You 無望",
+      "artist_id": "mayday",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "3631704c-2d12-4150-8d06-b9427357c6c2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3631704c-2d12-4150-8d06-b9427357c6c2"
+      ]
+    },
+    {
+      "id": "mb-241c47e0-a2bf-47f7-904e-76a72e5f3683",
+      "title": "風若吹",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "241c47e0-a2bf-47f7-904e-76a72e5f3683",
+      "source_urls": [
+        "https://musicbrainz.org/recording/241c47e0-a2bf-47f7-904e-76a72e5f3683"
+      ]
+    },
+    {
+      "id": "mb-4eff7808-12c1-4a77-99bc-2d7e8450d0c2",
+      "title": "Intro",
+      "artist_id": "mayday",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "4eff7808-12c1-4a77-99bc-2d7e8450d0c2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4eff7808-12c1-4a77-99bc-2d7e8450d0c2"
+      ]
+    },
+    {
+      "id": "mb-587149cc-320d-47c3-b769-3c85a366170a",
+      "title": "好不好",
+      "artist_id": "mayday",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "587149cc-320d-47c3-b769-3c85a366170a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/587149cc-320d-47c3-b769-3c85a366170a"
+      ]
+    },
+    {
+      "id": "mb-dc5c4056-e85d-45c2-be22-bde44bdcaaac",
+      "title": "溫柔 / Talking",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "dc5c4056-e85d-45c2-be22-bde44bdcaaac",
+      "source_urls": [
+        "https://musicbrainz.org/recording/dc5c4056-e85d-45c2-be22-bde44bdcaaac"
+      ]
+    },
+    {
+      "id": "mb-26ba0c5d-d799-4e68-ad77-61556cdf9d1d",
+      "title": "叫我第一名",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "26ba0c5d-d799-4e68-ad77-61556cdf9d1d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/26ba0c5d-d799-4e68-ad77-61556cdf9d1d"
+      ]
+    },
+    {
+      "id": "mb-4a89f069-cf4f-431c-aa48-5aeec6a61fd2",
+      "title": "啾啾啾",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "4a89f069-cf4f-431c-aa48-5aeec6a61fd2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4a89f069-cf4f-431c-aa48-5aeec6a61fd2"
+      ]
+    },
+    {
+      "id": "mb-a758a46c-8fea-49ad-8045-f7c58e930d14",
+      "title": "彩虹",
+      "artist_id": "mayday",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "a758a46c-8fea-49ad-8045-f7c58e930d14",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a758a46c-8fea-49ad-8045-f7c58e930d14"
+      ]
+    },
+    {
+      "id": "mb-b81451ed-8890-4380-8b6e-6ab7dbca4f60",
+      "title": "志明與春嬌",
+      "artist_id": "mayday",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock",
+        "band"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "b81451ed-8890-4380-8b6e-6ab7dbca4f60",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b81451ed-8890-4380-8b6e-6ab7dbca4f60"
+      ]
+    },
+    {
+      "id": "mb-72bf88e3-0743-4c49-abff-1ec3a8c926fc",
+      "title": "最愛的人傷我最深",
+      "artist_id": "a-mei",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "72bf88e3-0743-4c49-abff-1ec3a8c926fc",
+      "source_urls": [
+        "https://musicbrainz.org/recording/72bf88e3-0743-4c49-abff-1ec3a8c926fc"
+      ]
+    },
+    {
+      "id": "mb-1b3e6fc2-ed17-4d93-9857-7a0fa8369fe3",
+      "title": "It Doesn't Matter to Me",
+      "artist_id": "a-mei",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "1b3e6fc2-ed17-4d93-9857-7a0fa8369fe3",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1b3e6fc2-ed17-4d93-9857-7a0fa8369fe3"
+      ]
+    },
+    {
+      "id": "mb-624a7674-fc3e-43a2-8b8b-31ec32aebe13",
+      "title": "Hot Line You and Me",
+      "artist_id": "a-mei",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "624a7674-fc3e-43a2-8b8b-31ec32aebe13",
+      "source_urls": [
+        "https://musicbrainz.org/recording/624a7674-fc3e-43a2-8b8b-31ec32aebe13"
+      ]
+    },
+    {
+      "id": "mb-e8823f29-f52a-4b6e-b7be-422da8adcdf1",
+      "title": "跟我一起瘋",
+      "artist_id": "a-mei",
+      "year": 2002,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "e8823f29-f52a-4b6e-b7be-422da8adcdf1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e8823f29-f52a-4b6e-b7be-422da8adcdf1"
+      ]
+    },
+    {
+      "id": "mb-ce5f3b3e-4fbb-49a8-bfa6-3bb3f7d4aa3d",
+      "title": "哭不出來",
+      "artist_id": "a-mei",
+      "year": 1997,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "ce5f3b3e-4fbb-49a8-bfa6-3bb3f7d4aa3d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ce5f3b3e-4fbb-49a8-bfa6-3bb3f7d4aa3d"
+      ]
+    },
+    {
+      "id": "mb-38c6a9c6-62a9-49ca-bbd7-4eb53f8407fe",
+      "title": "Big City",
+      "artist_id": "a-mei",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "38c6a9c6-62a9-49ca-bbd7-4eb53f8407fe",
+      "source_urls": [
+        "https://musicbrainz.org/recording/38c6a9c6-62a9-49ca-bbd7-4eb53f8407fe"
+      ]
+    },
+    {
+      "id": "mb-9b04a35c-66c2-4eae-ae5b-064379bfe9f3",
+      "title": "愛是唯一",
+      "artist_id": "a-mei",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "9b04a35c-66c2-4eae-ae5b-064379bfe9f3",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9b04a35c-66c2-4eae-ae5b-064379bfe9f3"
+      ]
+    },
+    {
+      "id": "mb-634a7bd1-712f-40af-8fb9-1a78060dc1a4",
+      "title": "Following the Feeling",
+      "artist_id": "a-mei",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "634a7bd1-712f-40af-8fb9-1a78060dc1a4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/634a7bd1-712f-40af-8fb9-1a78060dc1a4"
+      ]
+    },
+    {
+      "id": "mb-a5999a1d-41d8-477a-9ed4-b1a80dee9c52",
+      "title": "Bizarre Love Triangle",
+      "artist_id": "a-mei",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "a5999a1d-41d8-477a-9ed4-b1a80dee9c52",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a5999a1d-41d8-477a-9ed4-b1a80dee9c52"
+      ]
+    },
+    {
+      "id": "mb-b8144af5-42ca-42fc-a41f-9c41f16cbb61",
+      "title": "牽手 (手を繋ごう)",
+      "artist_id": "a-mei",
+      "year": 2008,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "b8144af5-42ca-42fc-a41f-9c41f16cbb61",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b8144af5-42ca-42fc-a41f-9c41f16cbb61"
+      ]
+    },
+    {
+      "id": "mb-8eb94a6e-3db2-4013-8cf9-7410dae76456",
+      "title": "哭不出來",
+      "artist_id": "a-mei",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "8eb94a6e-3db2-4013-8cf9-7410dae76456",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8eb94a6e-3db2-4013-8cf9-7410dae76456"
+      ]
+    },
+    {
+      "id": "mb-c06d936a-98eb-446a-aed4-1e15a2632d0c",
+      "title": "壞的好人",
+      "artist_id": "a-mei",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "c06d936a-98eb-446a-aed4-1e15a2632d0c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c06d936a-98eb-446a-aed4-1e15a2632d0c"
+      ]
+    },
+    {
+      "id": "mb-9666bef7-26d7-4590-9bec-fefba4ee1519",
+      "title": "記得 Music Video",
+      "artist_id": "a-mei",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "9666bef7-26d7-4590-9bec-fefba4ee1519",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9666bef7-26d7-4590-9bec-fefba4ee1519"
+      ]
+    },
+    {
+      "id": "mb-519f2725-68bf-447d-bf8c-e5be9bbf824d",
+      "title": "相愛後動物感傷 完整禁忌版MV",
+      "artist_id": "a-mei",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "519f2725-68bf-447d-bf8c-e5be9bbf824d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/519f2725-68bf-447d-bf8c-e5be9bbf824d"
+      ]
+    },
+    {
+      "id": "mb-2bac342f-e11f-45e0-9654-81cda40fff35",
+      "title": "Now and Forever",
+      "artist_id": "a-mei",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "2bac342f-e11f-45e0-9654-81cda40fff35",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2bac342f-e11f-45e0-9654-81cda40fff35"
+      ]
+    },
+    {
+      "id": "mb-e779179a-9a98-4946-a84e-0b63428484c0",
+      "title": "听海",
+      "artist_id": "a-mei",
+      "year": null,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "e779179a-9a98-4946-a84e-0b63428484c0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e779179a-9a98-4946-a84e-0b63428484c0"
+      ]
+    },
+    {
+      "id": "mb-fc0e3e4b-044e-4375-b723-6e16782a7988",
+      "title": "Addicted to Love",
+      "artist_id": "a-mei",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "fc0e3e4b-044e-4375-b723-6e16782a7988",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fc0e3e4b-044e-4375-b723-6e16782a7988"
+      ]
+    },
+    {
+      "id": "mb-67db16f8-2b43-49c5-9dc3-92bd66e9d38f",
+      "title": "不要騙我 (騙さないで)",
+      "artist_id": "a-mei",
+      "year": 2008,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "67db16f8-2b43-49c5-9dc3-92bd66e9d38f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/67db16f8-2b43-49c5-9dc3-92bd66e9d38f"
+      ]
+    },
+    {
+      "id": "mb-01c4c50f-056c-4166-8cfe-c9f4fe8973ce",
+      "title": "後知後覺",
+      "artist_id": "a-mei",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "01c4c50f-056c-4166-8cfe-c9f4fe8973ce",
+      "source_urls": [
+        "https://musicbrainz.org/recording/01c4c50f-056c-4166-8cfe-c9f4fe8973ce"
+      ]
+    },
+    {
+      "id": "mb-0be4ad63-1e12-46ab-8e81-23e9fc3f1002",
+      "title": "傲嬌",
+      "artist_id": "a-mei",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "0be4ad63-1e12-46ab-8e81-23e9fc3f1002",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0be4ad63-1e12-46ab-8e81-23e9fc3f1002"
+      ]
+    },
+    {
+      "id": "mb-0f41fe00-abd1-450a-ad97-b84f82df9fb0",
+      "title": "不在乎他",
+      "artist_id": "a-mei",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "0f41fe00-abd1-450a-ad97-b84f82df9fb0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0f41fe00-abd1-450a-ad97-b84f82df9fb0"
+      ]
+    },
+    {
+      "id": "mb-b378af22-5dd4-4cc7-80ca-e2b74630f43c",
+      "title": "別去打擾他的心",
+      "artist_id": "a-mei",
+      "year": 2002,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "b378af22-5dd4-4cc7-80ca-e2b74630f43c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b378af22-5dd4-4cc7-80ca-e2b74630f43c"
+      ]
+    },
+    {
+      "id": "mb-193d1db9-0bdf-4455-ac63-c3ee42e60bfb",
+      "title": "站在高崗上",
+      "artist_id": "a-mei",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "193d1db9-0bdf-4455-ac63-c3ee42e60bfb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/193d1db9-0bdf-4455-ac63-c3ee42e60bfb"
+      ]
+    },
+    {
+      "id": "mb-b541fb35-2170-46c8-8c2d-6676f6c1f6e6",
+      "title": "勇敢",
+      "artist_id": "a-mei",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "diva",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "b541fb35-2170-46c8-8c2d-6676f6c1f6e6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b541fb35-2170-46c8-8c2d-6676f6c1f6e6"
+      ]
+    },
+    {
+      "id": "mb-c2262317-f2ff-4de2-b590-87a3a371643d",
+      "title": "第四乐章 有精神的快板 - 庄严的快板",
+      "artist_id": "sodagreen",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c2262317-f2ff-4de2-b590-87a3a371643d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c2262317-f2ff-4de2-b590-87a3a371643d"
+      ]
+    },
+    {
+      "id": "mb-b1db3887-054a-4347-bf65-09605a210fef",
+      "title": "愛人動物（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "b1db3887-054a-4347-bf65-09605a210fef",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b1db3887-054a-4347-bf65-09605a210fef"
+      ]
+    },
+    {
+      "id": "mb-c69eafe9-6a9e-40e7-91d0-acf7a627883b",
+      "title": "笑鬧人間（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c69eafe9-6a9e-40e7-91d0-acf7a627883b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c69eafe9-6a9e-40e7-91d0-acf7a627883b"
+      ]
+    },
+    {
+      "id": "mb-dcd7c61f-762c-41f6-ad88-54c860ff4691",
+      "title": "Interlude 1",
+      "artist_id": "sodagreen",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "dcd7c61f-762c-41f6-ad88-54c860ff4691",
+      "source_urls": [
+        "https://musicbrainz.org/recording/dcd7c61f-762c-41f6-ad88-54c860ff4691"
+      ]
+    },
+    {
+      "id": "mb-04aeaac5-34ad-49e9-9395-97136462a4d6",
+      "title": "獨處的時候",
+      "artist_id": "sodagreen",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "04aeaac5-34ad-49e9-9395-97136462a4d6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/04aeaac5-34ad-49e9-9395-97136462a4d6"
+      ]
+    },
+    {
+      "id": "mb-3799574b-3c9d-4199-b248-0389c0f93c60",
+      "title": "陪我歌唱",
+      "artist_id": "sodagreen",
+      "year": 2008,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "3799574b-3c9d-4199-b248-0389c0f93c60",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3799574b-3c9d-4199-b248-0389c0f93c60"
+      ]
+    },
+    {
+      "id": "mb-6d377b95-431f-4831-b5a5-688b09699406",
+      "title": "Four Seasons",
+      "artist_id": "sodagreen",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "6d377b95-431f-4831-b5a5-688b09699406",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6d377b95-431f-4831-b5a5-688b09699406"
+      ]
+    },
+    {
+      "id": "mb-c6400e03-cb1b-4bf8-84a6-dc4421a968ea",
+      "title": "落寞（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c6400e03-cb1b-4bf8-84a6-dc4421a968ea",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c6400e03-cb1b-4bf8-84a6-dc4421a968ea"
+      ]
+    },
+    {
+      "id": "mb-6aed1afa-d867-49ea-b050-1a9a50d0f07f",
+      "title": "原諒（Live in summer）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "6aed1afa-d867-49ea-b050-1a9a50d0f07f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6aed1afa-d867-49ea-b050-1a9a50d0f07f"
+      ]
+    },
+    {
+      "id": "mb-1a4c0d70-1bba-46da-b3ee-50e3935262d2",
+      "title": "再遇見（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "1a4c0d70-1bba-46da-b3ee-50e3935262d2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1a4c0d70-1bba-46da-b3ee-50e3935262d2"
+      ]
+    },
+    {
+      "id": "mb-f48102bb-5a83-401b-a877-9373db128ba7",
+      "title": "I don't care",
+      "artist_id": "sodagreen",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "f48102bb-5a83-401b-a877-9373db128ba7",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f48102bb-5a83-401b-a877-9373db128ba7"
+      ]
+    },
+    {
+      "id": "mb-01772f1a-5ab8-402a-a18f-bd5525916e18",
+      "title": "牆外的風景",
+      "artist_id": "sodagreen",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "01772f1a-5ab8-402a-a18f-bd5525916e18",
+      "source_urls": [
+        "https://musicbrainz.org/recording/01772f1a-5ab8-402a-a18f-bd5525916e18"
+      ]
+    },
+    {
+      "id": "mb-c63be38f-357f-4dfd-a42e-883e90836d39",
+      "title": "火光（Live in summer）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c63be38f-357f-4dfd-a42e-883e90836d39",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c63be38f-357f-4dfd-a42e-883e90836d39"
+      ]
+    },
+    {
+      "id": "mb-0e078d71-20fe-40ad-ba3e-e5e50f0203dd",
+      "title": "The Rose （Live in summer）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "0e078d71-20fe-40ad-ba3e-e5e50f0203dd",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0e078d71-20fe-40ad-ba3e-e5e50f0203dd"
+      ]
+    },
+    {
+      "id": "mb-f5128090-9215-4ad1-92c5-537726aa5130",
+      "title": ":",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "f5128090-9215-4ad1-92c5-537726aa5130",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f5128090-9215-4ad1-92c5-537726aa5130"
+      ]
+    },
+    {
+      "id": "mb-9171816d-9523-4216-a403-ea72ad2f0c64",
+      "title": "你心裡最後一個",
+      "artist_id": "sodagreen",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "9171816d-9523-4216-a403-ea72ad2f0c64",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9171816d-9523-4216-a403-ea72ad2f0c64"
+      ]
+    },
+    {
+      "id": "mb-8e495fbd-5d45-4d43-b3dd-30cc031f1ac1",
+      "title": "蜘蛛天空（蘇打綠版） [Classical Version]",
+      "artist_id": "sodagreen",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "8e495fbd-5d45-4d43-b3dd-30cc031f1ac1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8e495fbd-5d45-4d43-b3dd-30cc031f1ac1"
+      ]
+    },
+    {
+      "id": "mb-b1af6dca-b361-4b39-9d9c-db06ec04f5d6",
+      "title": "各站停靠:（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "b1af6dca-b361-4b39-9d9c-db06ec04f5d6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b1af6dca-b361-4b39-9d9c-db06ec04f5d6"
+      ]
+    },
+    {
+      "id": "mb-d4875b3a-129b-4136-b4f8-ca4737ffcf62",
+      "title": "美錯（Live in summer）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "d4875b3a-129b-4136-b4f8-ca4737ffcf62",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d4875b3a-129b-4136-b4f8-ca4737ffcf62"
+      ]
+    },
+    {
+      "id": "mb-1eb40a19-cc92-4f65-ac9c-e3bfbc8d7065",
+      "title": "痛快的哀艷（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2025,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "1eb40a19-cc92-4f65-ac9c-e3bfbc8d7065",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1eb40a19-cc92-4f65-ac9c-e3bfbc8d7065"
+      ]
+    },
+    {
+      "id": "mb-ca57963c-3977-4db1-9b96-38ec84c90d5a",
+      "title": "牆外的風景（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2025,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "ca57963c-3977-4db1-9b96-38ec84c90d5a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ca57963c-3977-4db1-9b96-38ec84c90d5a"
+      ]
+    },
+    {
+      "id": "mb-733e64e6-0e44-4451-ab23-1e552725a6e9",
+      "title": "早點回家（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "733e64e6-0e44-4451-ab23-1e552725a6e9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/733e64e6-0e44-4451-ab23-1e552725a6e9"
+      ]
+    },
+    {
+      "id": "mb-f370ea5e-b887-4e12-8865-bf89926c4225",
+      "title": "偷閒的翅膀（蘇打綠版）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "f370ea5e-b887-4e12-8865-bf89926c4225",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f370ea5e-b887-4e12-8865-bf89926c4225"
+      ]
+    },
+    {
+      "id": "mb-294535de-4299-4770-a231-fecf49c1287e",
+      "title": "Be Be Your Love（Live In Summer）",
+      "artist_id": "sodagreen",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "indie",
+        "band"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "294535de-4299-4770-a231-fecf49c1287e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/294535de-4299-4770-a231-fecf49c1287e"
+      ]
+    },
+    {
+      "id": "mb-f8cd288c-7519-4364-bd62-ea8396dc1d60",
+      "title": "Where Did U Go",
+      "artist_id": "gem-tang",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "f8cd288c-7519-4364-bd62-ea8396dc1d60",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f8cd288c-7519-4364-bd62-ea8396dc1d60"
+      ]
+    },
+    {
+      "id": "mb-8ab5e80a-5a37-4f02-bd8f-dbce41c61adb",
+      "title": "G.E.M.的心底話",
+      "artist_id": "gem-tang",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "8ab5e80a-5a37-4f02-bd8f-dbce41c61adb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8ab5e80a-5a37-4f02-bd8f-dbce41c61adb"
+      ]
+    },
+    {
+      "id": "mb-0c2abe58-c8e0-4fc2-9973-88b56ee81cf3",
+      "title": "One Button",
+      "artist_id": "gem-tang",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "0c2abe58-c8e0-4fc2-9973-88b56ee81cf3",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0c2abe58-c8e0-4fc2-9973-88b56ee81cf3"
+      ]
+    },
+    {
+      "id": "mb-76374c7b-113a-4f86-973a-3f9389337cf6",
+      "title": "多遠都要在一起",
+      "artist_id": "gem-tang",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "76374c7b-113a-4f86-973a-3f9389337cf6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/76374c7b-113a-4f86-973a-3f9389337cf6"
+      ]
+    },
+    {
+      "id": "mb-2f966bb1-72af-4c15-83db-0a7220941241",
+      "title": "突然之間",
+      "artist_id": "gem-tang",
+      "year": 2019,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "2f966bb1-72af-4c15-83db-0a7220941241",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2f966bb1-72af-4c15-83db-0a7220941241"
+      ]
+    },
+    {
+      "id": "mb-02df1d18-56a6-4ad6-9568-4352bf55d313",
+      "title": "Just The Way You Are (Live)",
+      "artist_id": "gem-tang",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "02df1d18-56a6-4ad6-9568-4352bf55d313",
+      "source_urls": [
+        "https://musicbrainz.org/recording/02df1d18-56a6-4ad6-9568-4352bf55d313"
+      ]
+    },
+    {
+      "id": "mb-db212e2a-ac78-4281-86b5-3b845826b2ef",
+      "title": "寫真拍攝花絮",
+      "artist_id": "gem-tang",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "db212e2a-ac78-4281-86b5-3b845826b2ef",
+      "source_urls": [
+        "https://musicbrainz.org/recording/db212e2a-ac78-4281-86b5-3b845826b2ef"
+      ]
+    },
+    {
+      "id": "mb-77e15623-1ea9-4c47-b7ca-80e3e161992f",
+      "title": "一路逆風",
+      "artist_id": "gem-tang",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "77e15623-1ea9-4c47-b7ca-80e3e161992f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/77e15623-1ea9-4c47-b7ca-80e3e161992f"
+      ]
+    },
+    {
+      "id": "mb-a1373be2-d570-4ebc-8b90-0af8c2750676",
+      "title": "透明 (Selfless)",
+      "artist_id": "gem-tang",
+      "year": 2019,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "a1373be2-d570-4ebc-8b90-0af8c2750676",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a1373be2-d570-4ebc-8b90-0af8c2750676"
+      ]
+    },
+    {
+      "id": "mb-6422d3a3-a968-4df4-8fe0-a861a0ad0ffa",
+      "title": "再见 (Live)",
+      "artist_id": "gem-tang",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "6422d3a3-a968-4df4-8fe0-a861a0ad0ffa",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6422d3a3-a968-4df4-8fe0-a861a0ad0ffa"
+      ]
+    },
+    {
+      "id": "mb-e4f4842a-43d6-496b-b3b4-c604bab3ec65",
+      "title": "Lady Marmalade (Live)",
+      "artist_id": "gem-tang",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "e4f4842a-43d6-496b-b3b4-c604bab3ec65",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e4f4842a-43d6-496b-b3b4-c604bab3ec65"
+      ]
+    },
+    {
+      "id": "mb-192605b4-85e8-4fd8-9061-265bff632912",
+      "title": "多遠都要在一起",
+      "artist_id": "gem-tang",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "192605b4-85e8-4fd8-9061-265bff632912",
+      "source_urls": [
+        "https://musicbrainz.org/recording/192605b4-85e8-4fd8-9061-265bff632912"
+      ]
+    },
+    {
+      "id": "mb-06dcc8bd-6881-4f51-9bd6-8904b7043ac6",
+      "title": "有心人",
+      "artist_id": "gem-tang",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "06dcc8bd-6881-4f51-9bd6-8904b7043ac6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/06dcc8bd-6881-4f51-9bd6-8904b7043ac6"
+      ]
+    },
+    {
+      "id": "mb-3a4da297-3163-452b-a6c8-059aea6e0e4f",
+      "title": "畫 (live piano session II)",
+      "artist_id": "gem-tang",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "3a4da297-3163-452b-a6c8-059aea6e0e4f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3a4da297-3163-452b-a6c8-059aea6e0e4f"
+      ]
+    },
+    {
+      "id": "mb-449ff670-1277-4245-8cd9-7dfe42698b54",
+      "title": "我們的夢",
+      "artist_id": "gem-tang",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "449ff670-1277-4245-8cd9-7dfe42698b54",
+      "source_urls": [
+        "https://musicbrainz.org/recording/449ff670-1277-4245-8cd9-7dfe42698b54"
+      ]
+    },
+    {
+      "id": "mb-4e98000b-4f1f-4146-bb02-56470258e0a8",
+      "title": "冰河時代",
+      "artist_id": "gem-tang",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "4e98000b-4f1f-4146-bb02-56470258e0a8",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4e98000b-4f1f-4146-bb02-56470258e0a8"
+      ]
+    },
+    {
+      "id": "mb-2330bef2-5308-441c-b900-7dfbcf6d411e",
+      "title": "Un Momento",
+      "artist_id": "gem-tang",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "2330bef2-5308-441c-b900-7dfbcf6d411e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2330bef2-5308-441c-b900-7dfbcf6d411e"
+      ]
+    },
+    {
+      "id": "mb-9d27d574-ac7f-484d-a2bb-960f06bfac4c",
+      "title": "那一夜 (Live)",
+      "artist_id": "gem-tang",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "9d27d574-ac7f-484d-a2bb-960f06bfac4c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9d27d574-ac7f-484d-a2bb-960f06bfac4c"
+      ]
+    },
+    {
+      "id": "mb-5f724da0-6aa1-4539-9f62-03f385d10998",
+      "title": "忐忑 (Live)",
+      "artist_id": "gem-tang",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "5f724da0-6aa1-4539-9f62-03f385d10998",
+      "source_urls": [
+        "https://musicbrainz.org/recording/5f724da0-6aa1-4539-9f62-03f385d10998"
+      ]
+    },
+    {
+      "id": "mb-33d9c71a-1682-4f3f-88a1-29b35128e32c",
+      "title": "另一個童話",
+      "artist_id": "gem-tang",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "33d9c71a-1682-4f3f-88a1-29b35128e32c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/33d9c71a-1682-4f3f-88a1-29b35128e32c"
+      ]
+    },
+    {
+      "id": "mb-ced267c9-41e4-4d8a-b0e4-a914b7b5f665",
+      "title": "面壁者 (《三体》动画片尾主题曲)",
+      "artist_id": "gem-tang",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "ced267c9-41e4-4d8a-b0e4-a914b7b5f665",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ced267c9-41e4-4d8a-b0e4-a914b7b5f665"
+      ]
+    },
+    {
+      "id": "mb-fd1de8e9-fee4-47c7-9bcc-9aeb9d0a8bb2",
+      "title": "Fuerza Centrífuga",
+      "artist_id": "gem-tang",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "fd1de8e9-fee4-47c7-9bcc-9aeb9d0a8bb2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fd1de8e9-fee4-47c7-9bcc-9aeb9d0a8bb2"
+      ]
+    },
+    {
+      "id": "mb-4ea56b48-b5a4-47e5-9827-6f97c9ece937",
+      "title": "HELL",
+      "artist_id": "gem-tang",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "4ea56b48-b5a4-47e5-9827-6f97c9ece937",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4ea56b48-b5a4-47e5-9827-6f97c9ece937"
+      ]
+    },
+    {
+      "id": "mb-ba5c6604-634d-4b4d-bff0-75d6d6df132b",
+      "title": "寂寞星球的玫瑰 (Live)",
+      "artist_id": "gem-tang",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "ba5c6604-634d-4b4d-bff0-75d6d6df132b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ba5c6604-634d-4b4d-bff0-75d6d6df132b"
+      ]
+    },
+    {
+      "id": "mb-f2c5614c-51f5-40ad-b37e-cbc16dae1afa",
+      "title": "崇拜",
+      "artist_id": "joker-xue",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "f2c5614c-51f5-40ad-b37e-cbc16dae1afa",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f2c5614c-51f5-40ad-b37e-cbc16dae1afa"
+      ]
+    },
+    {
+      "id": "mb-9208979a-8970-459d-b59c-b424bda9a6d0",
+      "title": "我的Show (instrumental)",
+      "artist_id": "joker-xue",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "9208979a-8970-459d-b59c-b424bda9a6d0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9208979a-8970-459d-b59c-b424bda9a6d0"
+      ]
+    },
+    {
+      "id": "mb-91a33277-05f6-40b8-910f-96d2a23641d3",
+      "title": "快乐帮",
+      "artist_id": "joker-xue",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "91a33277-05f6-40b8-910f-96d2a23641d3",
+      "source_urls": [
+        "https://musicbrainz.org/recording/91a33277-05f6-40b8-910f-96d2a23641d3"
+      ]
+    },
+    {
+      "id": "mb-d5925799-4ab4-40ad-be5c-80defd2d7d7e",
+      "title": "黄色枫叶",
+      "artist_id": "joker-xue",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "d5925799-4ab4-40ad-be5c-80defd2d7d7e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d5925799-4ab4-40ad-be5c-80defd2d7d7e"
+      ]
+    },
+    {
+      "id": "mb-fea237fe-5a68-44fd-a69b-74c50a322dd2",
+      "title": "钗头凤",
+      "artist_id": "joker-xue",
+      "year": 2006,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "fea237fe-5a68-44fd-a69b-74c50a322dd2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fea237fe-5a68-44fd-a69b-74c50a322dd2"
+      ]
+    },
+    {
+      "id": "mb-7e0c804f-8931-4723-af0c-f72065034803",
+      "title": "彩券",
+      "artist_id": "joker-xue",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "7e0c804f-8931-4723-af0c-f72065034803",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7e0c804f-8931-4723-af0c-f72065034803"
+      ]
+    },
+    {
+      "id": "mb-9e8cb288-78d0-4bec-9c91-fc56ab137168",
+      "title": "不爱我",
+      "artist_id": "joker-xue",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "9e8cb288-78d0-4bec-9c91-fc56ab137168",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9e8cb288-78d0-4bec-9c91-fc56ab137168"
+      ]
+    },
+    {
+      "id": "mb-8fd6bc68-5bb0-43fc-8718-44c4c8be9e39",
+      "title": "違背的青春",
+      "artist_id": "joker-xue",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "8fd6bc68-5bb0-43fc-8718-44c4c8be9e39",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8fd6bc68-5bb0-43fc-8718-44c4c8be9e39"
+      ]
+    },
+    {
+      "id": "mb-ac38a4f4-ba6d-4b4a-a609-9dd5d38dd17e",
+      "title": "笑场",
+      "artist_id": "joker-xue",
+      "year": 2019,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "ac38a4f4-ba6d-4b4a-a609-9dd5d38dd17e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ac38a4f4-ba6d-4b4a-a609-9dd5d38dd17e"
+      ]
+    },
+    {
+      "id": "mb-23e8cd4c-de7e-48d0-9cf7-2d50e5a2638e",
+      "title": "配合",
+      "artist_id": "joker-xue",
+      "year": 2019,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "23e8cd4c-de7e-48d0-9cf7-2d50e5a2638e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/23e8cd4c-de7e-48d0-9cf7-2d50e5a2638e"
+      ]
+    },
+    {
+      "id": "mb-ea70eb5d-af7e-4861-9be3-11759687c827",
+      "title": "爱的期限",
+      "artist_id": "joker-xue",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "ea70eb5d-af7e-4861-9be3-11759687c827",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ea70eb5d-af7e-4861-9be3-11759687c827"
+      ]
+    },
+    {
+      "id": "mb-327d9d6f-07e8-45f9-9c9c-c87118a7451f",
+      "title": "爱情宣判",
+      "artist_id": "joker-xue",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "327d9d6f-07e8-45f9-9c9c-c87118a7451f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/327d9d6f-07e8-45f9-9c9c-c87118a7451f"
+      ]
+    },
+    {
+      "id": "mb-c74720b4-5f2d-4371-b5a5-ef488528201f",
+      "title": "楚河汉界",
+      "artist_id": "joker-xue",
+      "year": 2012,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "c74720b4-5f2d-4371-b5a5-ef488528201f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c74720b4-5f2d-4371-b5a5-ef488528201f"
+      ]
+    },
+    {
+      "id": "mb-f8de3790-6e37-40d9-95d1-7541c60576a0",
+      "title": "潘金莲",
+      "artist_id": "joker-xue",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "f8de3790-6e37-40d9-95d1-7541c60576a0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f8de3790-6e37-40d9-95d1-7541c60576a0"
+      ]
+    },
+    {
+      "id": "mb-1bd0b57a-3b8a-4b08-bc34-94bdd61c9fae",
+      "title": "纸船（电视剧《天醒之路》片尾曲）",
+      "artist_id": "joker-xue",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "1bd0b57a-3b8a-4b08-bc34-94bdd61c9fae",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1bd0b57a-3b8a-4b08-bc34-94bdd61c9fae"
+      ]
+    },
+    {
+      "id": "mb-8dee4e6d-d759-4033-93f2-e9b418f4f25b",
+      "title": "敷衍",
+      "artist_id": "joker-xue",
+      "year": 2012,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "8dee4e6d-d759-4033-93f2-e9b418f4f25b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8dee4e6d-d759-4033-93f2-e9b418f4f25b"
+      ]
+    },
+    {
+      "id": "mb-3f612024-f6f0-4e81-9500-191e732c3fe2",
+      "title": "我终于成了别人的女人",
+      "artist_id": "joker-xue",
+      "year": 2012,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "3f612024-f6f0-4e81-9500-191e732c3fe2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3f612024-f6f0-4e81-9500-191e732c3fe2"
+      ]
+    },
+    {
+      "id": "mb-aec27091-5f6b-4a64-b44a-99bb8ed6fd20",
+      "title": "守候 (2020重唱版)",
+      "artist_id": "joker-xue",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "aec27091-5f6b-4a64-b44a-99bb8ed6fd20",
+      "source_urls": [
+        "https://musicbrainz.org/recording/aec27091-5f6b-4a64-b44a-99bb8ed6fd20"
+      ]
+    },
+    {
+      "id": "mb-e632535e-ad56-4bec-a1ac-26465a414cef",
+      "title": "凤毛麟角",
+      "artist_id": "joker-xue",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "e632535e-ad56-4bec-a1ac-26465a414cef",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e632535e-ad56-4bec-a1ac-26465a414cef"
+      ]
+    },
+    {
+      "id": "mb-f6d193a9-5376-4ed6-aaca-a1f50d456abd",
+      "title": "動物世界",
+      "artist_id": "joker-xue",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "f6d193a9-5376-4ed6-aaca-a1f50d456abd",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f6d193a9-5376-4ed6-aaca-a1f50d456abd"
+      ]
+    },
+    {
+      "id": "mb-f1c10738-52e6-443b-afc2-b65c5f31eb68",
+      "title": "別",
+      "artist_id": "joker-xue",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "f1c10738-52e6-443b-afc2-b65c5f31eb68",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f1c10738-52e6-443b-afc2-b65c5f31eb68"
+      ]
+    },
+    {
+      "id": "mb-acedb6aa-7509-44bc-9186-c92fab486526",
+      "title": "高尚",
+      "artist_id": "joker-xue",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "acedb6aa-7509-44bc-9186-c92fab486526",
+      "source_urls": [
+        "https://musicbrainz.org/recording/acedb6aa-7509-44bc-9186-c92fab486526"
+      ]
+    },
+    {
+      "id": "mb-55dbc298-d293-4b60-a7c2-a1dd09fe95c8",
+      "title": "背過手",
+      "artist_id": "joker-xue",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "55dbc298-d293-4b60-a7c2-a1dd09fe95c8",
+      "source_urls": [
+        "https://musicbrainz.org/recording/55dbc298-d293-4b60-a7c2-a1dd09fe95c8"
+      ]
+    },
+    {
+      "id": "mb-287f6cb2-0446-4d0b-b3ef-2dddaa01a051",
+      "title": "演员",
+      "artist_id": "joker-xue",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "ballad"
+      ],
+      "moods": [
+        "reflective",
+        "bittersweet"
+      ],
+      "mbid": "287f6cb2-0446-4d0b-b3ef-2dddaa01a051",
+      "source_urls": [
+        "https://musicbrainz.org/recording/287f6cb2-0446-4d0b-b3ef-2dddaa01a051"
+      ]
+    },
+    {
+      "id": "mb-00b2d2d6-5e77-4b26-ad0e-3a1531e8a2c9",
+      "title": "都一样",
+      "artist_id": "li-ronghao",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "00b2d2d6-5e77-4b26-ad0e-3a1531e8a2c9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/00b2d2d6-5e77-4b26-ad0e-3a1531e8a2c9"
+      ]
+    },
+    {
+      "id": "mb-d0df0a2e-c849-4927-8af8-4c685f24374a",
+      "title": "不说 (电影《从你的全世界路过》路过版主题曲)",
+      "artist_id": "li-ronghao",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "d0df0a2e-c849-4927-8af8-4c685f24374a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d0df0a2e-c849-4927-8af8-4c685f24374a"
+      ]
+    },
+    {
+      "id": "mb-e1943097-1607-4ee5-b81a-57bb66f4952f",
+      "title": "我們好好的",
+      "artist_id": "li-ronghao",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "e1943097-1607-4ee5-b81a-57bb66f4952f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e1943097-1607-4ee5-b81a-57bb66f4952f"
+      ]
+    },
+    {
+      "id": "mb-80442b56-092e-4130-92ed-a979a3044f68",
+      "title": "乐团",
+      "artist_id": "li-ronghao",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "80442b56-092e-4130-92ed-a979a3044f68",
+      "source_urls": [
+        "https://musicbrainz.org/recording/80442b56-092e-4130-92ed-a979a3044f68"
+      ]
+    },
+    {
+      "id": "mb-9733ff4e-9f29-434a-9c24-201a90dfac5e",
+      "title": "花样年华",
+      "artist_id": "li-ronghao",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "9733ff4e-9f29-434a-9c24-201a90dfac5e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9733ff4e-9f29-434a-9c24-201a90dfac5e"
+      ]
+    },
+    {
+      "id": "mb-70e4601c-c4a2-4c10-9ebc-b4bb7326b83d",
+      "title": "贝贝",
+      "artist_id": "li-ronghao",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "70e4601c-c4a2-4c10-9ebc-b4bb7326b83d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/70e4601c-c4a2-4c10-9ebc-b4bb7326b83d"
+      ]
+    },
+    {
+      "id": "mb-15029a95-6355-480c-9b83-35bc9abb1ca5",
+      "title": "慢冷 (Live)",
+      "artist_id": "li-ronghao",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "15029a95-6355-480c-9b83-35bc9abb1ca5",
+      "source_urls": [
+        "https://musicbrainz.org/recording/15029a95-6355-480c-9b83-35bc9abb1ca5"
+      ]
+    },
+    {
+      "id": "mb-fd173f7c-1b09-44b4-a3d0-36e31de68132",
+      "title": "流行歌曲 (Popular Songs)",
+      "artist_id": "li-ronghao",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "fd173f7c-1b09-44b4-a3d0-36e31de68132",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fd173f7c-1b09-44b4-a3d0-36e31de68132"
+      ]
+    },
+    {
+      "id": "mb-9c742a22-9667-4a14-aa2d-fcb633098732",
+      "title": "念念又不忘",
+      "artist_id": "li-ronghao",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "9c742a22-9667-4a14-aa2d-fcb633098732",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9c742a22-9667-4a14-aa2d-fcb633098732"
+      ]
+    },
+    {
+      "id": "mb-41d8f518-e6b1-4810-947f-bf3ba708c735",
+      "title": "大太阳 (The Big Sun)",
+      "artist_id": "li-ronghao",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "41d8f518-e6b1-4810-947f-bf3ba708c735",
+      "source_urls": [
+        "https://musicbrainz.org/recording/41d8f518-e6b1-4810-947f-bf3ba708c735"
+      ]
+    },
+    {
+      "id": "mb-c9f94cee-32bc-4251-8fcd-021d26622917",
+      "title": "等着等着就老了",
+      "artist_id": "li-ronghao",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "c9f94cee-32bc-4251-8fcd-021d26622917",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c9f94cee-32bc-4251-8fcd-021d26622917"
+      ]
+    },
+    {
+      "id": "mb-39813cfe-1484-471a-b558-2bf71e92c3cb",
+      "title": "拜拜",
+      "artist_id": "li-ronghao",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "39813cfe-1484-471a-b558-2bf71e92c3cb",
+      "source_urls": [
+        "https://musicbrainz.org/recording/39813cfe-1484-471a-b558-2bf71e92c3cb"
+      ]
+    },
+    {
+      "id": "mb-edf50b13-a77f-4183-ab19-29812e97c176",
+      "title": "模特",
+      "artist_id": "li-ronghao",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "edf50b13-a77f-4183-ab19-29812e97c176",
+      "source_urls": [
+        "https://musicbrainz.org/recording/edf50b13-a77f-4183-ab19-29812e97c176"
+      ]
+    },
+    {
+      "id": "mb-415cb765-ac40-4816-a797-4eda6c5d2ecc",
+      "title": "蓝绿",
+      "artist_id": "li-ronghao",
+      "year": 2013,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "415cb765-ac40-4816-a797-4eda6c5d2ecc",
+      "source_urls": [
+        "https://musicbrainz.org/recording/415cb765-ac40-4816-a797-4eda6c5d2ecc"
+      ]
+    },
+    {
+      "id": "mb-88dee5de-326c-432a-969c-f4ecf0b309d2",
+      "title": "我爱你",
+      "artist_id": "li-ronghao",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "88dee5de-326c-432a-969c-f4ecf0b309d2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/88dee5de-326c-432a-969c-f4ecf0b309d2"
+      ]
+    },
+    {
+      "id": "mb-31ae2d3b-fd98-4092-8ed8-1cbaa4332d2e",
+      "title": "黑马",
+      "artist_id": "li-ronghao",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "31ae2d3b-fd98-4092-8ed8-1cbaa4332d2e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/31ae2d3b-fd98-4092-8ed8-1cbaa4332d2e"
+      ]
+    },
+    {
+      "id": "mb-099dbccb-b37b-4f8f-8351-4bafaf46bf81",
+      "title": "模特",
+      "artist_id": "li-ronghao",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "099dbccb-b37b-4f8f-8351-4bafaf46bf81",
+      "source_urls": [
+        "https://musicbrainz.org/recording/099dbccb-b37b-4f8f-8351-4bafaf46bf81"
+      ]
+    },
+    {
+      "id": "mb-25dca9ad-43ae-42bd-957e-bfb2c678fdd4",
+      "title": "鸿门宴",
+      "artist_id": "li-ronghao",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "25dca9ad-43ae-42bd-957e-bfb2c678fdd4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/25dca9ad-43ae-42bd-957e-bfb2c678fdd4"
+      ]
+    },
+    {
+      "id": "mb-c12f5d5d-c276-4742-913a-f6d531fadf66",
+      "title": "要我怎么办",
+      "artist_id": "li-ronghao",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "c12f5d5d-c276-4742-913a-f6d531fadf66",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c12f5d5d-c276-4742-913a-f6d531fadf66"
+      ]
+    },
+    {
+      "id": "mb-1a82313c-4900-48f7-8c02-435b808b57a7",
+      "title": "習慣晚睡",
+      "artist_id": "li-ronghao",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "1a82313c-4900-48f7-8c02-435b808b57a7",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1a82313c-4900-48f7-8c02-435b808b57a7"
+      ]
+    },
+    {
+      "id": "mb-1a0bf674-78da-4971-9ec4-72ca7528b981",
+      "title": "恋人",
+      "artist_id": "li-ronghao",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "r&b",
+        "rock"
+      ],
+      "moods": [
+        "late-night",
+        "warm",
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "1a0bf674-78da-4971-9ec4-72ca7528b981",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1a0bf674-78da-4971-9ec4-72ca7528b981"
+      ]
+    },
+    {
+      "id": "mb-dfc98928-2fb3-428a-9964-a864f8d37396",
+      "title": "最佳歌手",
+      "artist_id": "xu-song",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "dfc98928-2fb3-428a-9964-a864f8d37396",
+      "source_urls": [
+        "https://musicbrainz.org/recording/dfc98928-2fb3-428a-9964-a864f8d37396"
+      ]
+    },
+    {
+      "id": "mb-7aa56b40-fd7c-4683-ad25-36be78104c36",
+      "title": "平行宇宙",
+      "artist_id": "xu-song",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "7aa56b40-fd7c-4683-ad25-36be78104c36",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7aa56b40-fd7c-4683-ad25-36be78104c36"
+      ]
+    },
+    {
+      "id": "mb-59f73b73-093a-45b9-8a13-530c618e9fe4",
+      "title": "燕歸巢",
+      "artist_id": "xu-song",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "59f73b73-093a-45b9-8a13-530c618e9fe4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/59f73b73-093a-45b9-8a13-530c618e9fe4"
+      ]
+    },
+    {
+      "id": "mb-2516669c-3ab8-4270-99a3-befe6f51862a",
+      "title": "尘世美",
+      "artist_id": "xu-song",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "2516669c-3ab8-4270-99a3-befe6f51862a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2516669c-3ab8-4270-99a3-befe6f51862a"
+      ]
+    },
+    {
+      "id": "mb-4bf00cf0-9890-4bbb-8fc4-9f86b6ee2741",
+      "title": "安徒生不后悔",
+      "artist_id": "xu-song",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "4bf00cf0-9890-4bbb-8fc4-9f86b6ee2741",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4bf00cf0-9890-4bbb-8fc4-9f86b6ee2741"
+      ]
+    },
+    {
+      "id": "mb-4be43799-a663-4c35-b89d-11eabb2ca37a",
+      "title": "我的Baby",
+      "artist_id": "xu-song",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "4be43799-a663-4c35-b89d-11eabb2ca37a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4be43799-a663-4c35-b89d-11eabb2ca37a"
+      ]
+    },
+    {
+      "id": "mb-45f6701d-7d65-4962-8319-1bfcb75ae5fc",
+      "title": "半城烟沙",
+      "artist_id": "xu-song",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "45f6701d-7d65-4962-8319-1bfcb75ae5fc",
+      "source_urls": [
+        "https://musicbrainz.org/recording/45f6701d-7d65-4962-8319-1bfcb75ae5fc"
+      ]
+    },
+    {
+      "id": "mb-c0f5591f-5cd9-49e2-ab07-7595abe952d6",
+      "title": "庐州月",
+      "artist_id": "xu-song",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "c0f5591f-5cd9-49e2-ab07-7595abe952d6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c0f5591f-5cd9-49e2-ab07-7595abe952d6"
+      ]
+    },
+    {
+      "id": "mb-0a623d76-2c0a-4d67-9c53-e194208db059",
+      "title": "心疼你的过去",
+      "artist_id": "xu-song",
+      "year": 2012,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "0a623d76-2c0a-4d67-9c53-e194208db059",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0a623d76-2c0a-4d67-9c53-e194208db059"
+      ]
+    },
+    {
+      "id": "mb-649e408a-92dd-463b-a829-32832cc8cb91",
+      "title": "野人",
+      "artist_id": "xu-song",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "649e408a-92dd-463b-a829-32832cc8cb91",
+      "source_urls": [
+        "https://musicbrainz.org/recording/649e408a-92dd-463b-a829-32832cc8cb91"
+      ]
+    },
+    {
+      "id": "mb-e9228b9c-6aec-4851-bd17-00d529dd6d75",
+      "title": "庞贝",
+      "artist_id": "xu-song",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "e9228b9c-6aec-4851-bd17-00d529dd6d75",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e9228b9c-6aec-4851-bd17-00d529dd6d75"
+      ]
+    },
+    {
+      "id": "mb-8e33d2b0-6ca2-4c21-80e8-f8e0fb3d55c6",
+      "title": "柳成荫",
+      "artist_id": "xu-song",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "8e33d2b0-6ca2-4c21-80e8-f8e0fb3d55c6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8e33d2b0-6ca2-4c21-80e8-f8e0fb3d55c6"
+      ]
+    },
+    {
+      "id": "mb-ae69e1f0-0cbb-4ea1-8632-c2f73ccf6e9b",
+      "title": "降温",
+      "artist_id": "xu-song",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "ae69e1f0-0cbb-4ea1-8632-c2f73ccf6e9b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ae69e1f0-0cbb-4ea1-8632-c2f73ccf6e9b"
+      ]
+    },
+    {
+      "id": "mb-d901417a-0dee-467a-807b-70a167a09fd1",
+      "title": "摄影艺术",
+      "artist_id": "xu-song",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "d901417a-0dee-467a-807b-70a167a09fd1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d901417a-0dee-467a-807b-70a167a09fd1"
+      ]
+    },
+    {
+      "id": "mb-acc90d70-af38-44b5-bac0-f1a1e5fb9bea",
+      "title": "摆脱",
+      "artist_id": "xu-song",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "acc90d70-af38-44b5-bac0-f1a1e5fb9bea",
+      "source_urls": [
+        "https://musicbrainz.org/recording/acc90d70-af38-44b5-bac0-f1a1e5fb9bea"
+      ]
+    },
+    {
+      "id": "mb-726bbf2c-0afa-47a3-a63d-d25b7eae88a5",
+      "title": "深夜书店",
+      "artist_id": "xu-song",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "726bbf2c-0afa-47a3-a63d-d25b7eae88a5",
+      "source_urls": [
+        "https://musicbrainz.org/recording/726bbf2c-0afa-47a3-a63d-d25b7eae88a5"
+      ]
+    },
+    {
+      "id": "mb-28f85e8b-bcfc-4a59-9446-943f6ecf0d92",
+      "title": "假摔",
+      "artist_id": "xu-song",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "28f85e8b-bcfc-4a59-9446-943f6ecf0d92",
+      "source_urls": [
+        "https://musicbrainz.org/recording/28f85e8b-bcfc-4a59-9446-943f6ecf0d92"
+      ]
+    },
+    {
+      "id": "mb-916866cb-5527-49f6-851d-18bc8d8b11d0",
+      "title": "燕归巢",
+      "artist_id": "xu-song",
+      "year": 2016,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "916866cb-5527-49f6-851d-18bc8d8b11d0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/916866cb-5527-49f6-851d-18bc8d8b11d0"
+      ]
+    },
+    {
+      "id": "mb-0205898a-2521-4f2d-b6f7-be6701157698",
+      "title": "城府",
+      "artist_id": "xu-song",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "0205898a-2521-4f2d-b6f7-be6701157698",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0205898a-2521-4f2d-b6f7-be6701157698"
+      ]
+    },
+    {
+      "id": "mb-12029af2-f6fb-4423-b145-5ee157714ed4",
+      "title": "山水之间",
+      "artist_id": "xu-song",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "12029af2-f6fb-4423-b145-5ee157714ed4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/12029af2-f6fb-4423-b145-5ee157714ed4"
+      ]
+    },
+    {
+      "id": "mb-9c6a24a9-ed3c-468f-b32b-642abea15588",
+      "title": "单人旅途",
+      "artist_id": "xu-song",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "9c6a24a9-ed3c-468f-b32b-642abea15588",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9c6a24a9-ed3c-468f-b32b-642abea15588"
+      ]
+    },
+    {
+      "id": "mb-f06c7fe7-12bf-4cba-8568-a6eb54a68a48",
+      "title": "在那不遥远的地方",
+      "artist_id": "xu-song",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "f06c7fe7-12bf-4cba-8568-a6eb54a68a48",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f06c7fe7-12bf-4cba-8568-a6eb54a68a48"
+      ]
+    },
+    {
+      "id": "mb-804cdbfe-64de-430f-8a1c-5bebb959706d",
+      "title": "有何不可",
+      "artist_id": "xu-song",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "804cdbfe-64de-430f-8a1c-5bebb959706d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/804cdbfe-64de-430f-8a1c-5bebb959706d"
+      ]
+    },
+    {
+      "id": "mb-8eec6035-12e1-47fe-8468-e51004955e07",
+      "title": "粉色信笺",
+      "artist_id": "xu-song",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "chinese-style"
+      ],
+      "moods": [
+        "nostalgic",
+        "elegant"
+      ],
+      "mbid": "8eec6035-12e1-47fe-8468-e51004955e07",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8eec6035-12e1-47fe-8468-e51004955e07"
+      ]
+    },
+    {
+      "id": "mb-de05c96a-407c-4e45-81ba-6920e0ac9942",
+      "title": "Black Or White",
+      "artist_id": "zhang-jie",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "de05c96a-407c-4e45-81ba-6920e0ac9942",
+      "source_urls": [
+        "https://musicbrainz.org/recording/de05c96a-407c-4e45-81ba-6920e0ac9942"
+      ]
+    },
+    {
+      "id": "mb-59059a58-6773-47ac-957f-c7fb504d6ad2",
+      "title": "拜托爱上我",
+      "artist_id": "zhang-jie",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "59059a58-6773-47ac-957f-c7fb504d6ad2",
+      "source_urls": [
+        "https://musicbrainz.org/recording/59059a58-6773-47ac-957f-c7fb504d6ad2"
+      ]
+    },
+    {
+      "id": "mb-98c51850-f33e-497b-9021-e88834832c94",
+      "title": "你你你",
+      "artist_id": "zhang-jie",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "98c51850-f33e-497b-9021-e88834832c94",
+      "source_urls": [
+        "https://musicbrainz.org/recording/98c51850-f33e-497b-9021-e88834832c94"
+      ]
+    },
+    {
+      "id": "mb-f468b696-5de5-4577-8ec7-475cba8b1028",
+      "title": "开不起玩笑",
+      "artist_id": "zhang-jie",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "f468b696-5de5-4577-8ec7-475cba8b1028",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f468b696-5de5-4577-8ec7-475cba8b1028"
+      ]
+    },
+    {
+      "id": "mb-10128f0d-0d86-41e5-a7e9-e72e332f0c8b",
+      "title": "那 就是我们吗",
+      "artist_id": "zhang-jie",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "10128f0d-0d86-41e5-a7e9-e72e332f0c8b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/10128f0d-0d86-41e5-a7e9-e72e332f0c8b"
+      ]
+    },
+    {
+      "id": "mb-acb7e0e8-e6f1-40f5-b45d-0ae68160baa5",
+      "title": "千万次想象",
+      "artist_id": "zhang-jie",
+      "year": 2026,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "acb7e0e8-e6f1-40f5-b45d-0ae68160baa5",
+      "source_urls": [
+        "https://musicbrainz.org/recording/acb7e0e8-e6f1-40f5-b45d-0ae68160baa5"
+      ]
+    },
+    {
+      "id": "mb-6cc963a2-f5b1-451e-baa2-e01df5de78f0",
+      "title": "Shallow (live)",
+      "artist_id": "zhang-jie",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "6cc963a2-f5b1-451e-baa2-e01df5de78f0",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6cc963a2-f5b1-451e-baa2-e01df5de78f0"
+      ]
+    },
+    {
+      "id": "mb-cb4c9d91-a880-4a52-a8a7-95b96f2eb45d",
+      "title": "Shallow (live 典藏)",
+      "artist_id": "zhang-jie",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "cb4c9d91-a880-4a52-a8a7-95b96f2eb45d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/cb4c9d91-a880-4a52-a8a7-95b96f2eb45d"
+      ]
+    },
+    {
+      "id": "mb-c74655d3-5669-408d-a918-650ff759cb16",
+      "title": "孤勇者 (Live)",
+      "artist_id": "zhang-jie",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c74655d3-5669-408d-a918-650ff759cb16",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c74655d3-5669-408d-a918-650ff759cb16"
+      ]
+    },
+    {
+      "id": "mb-c99f319c-f3e7-4455-baa4-abfefd5b939f",
+      "title": "消失",
+      "artist_id": "zhang-jie",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c99f319c-f3e7-4455-baa4-abfefd5b939f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c99f319c-f3e7-4455-baa4-abfefd5b939f"
+      ]
+    },
+    {
+      "id": "mb-ca26e080-55d4-402a-af63-2c191649d996",
+      "title": "半透明的墙",
+      "artist_id": "zhang-jie",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "ca26e080-55d4-402a-af63-2c191649d996",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ca26e080-55d4-402a-af63-2c191649d996"
+      ]
+    },
+    {
+      "id": "mb-d98b8b8c-057d-422a-8d20-ca8f33425bef",
+      "title": "三生三世（伴奏）",
+      "artist_id": "zhang-jie",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "d98b8b8c-057d-422a-8d20-ca8f33425bef",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d98b8b8c-057d-422a-8d20-ca8f33425bef"
+      ]
+    },
+    {
+      "id": "mb-41366631-a02a-4cd3-929b-65b497b3c08b",
+      "title": "一切都值得",
+      "artist_id": "zhang-jie",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "41366631-a02a-4cd3-929b-65b497b3c08b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/41366631-a02a-4cd3-929b-65b497b3c08b"
+      ]
+    },
+    {
+      "id": "mb-929f9793-9f00-4a9b-a9f0-8f5a53605f3f",
+      "title": "最悲歌",
+      "artist_id": "zhang-jie",
+      "year": 2010,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "929f9793-9f00-4a9b-a9f0-8f5a53605f3f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/929f9793-9f00-4a9b-a9f0-8f5a53605f3f"
+      ]
+    },
+    {
+      "id": "mb-92b79630-23dd-4b2d-bb24-1e686dcd66a4",
+      "title": "Marry Me",
+      "artist_id": "zhang-jie",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "92b79630-23dd-4b2d-bb24-1e686dcd66a4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/92b79630-23dd-4b2d-bb24-1e686dcd66a4"
+      ]
+    },
+    {
+      "id": "mb-f1f4aa68-b75e-427d-8bb1-0782b698269d",
+      "title": "突然想爱你",
+      "artist_id": "zhang-jie",
+      "year": 2012,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "f1f4aa68-b75e-427d-8bb1-0782b698269d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f1f4aa68-b75e-427d-8bb1-0782b698269d"
+      ]
+    },
+    {
+      "id": "mb-e0318ec5-f5a7-4e65-9379-71ccb05ca482",
+      "title": "火鸟",
+      "artist_id": "zhang-jie",
+      "year": 2011,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "e0318ec5-f5a7-4e65-9379-71ccb05ca482",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e0318ec5-f5a7-4e65-9379-71ccb05ca482"
+      ]
+    },
+    {
+      "id": "mb-71f073e2-da7e-461d-a9fc-45a8f7368414",
+      "title": "我在这",
+      "artist_id": "zhang-jie",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "71f073e2-da7e-461d-a9fc-45a8f7368414",
+      "source_urls": [
+        "https://musicbrainz.org/recording/71f073e2-da7e-461d-a9fc-45a8f7368414"
+      ]
+    },
+    {
+      "id": "mb-c122709a-3cdd-47c3-b712-641376f0d814",
+      "title": "因为爱情来得不容易",
+      "artist_id": "zhang-jie",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c122709a-3cdd-47c3-b712-641376f0d814",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c122709a-3cdd-47c3-b712-641376f0d814"
+      ]
+    },
+    {
+      "id": "mb-cbe77025-228c-4822-be6e-c0e3ddbf6ead",
+      "title": "无情的情书",
+      "artist_id": "zhang-jie",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "cbe77025-228c-4822-be6e-c0e3ddbf6ead",
+      "source_urls": [
+        "https://musicbrainz.org/recording/cbe77025-228c-4822-be6e-c0e3ddbf6ead"
+      ]
+    },
+    {
+      "id": "mb-ff07e71a-3113-4c43-941f-b82a359406ba",
+      "title": "Millionaire",
+      "artist_id": "zhang-jie",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "ff07e71a-3113-4c43-941f-b82a359406ba",
+      "source_urls": [
+        "https://musicbrainz.org/recording/ff07e71a-3113-4c43-941f-b82a359406ba"
+      ]
+    },
+    {
+      "id": "mb-4d486558-5e65-46b2-98a3-8ec89b7ed4c9",
+      "title": "他不懂",
+      "artist_id": "zhang-jie",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "4d486558-5e65-46b2-98a3-8ec89b7ed4c9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4d486558-5e65-46b2-98a3-8ec89b7ed4c9"
+      ]
+    },
+    {
+      "id": "mb-b39afd69-b0e1-47c6-9c57-0144decccc91",
+      "title": "伤痕",
+      "artist_id": "zhang-jie",
+      "year": 2012,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "b39afd69-b0e1-47c6-9c57-0144decccc91",
+      "source_urls": [
+        "https://musicbrainz.org/recording/b39afd69-b0e1-47c6-9c57-0144decccc91"
+      ]
+    },
+    {
+      "id": "mb-4cfe38d8-0506-408b-8ea4-c1f181241607",
+      "title": "徒手",
+      "artist_id": "zhang-jie",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "4cfe38d8-0506-408b-8ea4-c1f181241607",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4cfe38d8-0506-408b-8ea4-c1f181241607"
+      ]
+    },
+    {
+      "id": "mb-deb3b27d-bf9f-4970-979c-3988a320d289",
+      "title": "只因喜歡Faye (林海峰合唱)",
+      "artist_id": "faye-wong",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "deb3b27d-bf9f-4970-979c-3988a320d289",
+      "source_urls": [
+        "https://musicbrainz.org/recording/deb3b27d-bf9f-4970-979c-3988a320d289"
+      ]
+    },
+    {
+      "id": "mb-9ef498a9-00c2-4943-a5bf-c64c866a7bd5",
+      "title": "長大",
+      "artist_id": "faye-wong",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "9ef498a9-00c2-4943-a5bf-c64c866a7bd5",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9ef498a9-00c2-4943-a5bf-c64c866a7bd5"
+      ]
+    },
+    {
+      "id": "mb-7812ea0f-8f43-4f11-9744-155fc04e37c1",
+      "title": "百事可樂廣告“愿望篇”",
+      "artist_id": "faye-wong",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "7812ea0f-8f43-4f11-9744-155fc04e37c1",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7812ea0f-8f43-4f11-9744-155fc04e37c1"
+      ]
+    },
+    {
+      "id": "mb-6f0fd9ff-91c7-4e4d-9e3a-d55703ad8f55",
+      "title": "棋子",
+      "artist_id": "faye-wong",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "6f0fd9ff-91c7-4e4d-9e3a-d55703ad8f55",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6f0fd9ff-91c7-4e4d-9e3a-d55703ad8f55"
+      ]
+    },
+    {
+      "id": "mb-55e3a966-36cb-4ab9-863e-c3d5afc3f260",
+      "title": "回憶是紅色的天空",
+      "artist_id": "faye-wong",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "55e3a966-36cb-4ab9-863e-c3d5afc3f260",
+      "source_urls": [
+        "https://musicbrainz.org/recording/55e3a966-36cb-4ab9-863e-c3d5afc3f260"
+      ]
+    },
+    {
+      "id": "mb-da3d90ef-0adc-43ea-b4b6-c0c62a84e750",
+      "title": "有緣的話",
+      "artist_id": "faye-wong",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "da3d90ef-0adc-43ea-b4b6-c0c62a84e750",
+      "source_urls": [
+        "https://musicbrainz.org/recording/da3d90ef-0adc-43ea-b4b6-c0c62a84e750"
+      ]
+    },
+    {
+      "id": "mb-fca29d38-0c85-4c7f-8ba3-d3e700d4ef90",
+      "title": "暖昧",
+      "artist_id": "faye-wong",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "fca29d38-0c85-4c7f-8ba3-d3e700d4ef90",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fca29d38-0c85-4c7f-8ba3-d3e700d4ef90"
+      ]
+    },
+    {
+      "id": "mb-43cc8fb7-dca2-4a75-b3b7-86327f969384",
+      "title": "執迷不悔",
+      "artist_id": "faye-wong",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "43cc8fb7-dca2-4a75-b3b7-86327f969384",
+      "source_urls": [
+        "https://musicbrainz.org/recording/43cc8fb7-dca2-4a75-b3b7-86327f969384"
+      ]
+    },
+    {
+      "id": "mb-0306a27c-e662-4974-8738-133af9c55b0c",
+      "title": "如风",
+      "artist_id": "faye-wong",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "0306a27c-e662-4974-8738-133af9c55b0c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/0306a27c-e662-4974-8738-133af9c55b0c"
+      ]
+    },
+    {
+      "id": "mb-4820a6f5-ef49-44ac-a751-dd490128a099",
+      "title": "堕落",
+      "artist_id": "faye-wong",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "4820a6f5-ef49-44ac-a751-dd490128a099",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4820a6f5-ef49-44ac-a751-dd490128a099"
+      ]
+    },
+    {
+      "id": "mb-068263c1-ad9b-4814-a224-d01ffed4626e",
+      "title": "一人分飾兩角",
+      "artist_id": "faye-wong",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "068263c1-ad9b-4814-a224-d01ffed4626e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/068263c1-ad9b-4814-a224-d01ffed4626e"
+      ]
+    },
+    {
+      "id": "mb-de5998e3-4a13-445a-8a09-026c9b9a5b8f",
+      "title": "容易受傷的女人",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "de5998e3-4a13-445a-8a09-026c9b9a5b8f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/de5998e3-4a13-445a-8a09-026c9b9a5b8f"
+      ]
+    },
+    {
+      "id": "mb-922aff69-4c44-4f87-8a53-45c02dd26db5",
+      "title": "執迷不悔",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "922aff69-4c44-4f87-8a53-45c02dd26db5",
+      "source_urls": [
+        "https://musicbrainz.org/recording/922aff69-4c44-4f87-8a53-45c02dd26db5"
+      ]
+    },
+    {
+      "id": "mb-57319261-8bbe-435e-ba4d-31475783545a",
+      "title": "多得他",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "57319261-8bbe-435e-ba4d-31475783545a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/57319261-8bbe-435e-ba4d-31475783545a"
+      ]
+    },
+    {
+      "id": "mb-49936cee-b228-4b32-a68c-9e2627b8d50a",
+      "title": "我願意",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "49936cee-b228-4b32-a68c-9e2627b8d50a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/49936cee-b228-4b32-a68c-9e2627b8d50a"
+      ]
+    },
+    {
+      "id": "mb-8eaf8373-005c-4611-be7f-14ff79701043",
+      "title": "Eyes on Me (Featured in Final Fantasy VIII) (Almighty mix)",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "8eaf8373-005c-4611-be7f-14ff79701043",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8eaf8373-005c-4611-be7f-14ff79701043"
+      ]
+    },
+    {
+      "id": "mb-56e6adcb-bba0-47c1-9d70-3baebe32134c",
+      "title": "如風",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "56e6adcb-bba0-47c1-9d70-3baebe32134c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/56e6adcb-bba0-47c1-9d70-3baebe32134c"
+      ]
+    },
+    {
+      "id": "mb-6e1d7c1b-e695-4f8f-9d34-357427c77241",
+      "title": "迷路",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "6e1d7c1b-e695-4f8f-9d34-357427c77241",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6e1d7c1b-e695-4f8f-9d34-357427c77241"
+      ]
+    },
+    {
+      "id": "mb-e010e18c-a91a-4d5c-8cad-1d92a51db14e",
+      "title": "执迷不悔",
+      "artist_id": "faye-wong",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "e010e18c-a91a-4d5c-8cad-1d92a51db14e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e010e18c-a91a-4d5c-8cad-1d92a51db14e"
+      ]
+    },
+    {
+      "id": "mb-9f34353e-d460-4364-925a-5992b8e57b89",
+      "title": "Prelude of 誘惑我 / 誘惑我",
+      "artist_id": "faye-wong",
+      "year": 1995,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "9f34353e-d460-4364-925a-5992b8e57b89",
+      "source_urls": [
+        "https://musicbrainz.org/recording/9f34353e-d460-4364-925a-5992b8e57b89"
+      ]
+    },
+    {
+      "id": "mb-c5bf2395-bca8-49f3-bf20-d369478017e8",
+      "title": "棋子",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c5bf2395-bca8-49f3-bf20-d369478017e8",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c5bf2395-bca8-49f3-bf20-d369478017e8"
+      ]
+    },
+    {
+      "id": "mb-e854d234-c806-4a5e-9829-2cafe78ec708",
+      "title": "容易受傷的女人",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "e854d234-c806-4a5e-9829-2cafe78ec708",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e854d234-c806-4a5e-9829-2cafe78ec708"
+      ]
+    },
+    {
+      "id": "mb-234ac528-3048-4c2c-a749-4d7a9806e51e",
+      "title": "誓言",
+      "artist_id": "faye-wong",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "234ac528-3048-4c2c-a749-4d7a9806e51e",
+      "source_urls": [
+        "https://musicbrainz.org/recording/234ac528-3048-4c2c-a749-4d7a9806e51e"
+      ]
+    },
+    {
+      "id": "mb-71c50960-7fbe-410f-a62c-b90dc792c22b",
+      "title": "尾班車",
+      "artist_id": "faye-wong",
+      "year": 2004,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "cantopop",
+        "alternative"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "71c50960-7fbe-410f-a62c-b90dc792c22b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/71c50960-7fbe-410f-a62c-b90dc792c22b"
+      ]
+    },
+    {
+      "id": "mb-49a37dc8-9eed-4741-98a2-6908d9e72fc5",
+      "title": "如果你愛我",
+      "artist_id": "tanya-chua",
+      "year": 2007,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "49a37dc8-9eed-4741-98a2-6908d9e72fc5",
+      "source_urls": [
+        "https://musicbrainz.org/recording/49a37dc8-9eed-4741-98a2-6908d9e72fc5"
+      ]
+    },
+    {
+      "id": "mb-8be57ba9-2325-45cd-beb9-41703768980f",
+      "title": "I Do Believe (believer mix, 星光燦爛版)",
+      "artist_id": "tanya-chua",
+      "year": 2001,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "8be57ba9-2325-45cd-beb9-41703768980f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8be57ba9-2325-45cd-beb9-41703768980f"
+      ]
+    },
+    {
+      "id": "mb-6e3dfc20-bc9b-4e01-b17e-8342ce86adcd",
+      "title": "無所謂",
+      "artist_id": "tanya-chua",
+      "year": 1998,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "6e3dfc20-bc9b-4e01-b17e-8342ce86adcd",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6e3dfc20-bc9b-4e01-b17e-8342ce86adcd"
+      ]
+    },
+    {
+      "id": "mb-32582114-570b-458f-bd96-54ca61f952ba",
+      "title": "下一站",
+      "artist_id": "tanya-chua",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "32582114-570b-458f-bd96-54ca61f952ba",
+      "source_urls": [
+        "https://musicbrainz.org/recording/32582114-570b-458f-bd96-54ca61f952ba"
+      ]
+    },
+    {
+      "id": "mb-348b5560-a19a-46e3-a513-833dead41172",
+      "title": "記念",
+      "artist_id": "tanya-chua",
+      "year": 2000,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "348b5560-a19a-46e3-a513-833dead41172",
+      "source_urls": [
+        "https://musicbrainz.org/recording/348b5560-a19a-46e3-a513-833dead41172"
+      ]
+    },
+    {
+      "id": "mb-e6f1afa5-c1ce-4a00-909a-92feab3136e9",
+      "title": "Tell Me",
+      "artist_id": "tanya-chua",
+      "year": 2003,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "e6f1afa5-c1ce-4a00-909a-92feab3136e9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/e6f1afa5-c1ce-4a00-909a-92feab3136e9"
+      ]
+    },
+    {
+      "id": "mb-560f9aa7-bd5b-402b-8443-ce6644c229e4",
+      "title": "I Don't Know Where I Stand",
+      "artist_id": "tanya-chua",
+      "year": 1999,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "560f9aa7-bd5b-402b-8443-ce6644c229e4",
+      "source_urls": [
+        "https://musicbrainz.org/recording/560f9aa7-bd5b-402b-8443-ce6644c229e4"
+      ]
+    },
+    {
+      "id": "mb-a67910ce-d0fb-4e85-a409-7a14760d91a8",
+      "title": "異類的同類",
+      "artist_id": "tanya-chua",
+      "year": 2015,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "a67910ce-d0fb-4e85-a409-7a14760d91a8",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a67910ce-d0fb-4e85-a409-7a14760d91a8"
+      ]
+    },
+    {
+      "id": "mb-550b2bdd-d4b8-4c64-b320-618664c3f140",
+      "title": "芬蘭的擁抱",
+      "artist_id": "tanya-chua",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "550b2bdd-d4b8-4c64-b320-618664c3f140",
+      "source_urls": [
+        "https://musicbrainz.org/recording/550b2bdd-d4b8-4c64-b320-618664c3f140"
+      ]
+    },
+    {
+      "id": "mb-8f2f17d6-ecd5-44c4-bd80-8f5bd51a6112",
+      "title": "自由落體",
+      "artist_id": "tanya-chua",
+      "year": 2009,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "folk",
+        "r&b"
+      ],
+      "moods": [
+        "late-night",
+        "warm"
+      ],
+      "mbid": "8f2f17d6-ecd5-44c4-bd80-8f5bd51a6112",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8f2f17d6-ecd5-44c4-bd80-8f5bd51a6112"
+      ]
+    },
+    {
+      "id": "mb-a70e23a4-78d5-4b75-80ff-4373436b709f",
+      "title": "好想爱这个世界啊 (live)",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "a70e23a4-78d5-4b75-80ff-4373436b709f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/a70e23a4-78d5-4b75-80ff-4373436b709f"
+      ]
+    },
+    {
+      "id": "mb-4c639e6d-7519-494f-9df0-524ff460b6f3",
+      "title": "哥谭 (live)",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "4c639e6d-7519-494f-9df0-524ff460b6f3",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4c639e6d-7519-494f-9df0-524ff460b6f3"
+      ]
+    },
+    {
+      "id": "mb-dd94618d-83e8-4836-9900-821bde263f28",
+      "title": "鬥牛",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "dd94618d-83e8-4836-9900-821bde263f28",
+      "source_urls": [
+        "https://musicbrainz.org/recording/dd94618d-83e8-4836-9900-821bde263f28"
+      ]
+    },
+    {
+      "id": "mb-f429715f-e532-4a15-a754-95a906e3b076",
+      "title": "瘋人院",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "f429715f-e532-4a15-a754-95a906e3b076",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f429715f-e532-4a15-a754-95a906e3b076"
+      ]
+    },
+    {
+      "id": "mb-fb254a35-5eec-442f-af51-688ce474d9ed",
+      "title": "神樹",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "fb254a35-5eec-442f-af51-688ce474d9ed",
+      "source_urls": [
+        "https://musicbrainz.org/recording/fb254a35-5eec-442f-af51-688ce474d9ed"
+      ]
+    },
+    {
+      "id": "mb-39c111e8-a3b4-406f-999a-0af89b65ba56",
+      "title": "I’m Boring (無聊人)",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "39c111e8-a3b4-406f-999a-0af89b65ba56",
+      "source_urls": [
+        "https://musicbrainz.org/recording/39c111e8-a3b4-406f-999a-0af89b65ba56"
+      ]
+    },
+    {
+      "id": "mb-11932c0c-88a7-44dd-80f7-03aebd1a4e1d",
+      "title": "Walk As Long As You Can (尋)",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "11932c0c-88a7-44dd-80f7-03aebd1a4e1d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/11932c0c-88a7-44dd-80f7-03aebd1a4e1d"
+      ]
+    },
+    {
+      "id": "mb-c67d5048-7f13-4ef8-9c6c-90a94c02d354",
+      "title": "向阳而生",
+      "artist_id": "hua-chenyu",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "c67d5048-7f13-4ef8-9c6c-90a94c02d354",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c67d5048-7f13-4ef8-9c6c-90a94c02d354"
+      ]
+    },
+    {
+      "id": "mb-6b56ba7e-daf7-48c6-af27-94329bfedb81",
+      "title": "肆无惧燥",
+      "artist_id": "hua-chenyu",
+      "year": 2022,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "6b56ba7e-daf7-48c6-af27-94329bfedb81",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6b56ba7e-daf7-48c6-af27-94329bfedb81"
+      ]
+    },
+    {
+      "id": "mb-d42ac68b-2692-4ae4-b084-179a8c393444",
+      "title": "微光",
+      "artist_id": "hua-chenyu",
+      "year": 2018,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "d42ac68b-2692-4ae4-b084-179a8c393444",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d42ac68b-2692-4ae4-b084-179a8c393444"
+      ]
+    },
+    {
+      "id": "mb-228f09ac-88f2-4c58-bf61-79873a796980",
+      "title": "卡西莫多的礼物",
+      "artist_id": "hua-chenyu",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "228f09ac-88f2-4c58-bf61-79873a796980",
+      "source_urls": [
+        "https://musicbrainz.org/recording/228f09ac-88f2-4c58-bf61-79873a796980"
+      ]
+    },
+    {
+      "id": "mb-bdb985c4-a630-4b99-be5f-da3eba219275",
+      "title": "我们都是孤独的",
+      "artist_id": "hua-chenyu",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "bdb985c4-a630-4b99-be5f-da3eba219275",
+      "source_urls": [
+        "https://musicbrainz.org/recording/bdb985c4-a630-4b99-be5f-da3eba219275"
+      ]
+    },
+    {
+      "id": "mb-cbd9f8bd-a7a0-4164-b3b9-74ba1f9bb740",
+      "title": "烟火里的尘埃",
+      "artist_id": "hua-chenyu",
+      "year": 2014,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "cbd9f8bd-a7a0-4164-b3b9-74ba1f9bb740",
+      "source_urls": [
+        "https://musicbrainz.org/recording/cbd9f8bd-a7a0-4164-b3b9-74ba1f9bb740"
+      ]
+    },
+    {
+      "id": "mb-8eb2f005-9b61-42e1-ad8b-081d85b07daa",
+      "title": "造物者",
+      "artist_id": "hua-chenyu",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "8eb2f005-9b61-42e1-ad8b-081d85b07daa",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8eb2f005-9b61-42e1-ad8b-081d85b07daa"
+      ]
+    },
+    {
+      "id": "mb-06f39fd0-0f20-4bf1-b476-ff841531cba9",
+      "title": "To Be Free",
+      "artist_id": "hua-chenyu",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "06f39fd0-0f20-4bf1-b476-ff841531cba9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/06f39fd0-0f20-4bf1-b476-ff841531cba9"
+      ]
+    },
+    {
+      "id": "mb-bbaecf5f-9d3a-456a-ba64-149ef5fceafc",
+      "title": "疯人院",
+      "artist_id": "hua-chenyu",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "bbaecf5f-9d3a-456a-ba64-149ef5fceafc",
+      "source_urls": [
+        "https://musicbrainz.org/recording/bbaecf5f-9d3a-456a-ba64-149ef5fceafc"
+      ]
+    },
+    {
+      "id": "mb-4e7acefe-fc2a-4d8d-8d47-99414eb6d09c",
+      "title": "For Forever",
+      "artist_id": "hua-chenyu",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "4e7acefe-fc2a-4d8d-8d47-99414eb6d09c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/4e7acefe-fc2a-4d8d-8d47-99414eb6d09c"
+      ]
+    },
+    {
+      "id": "mb-2c41f303-4aac-41f2-b061-fb8d7b47b1bf",
+      "title": "无聊人",
+      "artist_id": "hua-chenyu",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "2c41f303-4aac-41f2-b061-fb8d7b47b1bf",
+      "source_urls": [
+        "https://musicbrainz.org/recording/2c41f303-4aac-41f2-b061-fb8d7b47b1bf"
+      ]
+    },
+    {
+      "id": "mb-89314216-e835-4da0-a40c-95028c5db54b",
+      "title": "挂彩",
+      "artist_id": "hua-chenyu",
+      "year": 2017,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "rock"
+      ],
+      "moods": [
+        "uplifting",
+        "resilient"
+      ],
+      "mbid": "89314216-e835-4da0-a40c-95028c5db54b",
+      "source_urls": [
+        "https://musicbrainz.org/recording/89314216-e835-4da0-a40c-95028c5db54b"
+      ]
+    },
+    {
+      "id": "mb-5b8b78f3-f3d4-403f-9963-470cd3773b1f",
+      "title": "往世界反方向走",
+      "artist_id": "liu-yuning",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "5b8b78f3-f3d4-403f-9963-470cd3773b1f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/5b8b78f3-f3d4-403f-9963-470cd3773b1f"
+      ]
+    },
+    {
+      "id": "mb-1cca6bc3-69e8-477b-bcb8-0af79c195e94",
+      "title": "世世《与凤行》",
+      "artist_id": "liu-yuning",
+      "year": 2026,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "1cca6bc3-69e8-477b-bcb8-0af79c195e94",
+      "source_urls": [
+        "https://musicbrainz.org/recording/1cca6bc3-69e8-477b-bcb8-0af79c195e94"
+      ]
+    },
+    {
+      "id": "mb-f6bbc983-89c2-43cf-ab3d-d331c0d44ddf",
+      "title": "逍遥仙 (《长安的荔枝》电视剧插曲)",
+      "artist_id": "liu-yuning",
+      "year": 2025,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "f6bbc983-89c2-43cf-ab3d-d331c0d44ddf",
+      "source_urls": [
+        "https://musicbrainz.org/recording/f6bbc983-89c2-43cf-ab3d-d331c0d44ddf"
+      ]
+    },
+    {
+      "id": "mb-d35906b2-d724-46dc-8b48-f476dfae2852",
+      "title": "像我这样的人 (Live伴奏)",
+      "artist_id": "liu-yuning",
+      "year": 2019,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "d35906b2-d724-46dc-8b48-f476dfae2852",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d35906b2-d724-46dc-8b48-f476dfae2852"
+      ]
+    },
+    {
+      "id": "mb-182c4558-e867-4850-8530-735e744efd6c",
+      "title": "野蔷薇",
+      "artist_id": "liu-yuning",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "182c4558-e867-4850-8530-735e744efd6c",
+      "source_urls": [
+        "https://musicbrainz.org/recording/182c4558-e867-4850-8530-735e744efd6c"
+      ]
+    },
+    {
+      "id": "mb-79f38130-19d0-4474-ba1a-cf493fceb75f",
+      "title": "矜持",
+      "artist_id": "liu-yuning",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "79f38130-19d0-4474-ba1a-cf493fceb75f",
+      "source_urls": [
+        "https://musicbrainz.org/recording/79f38130-19d0-4474-ba1a-cf493fceb75f"
+      ]
+    },
+    {
+      "id": "mb-d623b3a5-76ab-46f2-b572-17827705fb5a",
+      "title": "街角的祝福",
+      "artist_id": "liu-yuning",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "d623b3a5-76ab-46f2-b572-17827705fb5a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/d623b3a5-76ab-46f2-b572-17827705fb5a"
+      ]
+    },
+    {
+      "id": "mb-88011059-a4e3-4db0-ab3a-9762f6755dec",
+      "title": "缘圈",
+      "artist_id": "liu-yuning",
+      "year": 2025,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "88011059-a4e3-4db0-ab3a-9762f6755dec",
+      "source_urls": [
+        "https://musicbrainz.org/recording/88011059-a4e3-4db0-ab3a-9762f6755dec"
+      ]
+    },
+    {
+      "id": "mb-5536851d-587a-4bc9-abf0-9e22fe099164",
+      "title": "缘圈 (伴奏版)",
+      "artist_id": "liu-yuning",
+      "year": 2025,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "5536851d-587a-4bc9-abf0-9e22fe099164",
+      "source_urls": [
+        "https://musicbrainz.org/recording/5536851d-587a-4bc9-abf0-9e22fe099164"
+      ]
+    },
+    {
+      "id": "mb-637b99eb-3acc-4281-8363-1feba10827d8",
+      "title": "烟火星辰",
+      "artist_id": "liu-yuning",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "637b99eb-3acc-4281-8363-1feba10827d8",
+      "source_urls": [
+        "https://musicbrainz.org/recording/637b99eb-3acc-4281-8363-1feba10827d8"
+      ]
+    },
+    {
+      "id": "mb-7eec9cd1-589a-43db-be75-24eb7618281a",
+      "title": "故乡的云",
+      "artist_id": "liu-yuning",
+      "year": 2021,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "7eec9cd1-589a-43db-be75-24eb7618281a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/7eec9cd1-589a-43db-be75-24eb7618281a"
+      ]
+    },
+    {
+      "id": "mb-6331e7c7-3f0a-46ad-97fe-7393226cc4e6",
+      "title": "That Girl (CORSAK remix)",
+      "artist_id": "liu-yuning",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "6331e7c7-3f0a-46ad-97fe-7393226cc4e6",
+      "source_urls": [
+        "https://musicbrainz.org/recording/6331e7c7-3f0a-46ad-97fe-7393226cc4e6"
+      ]
+    },
+    {
+      "id": "mb-c16dda5e-14ac-4d7c-89ca-b0e470d5f782",
+      "title": "命中注定 (《他从火光中走来》情感主题曲)",
+      "artist_id": "liu-yuning",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "c16dda5e-14ac-4d7c-89ca-b0e470d5f782",
+      "source_urls": [
+        "https://musicbrainz.org/recording/c16dda5e-14ac-4d7c-89ca-b0e470d5f782"
+      ]
+    },
+    {
+      "id": "mb-db8e62aa-2a8d-4065-8e49-265e8565a89d",
+      "title": "毒酒 (伴奏)",
+      "artist_id": "liu-yuning",
+      "year": 2025,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "db8e62aa-2a8d-4065-8e49-265e8565a89d",
+      "source_urls": [
+        "https://musicbrainz.org/recording/db8e62aa-2a8d-4065-8e49-265e8565a89d"
+      ]
+    },
+    {
+      "id": "mb-8a0276d8-e4c4-45b3-8b10-7e530edfc841",
+      "title": "Magic Together (Shanghai Disney Resort 10th Birthday Celebration Theme Song)",
+      "artist_id": "liu-yuning",
+      "year": 2026,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "8a0276d8-e4c4-45b3-8b10-7e530edfc841",
+      "source_urls": [
+        "https://musicbrainz.org/recording/8a0276d8-e4c4-45b3-8b10-7e530edfc841"
+      ]
+    },
+    {
+      "id": "mb-865d1705-10d3-4f8f-87d7-52c2ffe30060",
+      "title": "《无心生大梦》（《大梦归离》影视剧燃斗曲） (人声伴奏版)",
+      "artist_id": "liu-yuning",
+      "year": 2024,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "865d1705-10d3-4f8f-87d7-52c2ffe30060",
+      "source_urls": [
+        "https://musicbrainz.org/recording/865d1705-10d3-4f8f-87d7-52c2ffe30060"
+      ]
+    },
+    {
+      "id": "mb-3f211bdb-3893-45a1-8079-216a75366cb9",
+      "title": "云字诀（《云襄传》电视剧主题曲）",
+      "artist_id": "liu-yuning",
+      "year": 2023,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "3f211bdb-3893-45a1-8079-216a75366cb9",
+      "source_urls": [
+        "https://musicbrainz.org/recording/3f211bdb-3893-45a1-8079-216a75366cb9"
+      ]
+    },
+    {
+      "id": "mb-247680e9-7fe6-449d-8ace-38dbd85a417a",
+      "title": "琉璃 (電視劇《琉璃》片頭曲)",
+      "artist_id": "liu-yuning",
+      "year": 2020,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "247680e9-7fe6-449d-8ace-38dbd85a417a",
+      "source_urls": [
+        "https://musicbrainz.org/recording/247680e9-7fe6-449d-8ace-38dbd85a417a"
+      ]
+    },
+    {
+      "id": "mb-03592fa4-7939-477c-bc07-364464f61982",
+      "title": "玉眠 (《月鳞绮纪》网络剧伤逝曲)",
+      "artist_id": "liu-yuning",
+      "year": 2026,
+      "language": "zh",
+      "is_cpop": true,
+      "tags": [
+        "mandopop",
+        "pop-rock"
+      ],
+      "moods": [
+        "reflective"
+      ],
+      "mbid": "03592fa4-7939-477c-bc07-364464f61982",
+      "source_urls": [
+        "https://musicbrainz.org/recording/03592fa4-7939-477c-bc07-364464f61982"
+      ]
     }
   ],
   "sync_report": [
@@ -32974,7 +38849,7 @@
     {
       "artist_id": "tao",
       "status": "error",
-      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/artist?query=artist%3A%22%E9%99%B6%E5%96%86%22&limit=5&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/recording?query=arid%3A38fe7fb3-2bde-4672-8016-2ba6f7d1808f+AND+status%3Aofficial&limit=24&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
     },
     {
       "artist_id": "leehom-wang",
@@ -33110,14 +38985,14 @@
     },
     {
       "artist_id": "chen-li",
-      "status": "error",
-      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/artist?query=artist%3A%22%E9%99%88%E7%B2%92%22&limit=5&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      "mbid": "53cb194a-e6da-49a6-b69d-317ac695d2ca",
+      "recording_count": 24,
+      "status": "ok"
     },
     {
       "artist_id": "shan-yichun",
-      "mbid": "da5993a2-b5b9-40a8-af03-fe5bbc198d29",
-      "recording_count": 24,
-      "status": "ok"
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/recording?query=arid%3Ada5993a2-b5b9-40a8-af03-fe5bbc198d29+AND+status%3Aofficial&limit=24&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
     },
     {
       "artist_id": "hua-chenyu",
@@ -33127,9 +39002,8 @@
     },
     {
       "artist_id": "phoenix-legend",
-      "mbid": "93840d78-9c8b-42f7-8682-41f642455209",
-      "recording_count": 24,
-      "status": "ok"
+      "status": "error",
+      "error": "Server error '503 Service Temporarily Unavailable' for url 'https://musicbrainz.org/ws/2/artist?query=artist%3A%22%E5%87%A4%E5%87%B0%E4%BC%A0%E5%A5%87%22&limit=5&fmt=json'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
     },
     {
       "artist_id": "liu-yuning",
